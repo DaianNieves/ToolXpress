@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.toolxpress.ui.theme.ToolXpressTheme
 import com.example.toolxpress.ui.theme.screens.LoginScreen
+import com.example.toolxpress.ui.theme.screens.LoginScreenP
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +68,6 @@ fun ComposableMultiScreenApp(){
 @Composable
 fun SetupNavGraph(navController: NavHostController){
     NavHost(navController = navController, startDestination = "login"){
-        composable("login") { LoginScreen(navController) }
+        composable("login") { LoginScreenP(navController) }
     }
 }
