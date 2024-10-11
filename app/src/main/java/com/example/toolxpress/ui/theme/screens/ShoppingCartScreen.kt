@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
@@ -46,15 +47,21 @@ import com.example.toolxpress.ui.theme.data.model.ShoppingModel
 fun ShoppingCartScreen(navController: NavController) {
 
     // Declaración de Variables
-    var ColorProd = Color(0xFF2c2c2c)
-    var ColorTextAzul = Color(color = 0xFF0057c4)
-    var ColorTextPrecio = Color(color = 0xFF1abf00)
+    val ColorProd = Color(0xFF2c2c2c)
+    val ColorNaranja = Color(color = 0xFFE66410)
+    val ColorTextPrecio = Color(color = 0xFF1abf00)
+
+    //Contenedor Barra Superior
+    Box(){
+        TopBar()
+    }
 
     // Contenedor Principal
     Box(
         modifier = Modifier
-            .padding(0.dp, 80.dp, 0.dp, 0.dp)
+            .padding(0.dp, 100.dp, 0.dp, 0.dp)
     ) {
+
         Column {
 
             Row(
@@ -87,104 +94,173 @@ fun ShoppingCartScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(20.dp))
 
             val productList = arrayOf(
-                ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
-                ShoppingModel(2, "Producto 2", "Descripción del producto 2", R.drawable.ejemploimagen, "$15.00"),
-                ShoppingModel(3, "Producto 3", "Descripción del producto 3", R.drawable.ejemploimagen, "$20.00"),
-                ShoppingModel(4, "Producto 4", "Descripción del producto 4", R.drawable.ejemploimagen, "$25.00")
+                ShoppingModel(
+                    1,
+                    "Producto 1",
+                    "Descripción del producto 1",
+                    R.drawable.ejemploimagen,
+                    "$10.00"
+                ),
+                ShoppingModel(
+                    2,
+                    "Producto 2",
+                    "Descripción del producto 2",
+                    R.drawable.ejemploimagen,
+                    "$15.00"
+                ),
+                ShoppingModel(
+                    3,
+                    "Producto 3",
+                    "Descripción del producto 3",
+                    R.drawable.ejemploimagen,
+                    "$20.00"
+                ),
+                ShoppingModel(
+                    4,
+                    "Producto 4",
+                    "Descripción del producto 4",
+                    R.drawable.ejemploimagen,
+                    "$25.00"
+                )
             )
 
             LazyColumn {
                 items(productList) { product ->
-                    Column(modifier = Modifier
-                        .fillMaxWidth()) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            Image(
-                                modifier = Modifier
-                                    .width(100.dp)
-                                    .height(100.dp),
-                                painter = painterResource(id = product.imageResId),
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop
-                            )
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        backgroundColor = Color.White,
+                        elevation = 4.dp
+                    ) {
+                        Column {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .width(100.dp)
+                                        .height(100.dp),
+                                    painter = painterResource(id = product.imageResId),
+                                    contentDescription = "",
+                                    contentScale = ContentScale.Crop
+                                )
 
-                            Column(modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp)) {
-                                Text(text = product.name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                                Text(text = product.description, fontSize = 14.sp)
-                                Row {
-                                    TextButton(onClick = { /* Acción para Guardar */ }) {
-                                        Text("Guardar", color = ColorTextAzul)
+                                Column(modifier = Modifier.padding(16.dp, 0.dp, 0.dp, 0.dp)) {
+                                    Text(
+                                        text = product.name,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp
+                                    )
+                                    Text(text = product.description, fontSize = 14.sp)
+                                    Row {
+                                        TextButton(onClick = {}) {
+                                            Text("Guardar", color = ColorNaranja, fontSize = 16.sp)
+                                        }
+                                        TextButton(onClick = {}) {
+                                            Text(
+                                                "Eliminar",
+                                                color = ColorNaranja,
+                                                fontSize = 16.sp
+                                            )
+                                        }
                                     }
-                                    TextButton(onClick = { /* Acción para Eliminar */ }) {
-                                        Text("Eliminar", color = ColorTextAzul)
-                                    }
-                                }
 
-                                // Menú desplegable para seleccionar la cantidad de productos
-                                var expanded by remember { mutableStateOf(false) }
-                                var selectedOption by remember { mutableStateOf("Selecciona cantidad") }
+                                    // Menú desplegable para seleccionar la cantidad de productos
+                                    var expanded by remember { mutableStateOf(false) }
+                                    var selectedOption by remember { mutableStateOf("Selecciona cantidad") }
 
-                                Box {
-                                    TextButton(onClick = { expanded = true }) {
-                                        Text(selectedOption)
-                                    }
-                                    DropdownMenu(
-                                        expanded = expanded,
-                                        onDismissRequest = { expanded = false }
-                                    ) {
-                                        listOf("1 producto", "2 productos", "3 productos", "4 productos").forEach { option ->
-                                            DropdownMenuItem(onClick = {
-                                                selectedOption = option
-                                                expanded = false
-                                            }) {
-                                                Text(option)
+                                    Box {
+                                        TextButton(onClick = { expanded = true }) {
+                                            Text(selectedOption, fontSize = 16.sp)
+                                        }
+                                        DropdownMenu(
+                                            expanded = expanded,
+                                            onDismissRequest = { expanded = false }
+                                        ) {
+                                            listOf(
+                                                "1 producto",
+                                                "2 productos",
+                                                "3 productos",
+                                                "4 productos"
+                                            ).forEach { option ->
+                                                DropdownMenuItem(onClick = {
+                                                    selectedOption = option
+                                                    expanded = false
+                                                }) {
+                                                    Text(option)
+                                                }
                                             }
                                         }
                                     }
                                 }
                             }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(0.dp, 0.dp, 40.dp, 20.dp),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Text(text = "Subtotal: ", fontSize = 18.sp)
+                                Text(
+                                    text = "${product.price}",
+                                    fontSize = 18.sp,
+                                    color = ColorTextPrecio
+                                )
+                            }
                         }
-                        Row(
+                    }
+                }
+
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Botón "Comprar"
+                        Button(
+                            onClick = {},
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(0.dp, 0.dp, 40.dp, 0.dp),
-                            horizontalArrangement = Arrangement.End
+                                .weight(1f)
+                                .padding(end = 8.dp)
+                                .height(50.dp)
+                                .fillMaxWidth(),
+
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = ColorNaranja,
+                                contentColor = Color.White
+                            )
+
                         ) {
-                            Text(text = "Subtotal: ", fontSize = 18.sp)
-                            Text(text = "${product.price}", fontSize = 18.sp, color = ColorTextPrecio)
+                            Text("Seguir Explorando", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White) // Tamaño del texto
+                        }
+
+                        // Botón "Seguir Explorando"
+                        Button(
+                            onClick = {},
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(start = 8.dp)
+                                .height(50.dp)
+                                .fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = ColorNaranja,
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text("Comprar", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White) // Tamaño del texto
                         }
                     }
                 }
             }
-
-            // Botón "Comprar"
-            Button(
-                onClick = { /* Acción para Comprar */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text("Comprar")
-            }
-
-            // Botón "Seguir Explorando"
-            Button(
-                onClick = { /* Acción para Seguir Explorando */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Text("Seguir Explorando")
-            }
-
         }
     }
 
-
-
-    //Contenedor del Footer
+    // Contenedor del Footer
     Box() {
 
     }
