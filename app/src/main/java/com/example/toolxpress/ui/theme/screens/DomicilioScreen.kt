@@ -21,7 +21,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.navigation.NavController
 
 @Composable
-fun EnvioScreen(navController: NavController) {
+fun DomicilioScreen(navController: NavController) {
 
     var name by remember { mutableStateOf("") }
     var postalCode by remember { mutableStateOf("") }
