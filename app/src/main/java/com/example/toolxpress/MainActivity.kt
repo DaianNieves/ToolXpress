@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.toolxpress.ui.theme.screens.LoginScreenP
 import com.example.toolxpress.ui.theme.screens.MainScreen
+import com.example.toolxpress.ui.theme.screens.ShoppingCartScreen
 import com.example.toolxpress.ui.theme.screens.StartScreen
 
 class MainActivity : ComponentActivity() {
@@ -52,7 +53,7 @@ fun GreetingPreview() {
 */
 
 @Composable
-fun ComposableMultiScreenApp(){
+fun ComposableMultiScreenApp() {
     val navController = rememberNavController()
     Surface(color = Color.White) {
         SetupNavGraph(navController = navController)
@@ -61,10 +62,12 @@ fun ComposableMultiScreenApp(){
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "StartScreen") {
+    NavHost(navController = navController, startDestination = "ShoppingCart") {
         composable("login") { LoginScreenP(navController) }
-        composable("createAccount") { CreateAccountScreen(navController) } // Usar el nombre correcto
+        composable("createAccount") { CreateAccountScreen(navController) }
         composable("StartScreen") { MainScreen(navController) }
+        composable("ShoppingCart") { ShoppingCartScreen(navController) }
+
     }
 }
 
