@@ -44,6 +44,7 @@ import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.GreenPrice
 import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.components.TopBar
 import com.example.toolxpress.ui.theme.data.model.ShoppingModel
 
 @Composable
