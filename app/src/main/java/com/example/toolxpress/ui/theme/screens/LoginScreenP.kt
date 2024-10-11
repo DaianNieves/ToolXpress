@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.Orange
 
 @Composable
 fun LoginScreenP(navController: NavController) {
@@ -309,7 +310,7 @@ fun LoginScreenP(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 25.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFe66410)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Orange),
                     enabled = !hasEmailError && !hasPasswordError && email.isNotEmpty() && password.isNotEmpty() // Deshabilitar si hay errores o campos vacíos
                 ) {
                     Text(

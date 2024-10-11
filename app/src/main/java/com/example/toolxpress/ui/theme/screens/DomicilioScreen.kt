@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.example.toolxpress.ui.theme.Orange
 
 @Composable
 fun EnvioScreen(navController: NavController) {
@@ -51,7 +53,7 @@ fun EnvioScreen(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color(0xFFe66410))
+                .background(Orange)
                 .padding(16.dp)
         ) {
             Icon(
@@ -213,7 +215,7 @@ fun EnvioScreen(navController: NavController) {
                 // Acción al guardar el domicilio
             },
             modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFe66410))
+            colors = ButtonDefaults.buttonColors(containerColor = Orange)
         ) {
             Text(
                 text = "Guardar domicilio",
