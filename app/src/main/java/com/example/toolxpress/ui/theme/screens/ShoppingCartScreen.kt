@@ -41,15 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.GrayProduct
+import com.example.toolxpress.ui.theme.GreenPrice
+import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.data.model.ShoppingModel
 
 @Composable
 fun ShoppingCartScreen(navController: NavController) {
-
-    // Declaración de Variables
-    val ColorProd = Color(0xFF2c2c2c)
-    val ColorNaranja = Color(color = 0xFFE66410)
-    val ColorTextPrecio = Color(color = 0xFF1abf00)
 
     //Contenedor Barra Superior
     Box(){
@@ -76,7 +74,7 @@ fun ShoppingCartScreen(navController: NavController) {
                             bottomEnd = 16.dp
                         )
                     )
-                    .background(ColorProd)
+                    .background(GrayProduct)
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -157,12 +155,12 @@ fun ShoppingCartScreen(navController: NavController) {
                                     Text(text = product.description, fontSize = 14.sp)
                                     Row {
                                         TextButton(onClick = {}) {
-                                            Text("Guardar", color = ColorNaranja, fontSize = 16.sp)
+                                            Text("Guardar", color = Orange, fontSize = 16.sp)
                                         }
                                         TextButton(onClick = {}) {
                                             Text(
                                                 "Eliminar",
-                                                color = ColorNaranja,
+                                                color = Orange,
                                                 fontSize = 16.sp
                                             )
                                         }
@@ -207,7 +205,7 @@ fun ShoppingCartScreen(navController: NavController) {
                                 Text(
                                     text = "${product.price}",
                                     fontSize = 18.sp,
-                                    color = ColorTextPrecio
+                                    color = GreenPrice
                                 )
                             }
                         }
@@ -231,7 +229,7 @@ fun ShoppingCartScreen(navController: NavController) {
                                 .fillMaxWidth(),
 
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = ColorNaranja,
+                                containerColor = Orange,
                                 contentColor = Color.White
                             )
 
@@ -248,7 +246,7 @@ fun ShoppingCartScreen(navController: NavController) {
                                 .height(50.dp)
                                 .fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = ColorNaranja,
+                                containerColor = Orange,
                                 contentColor = Color.White
                             )
                         ) {
