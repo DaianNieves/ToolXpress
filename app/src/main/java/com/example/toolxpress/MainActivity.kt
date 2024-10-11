@@ -12,7 +12,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.toolxpress.ui.theme.screens.LoginScreenP
+import com.example.toolxpress.ui.theme.screens.DomicilioScreen
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +61,11 @@ fun ComposableMultiScreenApp(){
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") { LoginScreenP(navController) }
-        composable("createAccount") { CreateAccountScreen(navController) } // Usar el nombre correcto
+    NavHost(navController = navController, startDestination = "DomicilioScreen") {
+        //composable("login") { LoginScreenP(navController) }
+        //composable("createAccount") { CreateAccountScreen(navController) }
+        composable("DomicilioScreen") { DomicilioScreen(navController) }
+
 
     }
 }
