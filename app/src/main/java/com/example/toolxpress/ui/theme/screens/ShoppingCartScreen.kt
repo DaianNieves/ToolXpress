@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
-import com.example.toolxpress.ui.theme.components.TopBar
 import com.example.toolxpress.ui.theme.data.model.ShoppingModel
 
 @Composable
