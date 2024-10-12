@@ -52,7 +52,7 @@ fun ShoppingCartScreen(navController: NavController) {
 
     //Contenedor Barra Superior
     Box(){
-        TopBar()
+        TopBar(navController)
     }
 
     // Contenedor Principal
@@ -222,7 +222,7 @@ fun ShoppingCartScreen(navController: NavController) {
                     ) {
                         // Botón "Comprar"
                         Button(
-                            onClick = {},
+                            onClick = {navController.navigate("StartScreen")},
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(end = 8.dp)
@@ -240,7 +240,7 @@ fun ShoppingCartScreen(navController: NavController) {
 
                         // Botón "Seguir Explorando"
                         Button(
-                            onClick = {},
+                            onClick = {navController.navigate("EnvioScreen")},
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 8.dp)

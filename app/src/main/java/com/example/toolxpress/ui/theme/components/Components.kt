@@ -37,10 +37,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.toolxpress.R
 
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavController) {
     var searchText = "" // campo de búsqueda
 
     // Contenedor principal de la barra superior
@@ -102,7 +103,7 @@ fun TopBar() {
             )
             // Ícono de persona
             IconButton(
-                onClick = { /* Acción de perfil */ },
+                onClick = { navController.navigate("login") },
                 modifier = Modifier.padding(start = 5.dp) // Espacio a la izquierda del ícono
             ) {
                 Icon(
@@ -114,7 +115,7 @@ fun TopBar() {
             // Ícono del carrito
             Box(modifier = Modifier.wrapContentSize()) {
                 IconButton(
-                    onClick = { /* Acción del carrito */ },
+                    onClick = { navController.navigate("ShoppingCart") },
                     modifier = Modifier.background(Color(0xFFE66410)) // Fondo azul para el botón
                 ) {
                     Icon(

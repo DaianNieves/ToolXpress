@@ -75,7 +75,7 @@ fun MainScreen(navController: NavController) {
     Column {
         // La barra superior fija
         Box(){
-            TopBar()
+            TopBar(navController)
         }
         // Espacio entre el carrusel y el contenido desplazable
         Spacer(modifier = Modifier.height(16.dp))
