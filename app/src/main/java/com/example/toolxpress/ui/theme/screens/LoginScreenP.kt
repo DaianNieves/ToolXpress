@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
@@ -20,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -27,12 +29,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.components.TopBar
 
 @Composable
 fun LoginScreenP(navController: NavController) {
@@ -42,6 +47,10 @@ fun LoginScreenP(navController: NavController) {
     var keepLoggedIn by remember { mutableStateOf(false) }
     var hasEmailError by remember { mutableStateOf(false) }
     var hasPasswordError by remember { mutableStateOf(false) }
+
+    Box(){
+        TopBar(navController)
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Imagen de fondo
@@ -61,6 +70,8 @@ fun LoginScreenP(navController: NavController) {
                 .background(Color.Black.copy(alpha = 0.1f))
         )
 */
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -73,75 +84,48 @@ fun LoginScreenP(navController: NavController) {
                     .fillMaxWidth()
 
             ) {
-                Spacer(modifier = Modifier.height(30.dp))
-                // Menú superior
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.DarkGray)
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
 
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Menu, // Usa un ícono de menú
-                        contentDescription = "Menu",
-                        tint = Color.White,
-                        modifier = Modifier.clickable {
-                            // Acción al hacer clic en el menú
-                        }
-                    )
-                    Text(
-                        text = "Categorías",
-                        color = Color.White,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Icon(
-                        imageVector = Icons.Default.Home, // Ícono de Home
-                        contentDescription = "Home",
-                        tint = Color.White,
-                        modifier = Modifier.clickable {
-                            // Acción para ir a la pantalla principal
-                        }
-                    )
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Icon(
-                        imageVector = Icons.Default.ShoppingCart, // Ícono de carrito
-                        contentDescription = "Cart",
-                        tint = Color.White,
-                        modifier = Modifier.clickable {
-                            // Acción para ir al carrito de compras
-                        }
-                    )
-                }
-                Spacer(modifier = Modifier.height(40.dp)) // Espacio entre el menú y el contenido
+                Spacer(modifier = Modifier.height(50.dp)) // Espacio entre el menú y el contenido
 
                 // Imagen centrada (Logo)
                 Image(
                     painter = painterResource(id = R.drawable.logo), // Reemplaza con tu recurso de imagen
                     contentDescription = "Logo",
                     modifier = Modifier
-                        .size(150.dp) // A  justa el tamaño de la imagen según sea necesario
+                        .size(200.dp) // A  justa el tamaño de la imagen según sea necesario
                         .align(Alignment.CenterHorizontally) // Centrar horizontalmente
                 )
 
                 // Crear una cuenta
                 Row(
-                    horizontalArrangement = Arrangement.Absolute.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 20.dp)
+                        .clip(
+                            RoundedCornerShape(
+                                topStart = 16.dp,
+                                topEnd = 16.dp,
+                                bottomStart = 16.dp,
+                                bottomEnd = 16.dp
+                            )
+                        )
+                        .background(GrayProduct)
+                        .height(60.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = "Log in",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 50.sp,
-                        color = Color.Black
-
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize(), // El Box ocupará todo el espacio de la Row
+                        contentAlignment = Alignment.Center // Alinea el contenido (texto) en el centro del Box
+                    ) {
+                        Text(
+                            text = "Log In",
+                            textAlign = TextAlign.Center,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 30.sp
+                        )
+                    }
                 }
+
                 Spacer(modifier = Modifier.height(30.dp))
 
                 // Email/Usuario
@@ -156,7 +140,7 @@ fun LoginScreenP(navController: NavController) {
                     Row(
                         modifier = Modifier
                             .background(
-                                Color.DarkGray.copy(alpha = 0.7f),
+                                Color.LightGray.copy(alpha = 0.7f),
                                 shape = MaterialTheme.shapes.medium
                             )
                             .padding(14.dp)
@@ -167,7 +151,7 @@ fun LoginScreenP(navController: NavController) {
                             imageVector = Icons.Default.PermIdentity,
                             contentDescription = "User Icon",
                             modifier = Modifier.size(28.dp),
-                            tint = Color.White
+                            tint = Color.DarkGray
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         BasicTextField(
@@ -193,7 +177,7 @@ fun LoginScreenP(navController: NavController) {
                                 }
                             },
                             textStyle = LocalTextStyle.current.copy(
-                                color = Color.White,
+                                color = Color.Black,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -223,7 +207,7 @@ fun LoginScreenP(navController: NavController) {
                     Row(
                         modifier = Modifier
                             .background(
-                                Color.DarkGray.copy(alpha = 0.7f),
+                                Color.LightGray.copy(alpha = 0.7f),
                                 shape = MaterialTheme.shapes.medium
                             )
                             .padding(14.dp)
@@ -234,7 +218,7 @@ fun LoginScreenP(navController: NavController) {
                             imageVector = Icons.Default.Password,
                             contentDescription = "User Icon",
                             modifier = Modifier.size(28.dp),
-                            tint = Color.White
+                            tint = Color.DarkGray
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         BasicTextField(
@@ -259,7 +243,7 @@ fun LoginScreenP(navController: NavController) {
                                 }
                             },
                             textStyle = LocalTextStyle.current.copy(
-                                color = Color.White,
+                                color = Color.Black,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -270,7 +254,7 @@ fun LoginScreenP(navController: NavController) {
                             modifier = Modifier
                                 .size(28.dp)
                                 .clickable { passwordVisible = !passwordVisible },
-                            tint = Color.White
+                            tint = Color.DarkGray
                         )
                     }
                     if (hasPasswordError) {
