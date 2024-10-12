@@ -12,9 +12,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.toolxpress.ui.theme.screens.DomicilioScreen
 import com.example.toolxpress.ui.theme.screens.EnvioScreen
 import com.example.toolxpress.ui.theme.screens.LoginScreenP
 import com.example.toolxpress.ui.theme.screens.MainScreen
+import com.example.toolxpress.ui.theme.screens.MetodoPagoScreen
 import com.example.toolxpress.ui.theme.screens.ProductScreen
 import com.example.toolxpress.ui.theme.screens.ShoppingCartScreen
 import com.example.toolxpress.ui.theme.screens.StartScreen
@@ -70,10 +72,14 @@ fun SetupNavGraph(navController: NavHostController) {
         composable("login") { LoginScreenP(navController) }
         composable("createAccount") { CreateAccountScreen(navController) }
         composable("ShoppingCart") { ShoppingCartScreen(navController) }
+        composable("DomicilioScreen") { DomicilioScreen(navController) }
         composable("EnvioScreen") { EnvioScreen(navController) }
+        composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }}
+
+
 
     }
-}
+
 
 
 

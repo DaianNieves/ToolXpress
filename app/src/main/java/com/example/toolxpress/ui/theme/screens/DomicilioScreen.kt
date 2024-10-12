@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 import com.example.toolxpress.ui.theme.Orange
 
 @Composable
-fun EnvioScreen(navController: NavController) {
+fun DomicilioScreen(navController: NavController) {
 
     var name by remember { mutableStateOf("") }
     var postalCode by remember { mutableStateOf("") }
