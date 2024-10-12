@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.composable
 import com.example.toolxpress.ui.theme.Orange
 
 @Composable
@@ -212,7 +213,7 @@ fun DomicilioScreen(navController: NavController) {
         // Botón de guardar
         Button(
             onClick = {
-                // Acción al guardar el domicilio
+                navController.navigate("EnvioScreen")
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = Orange)
