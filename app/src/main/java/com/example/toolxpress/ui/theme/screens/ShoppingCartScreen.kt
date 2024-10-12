@@ -240,7 +240,7 @@ fun ShoppingCartScreen(navController: NavController) {
 
                         // Botón "Seguir Explorando"
                         Button(
-                            onClick = {navController.navigate("EnvioScreen")},
+                            onClick = {navController.navigate("DomicilioScreen")},
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 8.dp)
