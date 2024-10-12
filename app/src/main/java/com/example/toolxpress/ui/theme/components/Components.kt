@@ -1,4 +1,5 @@
 package com.example.toolxpress.ui.theme.components
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -6,15 +7,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,6 +37,7 @@ import com.example.toolxpress.R
 @Composable
 fun TopBar(navController: NavController) {
     var searchText by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) } // Estado para controlar la expansión del menú
 
     // Contenedor principal de la barra superior
     Box(
@@ -49,16 +55,16 @@ fun TopBar(navController: NavController) {
             verticalAlignment = Alignment.CenterVertically, // Alineación vertical centrada
             horizontalArrangement = Arrangement.SpaceBetween // Espaciado entre elementos
         ) {
-            // Ícono de menú desplegable
+            // Ícono de menú
             IconButton(
-                onClick = { /* Acción del menú desplegable */ },
+                onClick = { expanded = !expanded }, // Abre el menú desplegable
                 modifier = Modifier.padding(end = 5.dp) // Espacio a la derecha del ícono
             ) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menú",
                     tint = Color.White, // Color del ícono
-                            modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(30.dp)
                 )
             }
 
@@ -78,7 +84,7 @@ fun TopBar(navController: NavController) {
                     )
                 },
                 singleLine = true, // Mantener una sola línea
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(18.dp),
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.Black,
                     unfocusedTextColor = Color.Black,
@@ -134,10 +140,41 @@ fun TopBar(navController: NavController) {
                 }
             }
         }
+
+        // Menú desplegable para categorías
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .background(Color.White) // Fondo del menú desplegable
+                .padding(8.dp) // Espaciado dentro del menú
+        ) {
+            // Lista de categorías
+            val categories = listOf(
+                "Categoria 1", "Categoria 2", "Categoria 3",
+                "Categoria 4", "Categoria 5", "Categoria 6"
+            )
+
+            categories.forEach { category ->
+                DropdownMenuItem(
+                    onClick = {
+                        // Aquí puedes añadir cualquier acción que quieras realizar al hacer clic
+                        expanded = false // Cierra el menú
+                    }
+                ) {
+                    Text(
+                        text = category, // Texto de la categoría
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                }
+            }
+        }
     }
 }
-
-
 
 
 @Composable

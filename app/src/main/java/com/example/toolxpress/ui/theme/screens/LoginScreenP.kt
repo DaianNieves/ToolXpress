@@ -49,7 +49,7 @@ fun LoginScreenP(navController: NavController) {
     var hasPasswordError by remember { mutableStateOf(false) }
 
     Box(){
-        TopBar(navController)
+        TopBar (navController)
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
