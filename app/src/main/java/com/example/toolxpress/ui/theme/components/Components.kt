@@ -1,20 +1,8 @@
 package com.example.toolxpress.ui.theme.components
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -28,11 +16,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,23 +31,20 @@ import com.example.toolxpress.R
 
 @Composable
 fun TopBar(navController: NavController) {
-    var searchText = "" // campo de búsqueda
+    var searchText by remember { mutableStateOf("") }
 
     // Contenedor principal de la barra superior
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 0.dp)
-            .statusBarsPadding() // espacio de la barra de estado
+            .statusBarsPadding() // Espacio de la barra de estado
             .background(Color(0xFFE66410))
-
     ) {
         // Fila que contiene el menú, búsqueda, ícono de persona y el ícono del carrito
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(vertical = 8.dp)
+                .height(64.dp) // Ajustar la altura total para dar más espacio al campo de búsqueda
                 .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically, // Alineación vertical centrada
             horizontalArrangement = Arrangement.SpaceBetween // Espaciado entre elementos
@@ -69,20 +55,21 @@ fun TopBar(navController: NavController) {
                 modifier = Modifier.padding(end = 5.dp) // Espacio a la derecha del ícono
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Menu, // Cambia esto si deseas otro ícono
+                    imageVector = Icons.Filled.Menu,
                     contentDescription = "Menú",
-                    tint = Color.White // Color del ícono
+                    tint = Color.White, // Color del ícono
+                            modifier = Modifier.size(30.dp)
                 )
             }
 
             // Campo de búsqueda
             OutlinedTextField(
                 value = searchText,
-                onValueChange = { searchText = it }, // Asegúrate de actualizar el texto de búsqueda
+                onValueChange = { searchText = it }, // Actualizar el texto de búsqueda
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight()
-                    .padding(end = 5.dp),
+                    .height(50.dp) // Altura ajustada del campo de texto
+                    .padding(vertical = 0.dp, horizontal = 5.dp),
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Filled.Search,
@@ -90,38 +77,45 @@ fun TopBar(navController: NavController) {
                         tint = Color(0xFFE66410) // Usando el color e66410
                     )
                 },
-                singleLine = true, // Solo una línea
-                shape = RoundedCornerShape(12.dp),
+                singleLine = true, // Mantener una sola línea
+                shape = RoundedCornerShape(20.dp),
                 colors = TextFieldDefaults.colors(
                     focusedTextColor = Color.Black,
                     unfocusedTextColor = Color.Black,
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
-                    focusedIndicatorColor = Color.Blue,
-                    unfocusedIndicatorColor = Color.Gray
+                    focusedIndicatorColor = Color.Transparent, // Sin borde al enfocarse
+                    unfocusedIndicatorColor = Color.Transparent // Sin borde cuando no está enfocado
+                ),
+                textStyle = androidx.compose.ui.text.TextStyle( // Aumentar el tamaño del texto si es necesario
+                    fontSize = 16.sp
                 )
             )
+
             // Ícono de persona
             IconButton(
                 onClick = { navController.navigate("login") },
                 modifier = Modifier.padding(start = 5.dp) // Espacio a la izquierda del ícono
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Person, // Reemplaza esto con el ícono que desees
+                    imageVector = Icons.Filled.Person,
                     contentDescription = "Perfil",
-                    tint = Color.White // Color del ícono
+                    tint = Color.White,// Color del ícono
+                    modifier = Modifier.size(30.dp)
                 )
             }
+
             // Ícono del carrito
             Box(modifier = Modifier.wrapContentSize()) {
                 IconButton(
                     onClick = { navController.navigate("ShoppingCart") },
-                    modifier = Modifier.background(Color(0xFFE66410)) // Fondo azul para el botón
+                    modifier = Modifier.background(Color(0xFFE66410)) // Fondo del botón
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ShoppingCart,
                         contentDescription = "Carrito de Compras",
-                        tint = Color.White
+                        tint = Color.White,
+                        modifier = Modifier.size(30.dp)
                     )
                 }
                 // Círculo con el número de notificaciones
@@ -142,6 +136,8 @@ fun TopBar(navController: NavController) {
         }
     }
 }
+
+
 
 
 @Composable
