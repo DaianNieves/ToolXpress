@@ -12,6 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.toolxpress.ui.theme.components.ProductDataProvider
 import com.example.toolxpress.ui.theme.screens.DomicilioScreen
 import com.example.toolxpress.ui.theme.screens.EnvioScreen
 import com.example.toolxpress.ui.theme.screens.LoginScreenP
@@ -67,19 +68,30 @@ fun ComposableMultiScreenApp() {
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "StartScreen") {
-        composable("StartScreen") { MainScreen(navController) }
-        composable("login") { LoginScreenP(navController) }
-        composable("createAccount") { CreateAccountScreen(navController) }
-        composable("ShoppingCart") { ShoppingCartScreen(navController) }
-        composable("DomicilioScreen") { DomicilioScreen(navController) }
-        composable("EnvioScreen") { EnvioScreen(navController) }
-        composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }
-        composable("ProductScreen") { ProductsScreen(navController) }
-
+    ProductDataProvider { allCategories ->
+        NavHost(navController = navController, startDestination = "StartScreen") {
+            composable("StartScreen") { MainScreen(navController, allCategories) }
+            composable("login") { LoginScreenP(navController) }
+            composable("createAccount") { CreateAccountScreen(navController) }
+            composable("ShoppingCart") { ShoppingCartScreen(navController) }
+            composable("DomicilioScreen") { DomicilioScreen(navController) }
+            composable("EnvioScreen") { EnvioScreen(navController) }
+            composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }
+            composable("ProductsScreen/{categoryName}") { backStackEntry ->
+                val categoryName = backStackEntry.arguments?.getString("categoryName")
+                ProductsScreen(navController, categoryName, allCategories)
+            }
+            composable("ProductsScreen") { // Ruta para acceder a todos los productos
+                ProductsScreen(navController, null, allCategories) // Pasar null para todos los productos
+            }
+        }
     }
+}
 
-    }
+
+
+
+
 
 
 

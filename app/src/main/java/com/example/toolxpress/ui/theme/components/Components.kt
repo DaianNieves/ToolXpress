@@ -157,21 +157,37 @@ fun TopBar(navController: NavController) {
                 .background(Color.White) // Fondo del menú desplegable
                 .padding(8.dp) // Espaciado dentro del menú
         ) {
-            // Lista de categorías
-            val categories = listOf(
-                "Categoria 1", "Categoria 2", "Categoria 3",
-                "Categoria 4", "Categoria 5", "Categoria 6"
-            )
+            // Usar ProductDataProvider para obtener las categorías y productos
+            ProductDataProvider { categories ->
+                categories.forEach { (categoryName, _) ->
+                    DropdownMenuItem(
+                        onClick = {
+                            expanded = false // Cierra el menú
+                            // Redirigir a la categoría seleccionada
+                            navController.navigate("ProductsScreen/$categoryName")
+                        }
+                    ) {
+                        Text(
+                            text = categoryName, // Texto de la categoría
+                            color = Color.Black,
+                            fontSize = 16.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        )
+                    }
+                }
 
-            categories.forEach { category ->
+                // Añadir opción para mostrar todos los productos
                 DropdownMenuItem(
                     onClick = {
-                        // Aquí puedes añadir cualquier acción que quieras realizar al hacer clic
                         expanded = false // Cierra el menú
+                        // Redirigir a ProductsScreen con null para mostrar todos los productos
+                        navController.navigate("ProductsScreen")
                     }
                 ) {
                     Text(
-                        text = category, // Texto de la categoría
+                        text = "Todos los Productos", // Texto de la opción
                         color = Color.Black,
                         fontSize = 16.sp,
                         modifier = Modifier
@@ -183,7 +199,6 @@ fun TopBar(navController: NavController) {
         }
     }
 }
-
 
 @Composable
 fun Footer() {
@@ -271,11 +286,11 @@ fun Footer() {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Cambiar a imagenes
+            // Cambiar a imágenes
             SocialMediaImage(imageResId = R.drawable.facebook, contentDescription = "Facebook")
             SocialMediaImage(imageResId = R.drawable.x, contentDescription = "Twitter")
             SocialMediaImage(imageResId = R.drawable.instagram, contentDescription = "Instagram")
-            SocialMediaImage(imageResId = R.drawable.whats, contentDescription = "whatsapp")
+            SocialMediaImage(imageResId = R.drawable.whats, contentDescription = "WhatsApp")
         }
 
         // Derechos reservados centrados horizontalmente
@@ -291,6 +306,7 @@ fun Footer() {
         )
     }
 }
+
 
 @Composable
 fun SocialMediaImage(imageResId: Int, contentDescription: String) {
@@ -365,6 +381,39 @@ fun CategoryHeader(categoryName: String) {
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Composable
+fun ProductDataProvider(
+    content: @Composable (categories: List<Pair<String, List<PostModel>>>) -> Unit
+) {
+    val postsCategory1 = listOf(
+        PostModel(1, "Title 1", "Price$1", painterResource(R.drawable.ejemploimagen)),
+        PostModel(2, "Title 2", "Price$2", painterResource(R.drawable.ejemploimagen)),
+        PostModel(3, "Title 3", "Price$3", painterResource(R.drawable.ejemploimagen))
+    )
+
+    val postsCategory2 = listOf(
+        PostModel(4, "Title 4", "Price$4", painterResource(R.drawable.ejemploimagen)),
+        PostModel(5, "Title 5", "Price$5", painterResource(R.drawable.ejemploimagen)),
+        PostModel(6, "Title 6", "Price$6", painterResource(R.drawable.ejemploimagen))
+    )
+
+    val postsCategory3 = listOf(
+        PostModel(7, "Title 7", "Price$7", painterResource(R.drawable.ejemploimagen)),
+        PostModel(8, "Title 8", "Price$8", painterResource(R.drawable.ejemploimagen)),
+        PostModel(9, "Title 9", "Price$9", painterResource(R.drawable.ejemploimagen)),
+        PostModel(10, "Title 10", "Price$10", painterResource(R.drawable.ejemploimagen))
+    )
+
+    val categories = listOf(
+        "Categoría 1" to postsCategory1,
+        "Categoría 2" to postsCategory2,
+        "Categoría 3" to postsCategory3
+    )
+
+    // Llama al contenido, pasando las categorías
+    content(categories)
 }
 
 @Composable
