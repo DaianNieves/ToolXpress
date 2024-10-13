@@ -29,21 +29,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
-import com.example.toolxpress.ui.theme.GrayProduct
+import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.GreenPrice
 import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.components.Footer
 import com.example.toolxpress.ui.theme.components.TopBar
 import com.example.toolxpress.ui.theme.data.model.ShoppingModel
 
@@ -75,7 +73,7 @@ fun ShoppingCartScreen(navController: NavController) {
                             bottomEnd = 16.dp
                         )
                     )
-                    .background(GrayProduct)
+                    .background(GreyProduct)
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -254,13 +252,12 @@ fun ShoppingCartScreen(navController: NavController) {
                             Text("Comprar", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White) // Tamaño del texto
                         }
                     }
+                    // La barra superior fija
+                    Box(){
+                        Footer()
+                    }
                 }
             }
         }
-    }
-
-    // Contenedor del Footer
-    Box() {
-
     }
 }
