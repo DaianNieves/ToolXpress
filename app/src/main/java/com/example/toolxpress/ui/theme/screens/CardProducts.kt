@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,7 +24,6 @@ import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.components.Footer
 import com.example.toolxpress.ui.theme.components.TopBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardProducts(navController: NavController) {
     var quantity by remember { mutableStateOf(1) }
