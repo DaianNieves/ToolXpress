@@ -69,7 +69,7 @@ fun ComposableMultiScreenApp() {
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     ProductDataProvider { allCategories ->
-        NavHost(navController = navController, startDestination = "StartScreen") {
+        NavHost(navController = navController, startDestination = "EnvioScreen") {
             composable("StartScreen") { MainScreen(navController, allCategories) }
             composable("login") { LoginScreenP(navController) }
             composable("createAccount") { CreateAccountScreen(navController) }

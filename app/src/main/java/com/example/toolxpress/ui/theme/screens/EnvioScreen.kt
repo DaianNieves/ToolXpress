@@ -1,8 +1,8 @@
 package com.example.toolxpress.ui.theme.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -10,141 +10,148 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import androidx.navigation.NavController
+import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.Orange
 
 @Composable
 fun EnvioScreen(navController: NavController) {
+    var sliderPosition by remember { mutableStateOf(0f) } // Estado inicial del progreso
 
-    // Estado inicial
-    var sliderPosition by remember { mutableStateOf(0f) }
-
-    // Actualizar texto
-    val deliveryStatusText = when (sliderPosition) {
-        0f -> "Preparando envío"
-        0.5f -> "En camino"
-        1f -> "Entregado"
-        else -> "Preparando envío"
+    // Simular progreso automáticamente usando LaunchedEffect
+    LaunchedEffect(Unit) {
+        // Simula el cambio del estado del pedido en el tiempo
+        while (sliderPosition < 1f) {
+            delay(9000) // Espera 9 segundos
+            sliderPosition += 0.5f // Avanza el progreso en un 50%
+        }
     }
 
+
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top,
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(MaterialTheme.colorScheme.background)
     ) {
+        Spacer(modifier = Modifier.height(50.dp))
+        // Título "Status"
+        Text(
+            text = "Status",
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(50.dp))
+
+        // Indicador de progreso lineal en la parte superior
+        LinearProgressIndicator(
+            progress = sliderPosition,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            color = Color.Black
+
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Estado de envío (íconos que se iluminan según el progreso)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Regresar",
-                modifier = Modifier
-                    .size(28.dp)
-                    .clickable { navController.popBackStack() }
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = "Seguimiento de Envío",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp
-                )
-            )
+            ProgressIcon(isActive = sliderPosition >= 0f, icon = Icons.Default.Build, label = "Preparación")
+            ProgressIcon(isActive = sliderPosition >= 0.5f, icon = Icons.Default.LocalShipping, label = "En camino")
+            ProgressIcon(isActive = sliderPosition == 1f, icon = Icons.Default.CheckCircle, label = "Entregado")
         }
 
-        Spacer(modifier = Modifier.height(200.dp))
-        // Texto estado de envio
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Proceso de entrega (lista de eventos)
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            OrderStatusItem(
+                status = "Pagado",
+                date = "5 Oct",
+                description = "Pedido pagado exitosamente.",
+                isActive = sliderPosition >= 0f
+            )
+            OrderStatusItem(
+                status = "Empacado",
+                date = "6 Oct",
+                description = "El pedido ha sido empacado y está listo para ser enviado.",
+                isActive = sliderPosition >= 0f
+            )
+            OrderStatusItem(
+                status = "Enviado",
+                date = "7 Oct",
+                description = "Tu pedido está en camino.",
+                isActive = sliderPosition >= 0.5f
+            )
+            OrderStatusItem(
+                status = "Entregado",
+                date = "8 Oct",
+                description = "El pedido ha sido entregado.",
+                isActive = sliderPosition == 1f
+            )
+        }
+    }
+}
+
+@Composable
+fun ProgressIcon(isActive: Boolean, icon: ImageVector, label: String) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = if (isActive) Orange else Color.Gray,
+            modifier = Modifier.size(40.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = deliveryStatusText,
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier.padding(vertical = 8.dp)
+            text = label,
+            color = if (isActive) Color.Black else Color.Gray,
+            fontWeight = FontWeight.Bold
         )
+    }
+}
 
-        Spacer(modifier = Modifier.height(100.dp))
-
-        // Slider con 3 estados
-        Slider(
-            value = sliderPosition,
-            onValueChange = { sliderPosition = it },
-            valueRange = 0f..1f, // Solo tres estados: 0, 0.5, y 1
-            steps = 1, // Hace que haya dos puntos intermedios
-            modifier = Modifier.padding(horizontal = 80.dp)
-        )
-
-        Spacer(modifier = Modifier.height(100.dp))
-
-        when (sliderPosition) {
-            0f -> {
-                Icon(
-                    imageVector = Icons.Filled.Build,
-                    contentDescription = "En preparación",
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.scrim
-                )
-                Text(
-                    text = "En preparación",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            0.5f -> {
-                Icon(
-                    imageVector = Icons.Filled.LocalShipping, // Icono de en camino
-                    contentDescription = "En camino",
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.scrim
-                )
-                Text(
-                    text = "En camino",
-                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.Green),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 30.dp),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "Tu paquete está en el último tramo del recorrido.",
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp),
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            1f -> {
-                Icon(
-                    imageVector = Icons.Filled.CheckCircle, // Icono de entregado
-                    contentDescription = "Entregado",
-                    modifier = Modifier.size(64.dp),
-                    tint = Color.Gray
-                )
-                Text(
-                    text = "Entregado",
-                    style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    textAlign = TextAlign.Center
-                )
-            }
+@Composable
+fun OrderStatusItem(status: String, date: String, description: String, isActive: Boolean) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background (if (isActive)  Orange else Color.White, shape = RoundedCornerShape(8.dp))
+            .padding(16.dp)
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.width(16.dp))
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(text = status, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(text = date, color = Color.Black, fontSize = 14.sp)
+            Text(text = description, color = Color.Black, fontSize = 14.sp)
         }
     }
 }
