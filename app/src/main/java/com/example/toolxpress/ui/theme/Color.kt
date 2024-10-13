@@ -12,4 +12,6 @@ val Pink40 = Color(0xFF7D5260)
 
 val Orange = Color(0xFFe66410)
 val GreenPrice = Color(0xFF1abf00)
-val GrayProduct = Color(0xFF2c2c2c)
+val GreyProduct = Color(0xFF2c2c2c)
+val YellowShop = Color(0xFFFFA500)
+val GreyFooter = Color(0xFF1E1E1E)

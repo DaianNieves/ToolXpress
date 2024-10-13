@@ -14,25 +14,33 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.GreyFooter
+import com.example.toolxpress.ui.theme.GreyProduct
+import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.YellowShop
+import com.example.toolxpress.ui.theme.data.model.PostModel
 
 @Composable
 fun TopBar(navController: NavController) {
@@ -44,7 +52,7 @@ fun TopBar(navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding() // Espacio de la barra de estado
-            .background(Color(0xFFE66410))
+            .background(Orange)
     ) {
         // Fila que contiene el menú, búsqueda, ícono de persona y el ícono del carrito
         Row(
@@ -80,7 +88,7 @@ fun TopBar(navController: NavController) {
                     Icon(
                         imageVector = Icons.Filled.Search,
                         contentDescription = "Buscar",
-                        tint = Color(0xFFE66410) // Usando el color e66410
+                        tint = Orange
                     )
                 },
                 singleLine = true, // Mantener una sola línea
@@ -115,7 +123,7 @@ fun TopBar(navController: NavController) {
             Box(modifier = Modifier.wrapContentSize()) {
                 IconButton(
                     onClick = { navController.navigate("ShoppingCart") },
-                    modifier = Modifier.background(Color(0xFFE66410)) // Fondo del botón
+                    modifier = Modifier.background(Orange) // Fondo del botón
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ShoppingCart,
@@ -128,7 +136,7 @@ fun TopBar(navController: NavController) {
                 Box(
                     modifier = Modifier
                         .size(20.dp) // Tamaño del círculo
-                        .background(Color(0xFFFFA500), shape = CircleShape) // Color naranja
+                        .background(YellowShop, shape = CircleShape) // Color naranja
                         .align(Alignment.TopEnd) // Alineación en la esquina superior derecha
                 ) {
                     Text(
@@ -182,7 +190,7 @@ fun Footer() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF1E1E1E))
+            .background(GreyFooter)
             .padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
         Row(
@@ -301,8 +309,101 @@ fun SocialMediaImage(imageResId: Int, contentDescription: String) {
     }
 }
 
-@Preview
 @Composable
-fun FooterPreview() {
-    Footer()
+fun ProductCard(post: PostModel) {
+    Box(
+        modifier = Modifier
+            .size(160.dp) // Tamaño uniforme para todas las tarjetas
+            .clip(RoundedCornerShape(8.dp))
+            .background(GreyProduct) // Color mantenido
+            .clickable { /* Acción del botón */ },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            // Usamos la imagen de cada producto
+            Image(
+                painter = post.image,
+                contentDescription = null,
+                modifier = Modifier.size(100.dp) // Tamaño de imagen mantenido
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = post.title,
+                fontSize = 20.sp, // Tamaño de texto mantenido
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = post.text,
+                fontSize = 18.sp, // Tamaño de texto mantenido
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun CategoryHeader(categoryName: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(GreyProduct)
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = categoryName,
+            color = Color.White,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+fun ProductCardCompact(id:Int,title:String,text:String,image:Painter){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(3.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Black,
+            contentColor = Color.White
+        )
+    ) {
+        Row(){
+            Image(
+                modifier = Modifier
+                    .width(80.dp)
+                    .height(100.dp)
+                    .padding(5.dp),
+                painter = image,
+                contentDescription = "Android Logo",
+                contentScale = ContentScale.FillBounds
+            )
+            Column {
+                Text(text = title,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(10.dp)
+                )
+                Text(
+                    text = text,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Justify,
+                    maxLines = 3,
+                    modifier = Modifier.padding(10.dp)
+
+                )
+
+            }
+        }
+    }
 }

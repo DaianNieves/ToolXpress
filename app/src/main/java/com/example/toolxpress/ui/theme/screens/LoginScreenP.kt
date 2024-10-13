@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
-import com.example.toolxpress.ui.theme.GrayProduct
+import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.components.TopBar
 
@@ -108,7 +108,7 @@ fun LoginScreenP(navController: NavController) {
                                 bottomEnd = 16.dp
                             )
                         )
-                        .background(GrayProduct)
+                        .background(GreyProduct)
                         .height(60.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {

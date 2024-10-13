@@ -18,6 +18,7 @@ import com.example.toolxpress.ui.theme.screens.LoginScreenP
 import com.example.toolxpress.ui.theme.screens.MainScreen
 import com.example.toolxpress.ui.theme.screens.MetodoPagoScreen
 import com.example.toolxpress.ui.theme.screens.ProductScreen
+import com.example.toolxpress.ui.theme.screens.ProductsScreen
 import com.example.toolxpress.ui.theme.screens.ShoppingCartScreen
 import com.example.toolxpress.ui.theme.screens.StartScreen
 
@@ -68,15 +69,15 @@ fun ComposableMultiScreenApp() {
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "StartScreen") {
         composable("StartScreen") { MainScreen(navController) }
-        //composable("ProductsScreen") { ProductScreen() }
         composable("login") { LoginScreenP(navController) }
         composable("createAccount") { CreateAccountScreen(navController) }
         composable("ShoppingCart") { ShoppingCartScreen(navController) }
         composable("DomicilioScreen") { DomicilioScreen(navController) }
         composable("EnvioScreen") { EnvioScreen(navController) }
-        composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }}
+        composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }
+        composable("ProductScreen") { ProductsScreen(navController) }
 
-
+    }
 
     }
 
