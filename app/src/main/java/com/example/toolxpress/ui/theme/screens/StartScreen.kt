@@ -70,7 +70,7 @@ fun MainScreen(navController: NavController, allCategories: List<Pair<String, Li
             // Contenido desplazable
             OfferCarousel()
             StartScreen(navController, allCategories)
-            ProductScreen()
+            ProductScreen(navController)
             // La barra inferior fija
             Box {
                 Footer()
@@ -222,7 +222,7 @@ data class Product(
 )
 
 @Composable
-fun ProductScreen() {
+fun ProductScreen(navController: NavController) {
     val products = listOf(
         Product("Producto 1", "Descripción del producto 1", 100.00, Icons.Default.Build),
         Product("Producto 2", "Descripción del producto 2", 150.00, Icons.Default.ShoppingCart),
@@ -285,7 +285,7 @@ fun ProductScreen() {
                                         .size(150.dp) // Tamaño aumentado como las categorías originales
                                         .clip(RoundedCornerShape(8.dp))
                                         .background(Color.LightGray)
-                                        .clickable { /* Acción del botón */ },
+                                        .clickable {navController.navigate("CardProducts")},
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column(
