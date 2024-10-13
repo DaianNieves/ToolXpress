@@ -1,13 +1,11 @@
 package com.example.toolxpress.ui.theme.screens
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -46,12 +44,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.components.Footer
-import com.example.toolxpress.ui.theme.components.ProductDataProvider
 import com.example.toolxpress.ui.theme.components.TopBar
 import com.example.toolxpress.ui.theme.data.model.PostModel
 
@@ -82,7 +78,6 @@ fun MainScreen(navController: NavController, allCategories: List<Pair<String, Li
         }
     }
 }
-
 
 @Composable
 fun OfferCarousel() {
@@ -116,7 +111,6 @@ fun OfferCarousel() {
                         .width(420.dp)
                         .height(170.dp)
                         .background(Color.White)
-
                 ) {
                     Image(
                         painter = painterResource(id = imageResId), // Carga la imagen
@@ -135,7 +129,8 @@ fun OfferCarousel() {
 @Composable
 fun StartScreen(navController: NavController, allCategories: List<Pair<String, List<PostModel>>>) {
     val buttonTexts = allCategories.map { it.first }
-    val buttonIcons = List(buttonTexts.size) { Icons.Default.Build } // Ajusta los íconos según tus necesidades
+    val buttonIcons =
+        List(buttonTexts.size) { Icons.Default.Build } // Ajusta los íconos según tus necesidades
 
     Box(
         modifier = Modifier
@@ -253,7 +248,7 @@ fun ProductScreen() {
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color(0xff2C2C2C)),
                 horizontalArrangement = Arrangement.Center
-            )  {
+            ) {
                 Text(
                     text = "Destacados",
                     color = Color.White,
@@ -332,6 +327,7 @@ fun ProductScreen() {
         }
     }
 }
+
 //  menú superior
 @Composable
 fun TopMenu() {

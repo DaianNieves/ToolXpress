@@ -49,7 +49,7 @@ import com.example.toolxpress.ui.theme.data.model.ShoppingModel
 fun ShoppingCartScreen(navController: NavController) {
 
     //Contenedor Barra Superior
-    Box(){
+    Box() {
         TopBar(navController)
     }
 
@@ -220,7 +220,7 @@ fun ShoppingCartScreen(navController: NavController) {
                     ) {
                         // Botón "Comprar"
                         Button(
-                            onClick = {navController.navigate("StartScreen")},
+                            onClick = { navController.navigate("StartScreen") },
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(end = 8.dp)
@@ -233,12 +233,17 @@ fun ShoppingCartScreen(navController: NavController) {
                             )
 
                         ) {
-                            Text("Seguir Explorando", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White) // Tamaño del texto
+                            Text(
+                                "Seguir Explorando",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            ) // Tamaño del texto
                         }
 
                         // Botón "Seguir Explorando"
                         Button(
-                            onClick = {navController.navigate("DomicilioScreen")},
+                            onClick = { navController.navigate("DomicilioScreen") },
                             modifier = Modifier
                                 .weight(1f)
                                 .padding(start = 8.dp)
@@ -249,11 +254,16 @@ fun ShoppingCartScreen(navController: NavController) {
                                 contentColor = Color.White
                             )
                         ) {
-                            Text("Comprar", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.White) // Tamaño del texto
+                            Text(
+                                "Comprar",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            ) // Tamaño del texto
                         }
                     }
                     // La barra superior fija
-                    Box(){
+                    Box() {
                         Footer()
                     }
                 }
