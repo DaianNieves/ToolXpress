@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.toolxpress.ui.theme.components.ProductDataProvider
+import com.example.toolxpress.ui.theme.screens.CardProducts
 import com.example.toolxpress.ui.theme.screens.DomicilioScreen
 import com.example.toolxpress.ui.theme.screens.EnvioScreen
 import com.example.toolxpress.ui.theme.screens.LoginScreenP
@@ -69,12 +70,13 @@ fun ComposableMultiScreenApp() {
 @Composable
 fun SetupNavGraph(navController: NavHostController) {
     ProductDataProvider { allCategories ->
-        NavHost(navController = navController, startDestination = "StartScreen") {
+        NavHost(navController = navController, startDestination = "CardProducts") {
             composable("StartScreen") { MainScreen(navController, allCategories) }
             composable("login") { LoginScreenP(navController) }
             composable("createAccount") { CreateAccountScreen(navController) }
             composable("ShoppingCart") { ShoppingCartScreen(navController) }
             composable("DomicilioScreen") { DomicilioScreen(navController) }
+            composable("CardProducts") { CardProducts(navController) }
             composable("EnvioScreen") { EnvioScreen(navController) }
             composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }
             composable("ProductsScreen/{categoryName}") { backStackEntry ->
