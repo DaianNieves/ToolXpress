@@ -46,24 +46,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.components.Footer
+import com.example.toolxpress.ui.theme.components.ProductDataProvider
 import com.example.toolxpress.ui.theme.components.TopBar
-
+import com.example.toolxpress.ui.theme.data.model.PostModel
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController, allCategories: List<Pair<String, List<PostModel>>>) {
     Column {
         // La barra superior fija
-        Box(){
+        Box {
             TopBar(navController)
         }
         // Espacio entre el carrusel y el contenido desplazable
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Contenedor con scroll para StartScreen y ProductScreen
+        // Contenedor con scroll para StartScreen
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -71,15 +73,16 @@ fun MainScreen(navController: NavController) {
         ) {
             // Contenido desplazable
             OfferCarousel()
-            StartScreen()
+            StartScreen(navController, allCategories)
             ProductScreen()
             // La barra inferior fija
-            Box(){
+            Box {
                 Footer()
             }
         }
     }
 }
+
 
 @Composable
 fun OfferCarousel() {
@@ -128,25 +131,11 @@ fun OfferCarousel() {
         }
     }
 }
-@Composable
-fun StartScreen() {
 
-    val buttonTexts = listOf(
-        "Herramientas 1",
-        "Herramientas 2",
-        "Herramientas 3",
-        "Herramientas 4",
-        "Herramientas 5",
-        "Herramientas 6"
-    )
-    val buttonIcons = listOf(
-        Icons.Default.Build,
-        Icons.Default.Build,
-        Icons.Default.Build,
-        Icons.Default.Build,
-        Icons.Default.Build,
-        Icons.Default.Build
-    )
+@Composable
+fun StartScreen(navController: NavController, allCategories: List<Pair<String, List<PostModel>>>) {
+    val buttonTexts = allCategories.map { it.first }
+    val buttonIcons = List(buttonTexts.size) { Icons.Default.Build } // Ajusta los íconos según tus necesidades
 
     Box(
         modifier = Modifier
@@ -164,7 +153,7 @@ fun StartScreen() {
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Categorias",
+                    text = "Categorías",
                     color = Color.White,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
@@ -195,10 +184,12 @@ fun StartScreen() {
                             if (index < buttonTexts.size) {
                                 Box(
                                     modifier = Modifier
-                                        .size(100.dp, 150.dp) // Tamaño ajustado como los productos
+                                        .size(100.dp, 150.dp)
                                         .clip(RoundedCornerShape(8.dp))
                                         .background(Color.LightGray)
-                                        .clickable { /* Acción del botón */ },
+                                        .clickable {
+                                            navController.navigate("ProductsScreen/${buttonTexts[index]}")
+                                        },
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column(
@@ -227,7 +218,6 @@ fun StartScreen() {
         }
     }
 }
-
 
 data class Product(
     val name: String,
