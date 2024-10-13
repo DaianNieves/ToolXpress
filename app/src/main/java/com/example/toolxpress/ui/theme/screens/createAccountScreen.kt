@@ -2,25 +2,38 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.PermIdentity
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.GreyProduct
+import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.components.TopBar
+
 
 @Composable
 fun CreateAccountScreen(navController: NavController) {
@@ -29,6 +42,12 @@ fun CreateAccountScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var hasEmailError by remember { mutableStateOf(false) }
+    var hasPasswordError by remember { mutableStateOf(false) }
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    Box() {
+        TopBar(navController)
+    }
 
     Box(
         modifier = Modifier
@@ -42,253 +61,253 @@ fun CreateAccountScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            // Menú superior
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.DarkGray)
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Menu",
-                    tint = Color.White,
-                    modifier = Modifier.clickable {
 
-                    }
-                )
-                Text(
-                    text = "Categorías",
-                    color = Color.White,
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "Home",
-                    tint = Color.White,
-                    modifier = Modifier.clickable {
-
-                    }
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = "Cart",
-                    tint = Color.White,
-                    modifier = Modifier.clickable {
-
-                    }
-                )
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(50.dp))
 
             // Imagen (Logo)
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "Logo",
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(200.dp)
                     .align(Alignment.CenterHorizontally)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
-
             // Crear una cuenta
-            Text("Create a New Account", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = 16.dp,
+                            topEnd = 16.dp,
+                            bottomStart = 16.dp,
+                            bottomEnd = 16.dp
+                        )
+                    )
+                    .background(GreyProduct)
+                    .height(60.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(), // El Box ocupará todo el espacio de la Row
+                    contentAlignment = Alignment.Center // Alinea el contenido (texto) en el centro del Box
+                ) {
+                    Text(
+                        text = "Create a New Account",
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp
+                    )
+                }
+            }
 
-            // nombre de usuario
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-            // correo electrónico
-            OutlinedTextField(
-                value = email,
-                onValueChange = {
-                    email = it
-                    // Validar correo contiene '@' y formato adecuado
-                    hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
-                        .matches() && email.isNotEmpty()
-                },
-                label = { Text("Email") },
-                isError = hasEmailError
-            )
-
-            // Mostrar mensaje de error
-            if (hasEmailError) {
+            //Usuario
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Please enter a valid email address.",
-                    color = Color.Red,
-                    style = MaterialTheme.typography.bodySmall,
+                    text = "Username",
+                    color = Color.Black,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
+                )
+                Row(
                     modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(start = 16.dp, top = 4.dp)
+                        .background(
+                            Color.LightGray.copy(alpha = 0.7f),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(14.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    BasicTextField(
+                        value = username,
+                        onValueChange = {
+                            username = it
+                            //hasPasswordError = password.isEmpty()
+                        },
+                        modifier = Modifier.weight(1f),
+                        decorationBox = { innerTextField ->
+                            Box(Modifier.fillMaxWidth()) {
+                                if (username.isEmpty()) {
+                                    Text(
+                                        "Enter your Username",
+                                        color = Color.Gray,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        },
+                        textStyle = LocalTextStyle.current.copy(
+                            color = Color.Black,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
+
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            //Correo electrónico
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "Email",
+                    color = Color.Black,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
                 )
+                Row(
+                    modifier = Modifier
+                        .background(
+                            Color.LightGray.copy(alpha = 0.7f),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(14.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    BasicTextField(
+                        value = email,
+                        onValueChange = {
+                            email = it
+                            // Validar si el correo contiene '@' y tiene un formato adecuado
+                            hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+                                .matches() && email.isNotEmpty()
+                        },
+                        modifier = Modifier.weight(1f),
+                        decorationBox = { innerTextField ->
+                            Box(Modifier.fillMaxWidth()) {
+                                if (email.isEmpty()) {
+                                    Text(
+                                        "Enter your email address",
+                                        color = Color.Gray,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        },
+                        textStyle = LocalTextStyle.current.copy(
+                            color = Color.Black,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }// Mostrar mensaje de error si el correo no es válido
+                if (hasEmailError) {
+                    Text(
+                        text = "Please enter a valid email address.",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // contraseña
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
-                visualTransformation = PasswordVisualTransformation()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            //Contraseña
 
-            // Botón para crear la cuenta
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "Password",
+                    color = Color.Black,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .background(
+                            Color.LightGray.copy(alpha = 0.7f),
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(14.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    BasicTextField(
+                        value = password,
+                        onValueChange = {
+                            password = it
+                            hasPasswordError = password.isEmpty()
+                        },
+                        modifier = Modifier.weight(1f),
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        decorationBox = { innerTextField ->
+                            Box(Modifier.fillMaxWidth()) {
+                                if (password.isEmpty()) {
+                                    Text(
+                                        "Enter your password",
+                                        color = Color.Gray,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                                innerTextField()
+                            }
+                        },
+                        textStyle = LocalTextStyle.current.copy(
+                            color = Color.Black,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        contentDescription = "Toggle Password Visibility",
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clickable { passwordVisible = !passwordVisible },
+                        tint = Color.DarkGray
+                    )
+                }
+                if (hasPasswordError) {
+                    Text(
+                        text = "Please enter your password.",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(60.dp))
+
+            //Crear cuenta
             Button(
-                onClick = {
-                    navController.popBackStack()
-                },
-                enabled = !hasEmailError && email.isNotEmpty() // El botón solo se habilita si....
-            ) {
-                Text("Create Account")
-            }
-        }
-
-        // pie de página
-        Footer(modifier = Modifier.align(Alignment.BottomCenter))
-    }
-}
-
-@Composable
-fun Footer(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color(0xFF2C2C2C))
-            .padding(vertical = 20.dp, horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Footer
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            // Primera columna
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    "TOOLXPRESS",
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    "Los mejores productos a los mejores precios para todos tus proyectos de construcción y remodelación.",
-                    color = Color.LightGray,
-                    fontSize = 14.sp
-                )
-            }
-
-            // Segunda columna (Enlaces útiles)
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                onClick = { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 25.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Orange),
+                enabled = !hasEmailError && !hasPasswordError && email.isNotEmpty() && password.isNotEmpty() // Deshabilitar si hay errores o campos vacíos
             ) {
                 Text(
-                    "ENLACES ÚTILES",
+                    text = "Create Account",
                     color = Color.White,
-                    fontSize = 14.sp,
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    "Catálogo",
-                    color = Color.LightGray,
-                    fontSize = 14.sp,
-                    modifier = Modifier.clickable {
-                        //navController.navigate("catalogScreen")
-                    }
-                )
-                Text(
-                    "Carrito",
-                    color = Color.LightGray,
-                    fontSize = 14.sp,
-                    modifier = Modifier.clickable {
-                        //navController.navigate("cartScreen")
-                    }
-                )
-                Text(
-                    "Iniciar sesión",
-                    color = Color.LightGray,
-                    fontSize = 14.sp,
-                    modifier = Modifier.clickable {
-                        //navController.navigate("loginScreen")
-                    }
-                )
-            }
-
-            // Tercera columna (Contacto)
-            Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                Text(
-                    "CONTACTO",
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.Phone,
-                        contentDescription = "Phone",
-                        tint = Color.LightGray,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "+1 234 567 890",
-                        color = Color.LightGray,
-                        fontSize = 14.sp,
-                        modifier = Modifier.clickable {
-
-                        }
-                    )
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Default.Email,
-                        contentDescription = "Email",
-                        tint = Color.LightGray,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        "info@toolxpress.com",
-                        color = Color.LightGray,
-                        fontSize = 14.sp,
-                        modifier = Modifier.clickable {
-
-                        }
-                    )
-                }
-                Text(
-                    "Dirección: Calle Falsa 123, Ciudad, País",
-                    color = Color.LightGray,
-                    fontSize = 14.sp
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Divider(color = Color.DarkGray, thickness = 1.dp)
-
-        // derechos de autor
-        Text(
-            "© 2024 TOOLXPRESS - Todos los derechos reservados.",
-            color = Color.Gray,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(top = 16.dp)
-        )
     }
 }
