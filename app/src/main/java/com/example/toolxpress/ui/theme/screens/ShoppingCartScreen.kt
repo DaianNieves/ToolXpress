@@ -130,7 +130,6 @@ fun ShoppingCartScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Footer()
             }
         }
     }

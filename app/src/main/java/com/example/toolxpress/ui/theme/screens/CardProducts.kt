@@ -179,7 +179,5 @@ fun CardProducts(navController: NavController) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // Footer
-        Footer()
     }
 }
