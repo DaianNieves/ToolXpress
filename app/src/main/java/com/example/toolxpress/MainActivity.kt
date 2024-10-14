@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.toolxpress.ui.theme.components.ProductDataProvider
 import com.example.toolxpress.ui.theme.screens.CardProducts
+import com.example.toolxpress.ui.theme.screens.DataUserScreen
 import com.example.toolxpress.ui.theme.screens.DomicilioScreen
 import com.example.toolxpress.ui.theme.screens.EnvioScreen
 import com.example.toolxpress.ui.theme.screens.LoginScreenP
@@ -86,6 +87,7 @@ fun SetupNavGraph(navController: NavHostController) {
             composable("ProductsScreen") { // Ruta para acceder a todos los productos
                 ProductsScreen(navController, null, allCategories) // Pasar null para todos los productos
             }
+            composable("DataUserScreen") { DataUserScreen(navController) }
         }
     }
 }
