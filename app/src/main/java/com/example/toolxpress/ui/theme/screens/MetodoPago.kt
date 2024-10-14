@@ -147,9 +147,7 @@ fun MetodoPagoScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = {
-
-                },
+                onClick = {navController.navigate("EnvioScreen")},
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),

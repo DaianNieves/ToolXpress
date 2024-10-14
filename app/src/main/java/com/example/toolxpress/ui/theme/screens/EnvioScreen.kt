@@ -19,7 +19,10 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.components.TopBar
+
 
 @Composable
 fun EnvioScreen(navController: NavController) {
@@ -34,25 +37,34 @@ fun EnvioScreen(navController: NavController) {
         }
     }
 
+    Box {
+        TopBar(navController)
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(50.dp))
-        // Título "Status"
-        Text(
-            text = "Status",
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold
-            ),
+        Spacer(modifier = Modifier.height(100.dp))
+        // Recuadro gris para el título "Status"
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            textAlign = TextAlign.Center
-        )
+                .background(GreyProduct, shape = RoundedCornerShape(8.dp))
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Status",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                color = Color.White,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        }
         Spacer(modifier = Modifier.height(50.dp))
 
         // Indicador de progreso lineal en la parte superior
@@ -61,8 +73,7 @@ fun EnvioScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            color = Color.Black
-
+            color = Orange
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -75,9 +86,21 @@ fun EnvioScreen(navController: NavController) {
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ProgressIcon(isActive = sliderPosition >= 0f, icon = Icons.Default.Build, label = "Preparación")
-            ProgressIcon(isActive = sliderPosition >= 0.5f, icon = Icons.Default.LocalShipping, label = "En camino")
-            ProgressIcon(isActive = sliderPosition == 1f, icon = Icons.Default.CheckCircle, label = "Entregado")
+            ProgressIcon(
+                isActive = sliderPosition >= 0f,
+                icon = Icons.Default.Build,
+                label = "Preparación"
+            )
+            ProgressIcon(
+                isActive = sliderPosition >= 0.5f,
+                icon = Icons.Default.LocalShipping,
+                label = "En camino"
+            )
+            ProgressIcon(
+                isActive = sliderPosition == 1f,
+                icon = Icons.Default.CheckCircle,
+                label = "Entregado"
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -92,18 +115,21 @@ fun EnvioScreen(navController: NavController) {
                 description = "Pedido pagado exitosamente.",
                 isActive = sliderPosition >= 0f
             )
+            Spacer(modifier = Modifier.height(8.dp)) // Espacio en blanco entre los elementos
             OrderStatusItem(
-                status = "Empacado",
+                status = "Empaquetado",
                 date = "6 Oct",
                 description = "El pedido ha sido empacado y está listo para ser enviado.",
-                isActive = sliderPosition >= 0f
+                isActive = sliderPosition >= 0.5f
             )
+            Spacer(modifier = Modifier.height(8.dp)) // Espacio en blanco entre los elementos
             OrderStatusItem(
                 status = "Enviado",
                 date = "7 Oct",
                 description = "Tu pedido está en camino.",
                 isActive = sliderPosition >= 0.5f
             )
+            Spacer(modifier = Modifier.height(8.dp)) // Espacio en blanco entre los elementos
             OrderStatusItem(
                 status = "Entregado",
                 date = "8 Oct",
@@ -129,7 +155,7 @@ fun ProgressIcon(isActive: Boolean, icon: ImageVector, label: String) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = label,
-            color = if (isActive) Color.Black else Color.Gray,
+            color = if (isActive) Orange else Color.Gray,
             fontWeight = FontWeight.Bold
         )
     }
@@ -140,9 +166,9 @@ fun OrderStatusItem(status: String, date: String, description: String, isActive:
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background (if (isActive)  Orange else Color.White, shape = RoundedCornerShape(8.dp))
+            .background(if (isActive) Color.LightGray else Color.White, shape = RoundedCornerShape(8.dp))
             .padding(16.dp)
-            .padding(vertical = 8.dp),
+            .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.width(16.dp))
@@ -152,6 +178,15 @@ fun OrderStatusItem(status: String, date: String, description: String, isActive:
             Text(text = status, fontWeight = FontWeight.Bold, fontSize = 16.sp)
             Text(text = date, color = Color.Black, fontSize = 14.sp)
             Text(text = description, color = Color.Black, fontSize = 14.sp)
+        }
+        // Mostrar ícono de check si está activo
+        if (isActive) {
+            Icon(
+                imageVector = Icons.Default.CheckCircle,
+                contentDescription = "Check",
+                tint = Orange,
+                modifier = Modifier.size(24.dp) // Ajusta el tamaño del ícono según sea necesario
+            )
         }
     }
 }
