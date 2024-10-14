@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.theme.components.TopBar
+import com.example.toolxpress.ui.components.TopBar
 
 
 @Composable

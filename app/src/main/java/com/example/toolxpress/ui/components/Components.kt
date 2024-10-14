@@ -1,4 +1,4 @@
-package com.example.toolxpress.ui.theme.components
+package com.example.toolxpress.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,7 +40,7 @@ import com.example.toolxpress.ui.theme.GreyFooter
 import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.YellowShop
-import com.example.toolxpress.ui.theme.data.model.PostModel
+import com.example.toolxpress.data.model.PostModel
 
 @Composable
 fun TopBar(navController: NavController) {

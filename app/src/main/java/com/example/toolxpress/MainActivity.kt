@@ -12,18 +12,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.toolxpress.ui.theme.components.ProductDataProvider
-import com.example.toolxpress.ui.theme.screens.CardProducts
-import com.example.toolxpress.ui.theme.screens.DataUserScreen
-import com.example.toolxpress.ui.theme.screens.DomicilioScreen
-import com.example.toolxpress.ui.theme.screens.EnvioScreen
-import com.example.toolxpress.ui.theme.screens.LoginScreenP
-import com.example.toolxpress.ui.theme.screens.MainScreen
-import com.example.toolxpress.ui.theme.screens.MetodoPagoScreen
-import com.example.toolxpress.ui.theme.screens.ProductScreen
-import com.example.toolxpress.ui.theme.screens.ProductsScreen
-import com.example.toolxpress.ui.theme.screens.ShoppingCartScreen
-import com.example.toolxpress.ui.theme.screens.StartScreen
+import com.example.toolxpress.ui.components.ProductDataProvider
+import com.example.toolxpress.ui.screens.CardProducts
+import com.example.toolxpress.ui.screens.DataUserScreen
+import com.example.toolxpress.ui.screens.DomicilioScreen
+import com.example.toolxpress.ui.screens.EnvioScreen
+import com.example.toolxpress.ui.screens.LoginScreenP
+import com.example.toolxpress.ui.screens.MainScreen
+import com.example.toolxpress.ui.screens.MetodoPagoScreen
+import com.example.toolxpress.ui.screens.ProductsScreen
+import com.example.toolxpress.ui.screens.ShoppingCartScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

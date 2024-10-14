@@ -1,4 +1,4 @@
-package com.example.toolxpress.ui.theme.screens
+package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
