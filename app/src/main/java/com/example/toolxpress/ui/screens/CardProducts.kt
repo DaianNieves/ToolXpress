@@ -1,4 +1,4 @@
-package com.example.toolxpress.ui.theme.screens
+package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -22,8 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.theme.components.Footer
-import com.example.toolxpress.ui.theme.components.TopBar
+import com.example.toolxpress.ui.components.TopBar
 
 @Composable
 fun CardProducts(navController: NavController) {

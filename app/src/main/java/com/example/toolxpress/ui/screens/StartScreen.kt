@@ -1,4 +1,4 @@
-package com.example.toolxpress.ui.theme.screens
+package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,9 +47,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GreyProduct
-import com.example.toolxpress.ui.theme.components.Footer
-import com.example.toolxpress.ui.theme.components.TopBar
-import com.example.toolxpress.ui.theme.data.model.PostModel
+import com.example.toolxpress.ui.components.Footer
+import com.example.toolxpress.ui.components.TopBar
+import com.example.toolxpress.data.model.PostModel
 
 @Composable
 fun MainScreen(navController: NavController, allCategories: List<Pair<String, List<PostModel>>>) {

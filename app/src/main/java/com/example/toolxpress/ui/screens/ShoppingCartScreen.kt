@@ -1,4 +1,4 @@
-package com.example.toolxpress.ui.theme.screens
+package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -41,13 +40,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.example.toolxpress.R
-import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.GreenPrice
 import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.theme.components.CategoryHeader
-import com.example.toolxpress.ui.theme.components.Footer
-import com.example.toolxpress.ui.theme.components.TopBar
-import com.example.toolxpress.ui.theme.data.model.ShoppingModel
+import com.example.toolxpress.ui.components.CategoryHeader
+import com.example.toolxpress.ui.components.TopBar
+import com.example.toolxpress.data.model.ShoppingModel
 
 @Composable
 fun ShoppingCartScreen(navController: NavController) {

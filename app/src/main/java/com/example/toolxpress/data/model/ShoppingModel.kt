@@ -1,4 +1,4 @@
-package com.example.toolxpress.ui.theme.data.model
+package com.example.toolxpress.data.model
 
 data class ShoppingModel(
     val id:Int,

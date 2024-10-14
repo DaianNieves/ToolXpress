@@ -1,4 +1,4 @@
-package com.example.toolxpress.ui.theme.screens
+package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,17 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import androidx.navigation.NavController
-import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GreyProduct
 import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.theme.components.TopBar
+import com.example.toolxpress.ui.components.TopBar
 
 
 @Composable
