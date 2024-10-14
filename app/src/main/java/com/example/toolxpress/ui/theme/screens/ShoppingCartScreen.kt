@@ -102,7 +102,8 @@ fun ShoppingCartScreen(navController: NavController) {
                             "Comprar",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center // Centrado del texto
+                            textAlign = TextAlign.Center, // Centrado del texto
+                            color = Color.White // Color del texto en blanco
                         )
                     }
 
@@ -118,10 +119,11 @@ fun ShoppingCartScreen(navController: NavController) {
                         )
                     ) {
                         Text(
-                            "Apartar Carrito",
+                            text = "Apartar Carrito",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center // Centrado del texto
+                            textAlign = TextAlign.Center, // Centrado del texto
+                            color = Color.White // Color del texto en blanco
                         )
                     }
                 }

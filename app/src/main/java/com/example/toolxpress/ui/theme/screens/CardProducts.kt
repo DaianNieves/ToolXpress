@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.components.Footer
 import com.example.toolxpress.ui.theme.components.TopBar
 
@@ -165,9 +166,11 @@ fun CardProducts(navController: NavController) {
                             navController.navigate("ShoppingCart")
                         },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                    ) {
+                            .height(50.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Orange,
+                            contentColor = Color.White
+                        )) {
                         Text(text = "Agregar al carrito", color = Color.White)
                     }
                 }
