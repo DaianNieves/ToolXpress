@@ -25,65 +25,62 @@ import com.example.toolxpress.ui.theme.components.TopBar
 import com.example.toolxpress.ui.theme.data.model.PostModel
 
 @Composable
-fun ProductsScreen(navController: NavController, categoryName: String?, allCategories: List<Pair<String, List<PostModel>>>) {
-    // Filtrar los productos según la categoría seleccionada
+fun ProductsScreen(
+    navController: NavController,
+    categoryName: String?,
+    allCategories: List<Pair<String, List<PostModel>>>
+) {
     val selectedProducts = if (categoryName != null) {
         allCategories.find { it.first == categoryName }?.second ?: emptyList()
     } else {
-        // Si no hay categoría seleccionada, muestra todos los productos
         allCategories.flatMap { it.second }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Barra superior fija (TopBar)
         TopBar(navController = navController)
 
-        // Contenido desplazable dentro del LazyColumn
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f) // Ocupar el resto del espacio disponible
+                .weight(1f)
         ) {
-            // Si se han seleccionado productos, mostrar las categorías y sus productos
             if (categoryName == null) {
-                // Muestra todas las categorías y productos
                 allCategories.forEach { (categoryName, posts) ->
-                    // Agregamos la categoría como un encabezado de ancho completo
-                    item {
-                        CategoryHeader(categoryName)
-                    }
+                    item { CategoryHeader(categoryName) }
 
-                    // Agregamos los productos para esta categoría
                     item {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(10.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp) // Espacio entre categorías
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            // Dividir productos en filas de 2
                             val totalItems = posts.size
-                            val rows = (totalItems + 1) / 2 // Calculamos el número de filas
+                            val rows = (totalItems + 1) / 2
 
                             repeat(rows) { rowIndex ->
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = 20.dp, vertical = 10.dp), // Padding horizontal y vertical
-                                    horizontalArrangement = Arrangement.SpaceBetween // Espaciado uniforme
+                                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
-                                    // Producto para la columna izquierda
                                     val leftIndex = rowIndex * 2
                                     if (leftIndex < totalItems) {
                                         val leftPost = posts[leftIndex]
-                                        ProductCard(post = leftPost)
+                                        ProductCard(
+                                            post = leftPost,
+                                            navController = navController
+                                        )
                                     }
 
-                                    // Producto para la columna derecha
                                     val rightIndex = leftIndex + 1
                                     if (rightIndex < totalItems) {
                                         val rightPost = posts[rightIndex]
-                                        ProductCard(post = rightPost)
+                                        ProductCard(
+                                            post = rightPost,
+                                            navController = navController
+                                        )
                                     }
                                 }
                             }
@@ -91,11 +88,7 @@ fun ProductsScreen(navController: NavController, categoryName: String?, allCateg
                     }
                 }
             } else {
-                // Si hay categoría seleccionada, mostrar solo los productos de esa categoría
-                item {
-                    // Muestra el encabezado de la categoría seleccionada
-                    CategoryHeader(categoryName)
-                }
+                item { CategoryHeader(categoryName) }
 
                 if (selectedProducts.isEmpty()) {
                     item {
@@ -107,54 +100,49 @@ fun ProductsScreen(navController: NavController, categoryName: String?, allCateg
                         )
                     }
                 } else {
-                    // Agregamos los productos de la categoría seleccionada
                     item {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(10.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp) // Espacio entre productos
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            // Dividir productos en filas de 2
                             val totalItems = selectedProducts.size
-                            val rows = (totalItems + 1) / 2 // Calculamos el número de filas
+                            val rows = (totalItems + 1) / 2
 
                             repeat(rows) { rowIndex ->
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(horizontal = 20.dp, vertical = 10.dp), // Padding horizontal y vertical
-                                    horizontalArrangement = Arrangement.SpaceBetween // Espaciado uniforme
+                                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
-                                    // Producto para la columna izquierda
                                     val leftIndex = rowIndex * 2
                                     if (leftIndex < totalItems) {
                                         val leftPost = selectedProducts[leftIndex]
-                                        ProductCard(post = leftPost)
+                                        ProductCard(
+                                            post = leftPost,
+                                            navController = navController
+                                        )
                                     }
 
-                                    // Producto para la columna derecha
                                     val rightIndex = leftIndex + 1
                                     if (rightIndex < totalItems) {
                                         val rightPost = selectedProducts[rightIndex]
-                                        ProductCard(post = rightPost)
+                                        ProductCard(
+                                            post = rightPost,
+                                            navController = navController
+                                        )
                                     }
                                 }
                             }
                         }
                     }
                 }
-
-                // Espacio vacío para empujar el footer hacia abajo
-                item {
-                    Spacer(modifier = Modifier.height(200.dp).weight(1f))
-                }
             }
 
-            // Barra inferior fija (Footer) - Mantenido siempre al final
-            item {
-                Footer()
-            }
+            item { Spacer(modifier = Modifier.height(200.dp).weight(1f)) }
+            item { Footer() }
         }
     }
 }

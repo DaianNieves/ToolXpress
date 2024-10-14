@@ -326,41 +326,43 @@ fun SocialMediaImage(imageResId: Int, contentDescription: String) {
 }
 
 @Composable
-fun ProductCard(post: PostModel) {
+fun ProductCard(post: PostModel, navController: NavController) {
     Box(
         modifier = Modifier
             .size(160.dp) // Tamaño uniforme para todas las tarjetas
             .clip(RoundedCornerShape(8.dp))
-            .background(GreyProduct) // Color mantenido
-            .clickable { /* Acción del botón */ },
+            .background(GreyProduct)
+            .clickable {
+                navController.navigate("CardProducts") // Navegar al detalle del producto
+            },
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Usamos la imagen de cada producto
             Image(
                 painter = post.image,
                 contentDescription = null,
-                modifier = Modifier.size(100.dp) // Tamaño de imagen mantenido
+                modifier = Modifier.size(100.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = post.title,
-                fontSize = 20.sp, // Tamaño de texto mantenido
+                fontSize = 20.sp,
                 color = Color.Black,
                 textAlign = TextAlign.Center
             )
             Text(
                 text = post.text,
-                fontSize = 18.sp, // Tamaño de texto mantenido
+                fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
         }
     }
 }
+
 
 @Composable
 fun CategoryHeader(categoryName: String) {
