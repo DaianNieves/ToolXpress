@@ -290,7 +290,7 @@ fun LoginScreenP(navController: NavController) {
 
                 // inicio de sesión
                 Button(
-                    onClick = { },
+                    onClick = {navController.navigate("DataUserScreen")},
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 25.dp),
