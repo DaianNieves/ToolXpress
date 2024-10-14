@@ -159,6 +159,42 @@ fun TopBar(navController: NavController) {
         ) {
             // Usar ProductDataProvider para obtener las categorías y productos
             ProductDataProvider { categories ->
+
+                // Añadir opción para mostrar todos los productos
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false // Cierra el menú
+                        // Redirigir a ProductsScreen con null para mostrar todos los productos
+                        navController.navigate("StartScreen")
+                    }
+                ) {
+                    Text(
+                        text = "Inicio", // Texto de la opción
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                }
+                // Añadir opción para mostrar todos los productos
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false // Cierra el menú
+                        // Redirigir a ProductsScreen con null para mostrar todos los productos
+                        navController.navigate("ProductsScreen")
+                    }
+                ) {
+                    Text(
+                        text = "Todos los Productos", // Texto de la opción
+                        color = Color.Black,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
+                    )
+                }
+
                 categories.forEach { (categoryName, _) ->
                     DropdownMenuItem(
                         onClick = {
@@ -176,24 +212,6 @@ fun TopBar(navController: NavController) {
                                 .padding(8.dp)
                         )
                     }
-                }
-
-                // Añadir opción para mostrar todos los productos
-                DropdownMenuItem(
-                    onClick = {
-                        expanded = false // Cierra el menú
-                        // Redirigir a ProductsScreen con null para mostrar todos los productos
-                        navController.navigate("ProductsScreen")
-                    }
-                ) {
-                    Text(
-                        text = "Todos los Productos", // Texto de la opción
-                        color = Color.Black,
-                        fontSize = 16.sp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                    )
                 }
             }
         }
