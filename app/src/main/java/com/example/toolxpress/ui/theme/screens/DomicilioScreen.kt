@@ -67,7 +67,7 @@ fun DomicilioScreen(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Agrega un domicilio",
+                    text = "Información Necesaria",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -231,13 +231,13 @@ fun DomicilioScreen(navController: NavController) {
                 // Botón de guardar
                 Button(
                     onClick = {
-                        navController.navigate("EnvioScreen")
+                        navController.navigate("MetodoPagoScreen")
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Orange)
                 ) {
                     Text(
-                        text = "Guardar domicilio",
+                        text = "Guardar Información",
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
