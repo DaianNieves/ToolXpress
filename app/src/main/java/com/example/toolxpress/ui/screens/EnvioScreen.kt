@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import androidx.navigation.NavController
-import com.example.toolxpress.ui.theme.GreyProduct
+import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
 
@@ -49,7 +49,7 @@ fun EnvioScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(GreyProduct, shape = RoundedCornerShape(8.dp))
+                .background(GrayProduct, shape = RoundedCornerShape(8.dp))
                 .padding(16.dp)
         ) {
             Text(
