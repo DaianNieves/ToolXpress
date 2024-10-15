@@ -8,10 +8,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Handyman
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -216,6 +218,36 @@ fun TopBar(navController: NavController) {
                 // Divider después de la opción "Inicio"
                 Divider(color = Color.Gray, thickness = .5.dp)
 
+                // Opción "Mis compras"
+                DropdownMenuItemWithBackground(
+                    onClick = {
+                        expanded = false
+                        navController.navigate("ComprasScreen")
+                    },
+                    backgroundColor = Color(0xFFE3F2FD)  // Azul claro
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ShoppingBag,
+                            contentDescription = "Compras",
+                            tint = Color.Black,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Mis compras",
+                            color = Color.Black,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+
+                // Divider después de la opción "Mis compras"
+                Divider(color = Color.Gray, thickness = .5.dp)
+
                 // Opción "Todos los Productos"
                 DropdownMenuItemWithBackground(
                     onClick = {
@@ -225,7 +257,7 @@ fun TopBar(navController: NavController) {
                     backgroundColor = Color.White
                 ) {
                     Text(
-                        text = "Todos los Productos",
+                        text = "Todos los productos",
                         color = Color.Black,
                         fontSize = 16.sp,
                         modifier = Modifier.fillMaxWidth()
@@ -273,132 +305,40 @@ fun DropdownMenuItemWithBackground(
     }
 }
 
-/*
+//IMPLEMENTAR A FUTURO BIEN
 @Composable
-fun Footer() {
+fun ReturnBar(navController: NavController, title: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(GreyFooter)
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .background(Orange)
+            .statusBarsPadding()
+            .padding(16.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.Start
         ) {
-            // Sección de Correos
-            Column(
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = "Correos",
-                    color = Color.White,
-                    fontSize = 14.sp
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "contacto@toolxpress.com",
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-            }
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "Regresar",
+                tint = Color.White,
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { navController.popBackStack() }
+            )
+            Spacer(modifier = Modifier.width(3.dp))
 
-            // Sección de Teléfonos
-            Column(
-                horizontalAlignment = Alignment.Start,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = "Teléfonos",
-                    color = Color.White,
-                    fontSize = 14.sp
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "+52 123 456 7890",
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-                Text(
-                    text = "52 987 654 3210",
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-            }
-
-            // Descripción de la Empresa
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = "TOOLXPRESS",
-                    color = Color.White,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Herramientas especializadas.",
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-            }
+            Text(
+                text = title,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
         }
-
-        // Espaciado entre las secciones y las redes sociales
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Redes sociales",
-            color = Color.White,
-            fontSize = 14.sp
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Cambiar a imágenes
-            SocialMediaImage(imageResId = R.drawable.facebook, contentDescription = "Facebook")
-            SocialMediaImage(imageResId = R.drawable.x, contentDescription = "Twitter")
-            SocialMediaImage(imageResId = R.drawable.instagram, contentDescription = "Instagram")
-            SocialMediaImage(imageResId = R.drawable.whats, contentDescription = "WhatsApp")
-        }
-
-        // Derechos reservados centrados horizontalmente
-        Spacer(modifier = Modifier.height(16.dp))
-        Divider(color = Color.Gray.copy(alpha = 0.5f), thickness = 1.dp)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = "© 2024 TOOLXPRESS - Todos los derechos reservados.",
-            color = Color.Gray,
-            fontSize = 10.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
-        )
     }
 }
 
-
-@Composable
-fun SocialMediaImage(imageResId: Int, contentDescription: String) {
-    Box(
-        modifier = Modifier
-            .size(40.dp)
-            .background(Color.White.copy(alpha = 0.1f), shape = CircleShape)
-            .clickable { /* Acción para redes sociales */ },
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = imageResId),
-            contentDescription = contentDescription,
-            modifier = Modifier.size(24.dp)
-        )
-    }
-}
-*/
 @Composable
 fun ProductCard(
     post: PostModel,

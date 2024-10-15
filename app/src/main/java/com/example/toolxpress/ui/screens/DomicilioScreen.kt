@@ -38,7 +38,6 @@ fun DomicilioScreen(navController: NavController) {
     var contactNumber by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
 
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -74,7 +73,6 @@ fun DomicilioScreen(navController: NavController) {
                 )
             }
         }
-
 
         // Contenido Principal
         Box(
@@ -243,6 +241,7 @@ fun DomicilioScreen(navController: NavController) {
                         fontWeight = FontWeight.Bold
                     )
                 }
+                Spacer(modifier = Modifier.height(30.dp))
             }
         }
     }

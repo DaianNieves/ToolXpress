@@ -32,20 +32,51 @@ fun MetodoPagoScreen(navController: NavController) {
     var cardCVC by remember { mutableStateOf("") }
     var cardHolderName by remember { mutableStateOf("") }
     var paypalEmail by remember { mutableStateOf("") }
-
     val scrollState = rememberScrollState()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        TopBar(navController, "Método de Pago")
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // Barra Superior
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 0.dp)
+                .statusBarsPadding()
+        ) {
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Orange)
+                    .padding(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White,
+                    modifier = Modifier.clickable {
+                        navController.popBackStack() // Acción para regresar a la pantalla anterior
+                    }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Método de Pago",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+        }
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(top = 72.dp)
                 .padding(16.dp)
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
+            //Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = "Selecciona un método de pago",
                 style = MaterialTheme.typography.bodyLarge.copy(
@@ -166,38 +197,6 @@ fun MetodoPagoScreen(navController: NavController) {
     }
 }
 
-@Composable
-fun TopBar(navController: NavController, title: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Orange)
-            .statusBarsPadding()
-            .padding(16.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Regresar",
-                tint = Color.White,
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable { navController.popBackStack() }
-            )
-            Spacer(modifier = Modifier.width(3.dp))
-
-            Text(
-                text = title,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-        }
-    }
-}
 
 @Composable
 fun PaymentOptionItem(

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,7 +43,6 @@ import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GreenPrice
 import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.components.CategoryHeader
 import com.example.toolxpress.ui.components.TopBar
 import com.example.toolxpress.data.model.ShoppingModel
 
@@ -50,21 +50,10 @@ import com.example.toolxpress.data.model.ShoppingModel
 fun ShoppingCartScreen(navController: NavController) {
     var showDialog by remember { mutableStateOf(false) } // Estado del mensaje emergente
 
-    // Contenedor Barra Superior
-    Box {
-        TopBar(navController)
-    }
-
-    // Contenedor Principal
-    Box(
-        modifier = Modifier.padding(0.dp, 100.dp, 0.dp, 0.dp)
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        TopBar(navController = navController)
         // Usamos un LazyColumn para permitir el desplazamiento
         LazyColumn {
-            item {
-                // Encabezado de categoría
-                CategoryHeader(categoryName = "Productos")
-            }
 
             val productList = arrayOf(
                 ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
