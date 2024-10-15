@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -70,8 +69,6 @@ fun MainScreen(navController: NavController, allCategories: List<Pair<String, Li
         Box {
             TopBar(navController)
         }
-        // Espacio entre el carrusel y el contenido desplazable
-        Spacer(modifier = Modifier.height(16.dp))
 
         // Contenedor con scroll para StartScreen
         Column(

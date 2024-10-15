@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.toolxpress.ui.components.ProductDataProvider
 import com.example.toolxpress.ui.screens.CardProducts
+import com.example.toolxpress.ui.screens.ComprasScreen
 import com.example.toolxpress.ui.screens.DataUserScreen
 import com.example.toolxpress.ui.screens.DomicilioScreen
 import com.example.toolxpress.ui.screens.EnvioScreen
@@ -78,6 +79,7 @@ fun SetupNavGraph(navController: NavHostController) {
             composable("CardProducts") { CardProducts(navController) }
             composable("EnvioScreen") { EnvioScreen(navController) }
             composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }
+            composable("ComprasScreen") { ComprasScreen(navController) }
             composable("ProductsScreen/{categoryName}") { backStackEntry ->
                 val categoryName = backStackEntry.arguments?.getString("categoryName")
                 ProductsScreen(navController, categoryName, allCategories)
