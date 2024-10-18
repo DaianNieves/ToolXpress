@@ -185,6 +185,8 @@ fun StartScreen(
     // Lista personalizada de imágenes o íconos para cada categoría
     val buttonIcons = listOf(
         R.drawable.logo,               // Imagen para la primera categoría
+        R.drawable.logo,
+        R.drawable.logo,
         Icons.Default.Computer,         // Ícono para la segunda categoría
         Icons.Default.ShoppingCart,     // Ícono para la tercera categoría
         Icons.Default.Home,             // Ícono adicional
@@ -242,7 +244,7 @@ fun StartScreen(
                             if (index < buttonTexts.size) {
                                 Box(
                                     modifier = Modifier
-                                        .size(100.dp, 150.dp)
+                                        .size(120.dp, 180.dp) // Aumentar tamaño de los recuadros
                                         .clip(RoundedCornerShape(8.dp))
                                         .background(Color.LightGray)
                                         .clickable {
@@ -258,19 +260,19 @@ fun StartScreen(
                                             is Int -> Image(
                                                 painter = painterResource(id = icon),
                                                 contentDescription = "Imagen de ${buttonTexts[index]}",
-                                                modifier = Modifier.size(60.dp)
+                                                modifier = Modifier.size(80.dp) // Aumentar tamaño del ícono
                                             )
                                             is ImageVector -> Icon(
                                                 imageVector = icon,
                                                 contentDescription = "Ícono de ${buttonTexts[index]}",
-                                                modifier = Modifier.size(40.dp),
+                                                modifier = Modifier.size(60.dp), // Aumentar tamaño del ícono
                                                 tint = Color.Black
                                             )
                                         }
                                         Spacer(modifier = Modifier.height(4.dp))
                                         Text(
                                             text = buttonTexts[index],
-                                            fontSize = 14.sp,
+                                            fontSize = 16.sp, // Aumentar tamaño de la fuente
                                             color = Color.Black,
                                             textAlign = TextAlign.Center
                                         )
@@ -291,6 +293,7 @@ data class Product(
     val price: Double,
     val image: Any // Puede ser un ImageVector o un Int (R.drawable)
 )
+
 
 @Composable
 fun ProductScreen(navController: NavController) {
