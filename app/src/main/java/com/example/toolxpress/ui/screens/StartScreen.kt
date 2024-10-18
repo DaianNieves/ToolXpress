@@ -89,11 +89,11 @@ fun MainScreen(navController: NavController, allCategories: List<Pair<String, Li
 fun OfferCarousel() {
     // Lista de recursos de imágenes para las ofertas
     val offerImages = listOf(
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo,
-        R.drawable.logo
+        R.drawable.promo3,
+        R.drawable.promo2,
+        R.drawable.promo1,
+        R.drawable.promo4,
+        R.drawable.promo5
     )
 
     // Estado del Pager
