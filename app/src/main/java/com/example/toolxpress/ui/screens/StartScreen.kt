@@ -182,21 +182,19 @@ fun StartScreen(
     // Nombres de las categorías
     val buttonTexts = allCategories.map { it.first }
 
-    // Lista de íconos personalizada para cada categoría
+    // Lista personalizada de imágenes o íconos para cada categoría
     val buttonIcons = listOf(
-        Icons.Default.Build,         // Ícono para la primera categoría
-        Icons.Default.Computer,      // Ícono para la segunda categoría
-        Icons.Default.ShoppingCart,  // Ícono para la tercera categoría
-        Icons.Default.Home,          // Ícono adicional para más categorías
-        Icons.Default.FitnessCenter  // Puedes añadir más íconos según sea necesario
+        R.drawable.logo,               // Imagen para la primera categoría
+        Icons.Default.Computer,         // Ícono para la segunda categoría
+        Icons.Default.ShoppingCart,     // Ícono para la tercera categoría
+        Icons.Default.Home,             // Ícono adicional
+        Icons.Default.FitnessCenter     // Ícono adicional
     )
 
-    // Validar que el número de íconos coincida con las categorías
     require(buttonIcons.size >= buttonTexts.size) {
         "El número de íconos debe ser igual o mayor al número de categorías"
     }
 
-    // Estructura principal de la pantalla
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -204,7 +202,6 @@ fun StartScreen(
             .padding(0.dp, 20.dp, 0.dp, 20.dp)
     ) {
         Column {
-            // Título "Categorías"
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -224,7 +221,6 @@ fun StartScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Contenido con categorías e íconos personalizados
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -234,7 +230,6 @@ fun StartScreen(
                 val numColumns = 3 // Número de columnas por fila
                 val numRows = (buttonTexts.size + numColumns - 1) / numColumns
 
-                // Repetir filas según el número de categorías
                 repeat(numRows) { rowIndex ->
                     Row(
                         modifier = Modifier
@@ -245,7 +240,6 @@ fun StartScreen(
                         repeat(numColumns) { columnIndex ->
                             val index = rowIndex * numColumns + columnIndex
                             if (index < buttonTexts.size) {
-                                // Caja que contiene ícono y texto
                                 Box(
                                     modifier = Modifier
                                         .size(100.dp, 150.dp)
@@ -260,14 +254,20 @@ fun StartScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.SpaceEvenly
                                     ) {
-                                        // Ícono personalizado para cada categoría
-                                        Icon(
-                                            imageVector = buttonIcons[index],
-                                            contentDescription = "Ícono de ${buttonTexts[index]}",
-                                            modifier = Modifier.size(40.dp),
-                                            tint = Color.Black
-                                        )
-                                        // Texto con el nombre de la categoría
+                                        when (val icon = buttonIcons[index]) {
+                                            is Int -> Image(
+                                                painter = painterResource(id = icon),
+                                                contentDescription = "Imagen de ${buttonTexts[index]}",
+                                                modifier = Modifier.size(60.dp)
+                                            )
+                                            is ImageVector -> Icon(
+                                                imageVector = icon,
+                                                contentDescription = "Ícono de ${buttonTexts[index]}",
+                                                modifier = Modifier.size(40.dp),
+                                                tint = Color.Black
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.height(4.dp))
                                         Text(
                                             text = buttonTexts[index],
                                             fontSize = 14.sp,
@@ -289,13 +289,13 @@ data class Product(
     val name: String,
     val description: String,
     val price: Double,
-    val icon: ImageVector // Campo para almacenar el ícono
+    val image: Any // Puede ser un ImageVector o un Int (R.drawable)
 )
 
 @Composable
 fun ProductScreen(navController: NavController) {
     val products = listOf(
-        Product("Producto 1", "Descripción del producto 1", 100.00, Icons.Default.Build),
+        Product("Producto 1", "Descripción del producto 1", 100.00, R.drawable.logo),
         Product("Producto 2", "Descripción del producto 2", 150.00, Icons.Default.ShoppingCart),
         Product("Producto 3", "Descripción del producto 3", 200.00, Icons.Default.FavoriteBorder),
         Product("Producto 4", "Descripción del producto 4", 250.00, Icons.Default.Star),
@@ -345,7 +345,7 @@ fun ProductScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentWidth(Alignment.CenterHorizontally),
-                        horizontalArrangement = Arrangement.spacedBy(30.dp) // Espaciado más amplio
+                        horizontalArrangement = Arrangement.spacedBy(30.dp)
                     ) {
                         repeat(numColumns) { columnIndex ->
                             val index = rowIndex * numColumns + columnIndex
@@ -353,23 +353,31 @@ fun ProductScreen(navController: NavController) {
                                 val product = products[index]
                                 Box(
                                     modifier = Modifier
-                                        .size(150.dp) // Tamaño aumentado como las categorías originales
+                                        .size(150.dp)
                                         .clip(RoundedCornerShape(8.dp))
                                         .background(Color.LightGray)
-                                        .clickable {navController.navigate("CardProducts")},
+                                        .clickable { navController.navigate("CardProducts") },
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Column(
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.Center
                                     ) {
-                                        // Usamos el ícono específico de cada producto
-                                        Icon(
-                                            imageVector = product.icon,
-                                            contentDescription = "Ícono del producto",
-                                            modifier = Modifier.size(40.dp),
-                                            tint = Color.Black
-                                        )
+                                        // Verificar si el campo 'image' es un drawable o un ícono
+                                        when (val image = product.image) {
+                                            is Int -> Image(
+                                                painter = painterResource(id = image),
+                                                contentDescription = product.name,
+                                                modifier = Modifier.size(60.dp)
+                                            )
+                                            is ImageVector -> Icon(
+                                                imageVector = image,
+                                                contentDescription = product.name,
+                                                modifier = Modifier.size(40.dp),
+                                                tint = Color.Black
+                                            )
+                                        }
+
                                         Spacer(modifier = Modifier.height(4.dp))
                                         Text(
                                             text = product.name,
