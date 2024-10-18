@@ -45,9 +45,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -184,9 +186,9 @@ fun StartScreen(
 
     // Lista personalizada de imágenes o íconos para cada categoría
     val buttonIcons = listOf(
-        R.drawable.logo,               // Imagen para la primera categoría
-        R.drawable.logo,
-        R.drawable.logo,
+        R.drawable.fondo1,               // Imagen para la primera categoría
+        R.drawable.fondo1,
+        R.drawable.fondo1,
         Icons.Default.Computer,         // Ícono para la segunda categoría
         Icons.Default.ShoppingCart,     // Ícono para la tercera categoría
         Icons.Default.Home,             // Ícono adicional
@@ -204,6 +206,7 @@ fun StartScreen(
             .padding(0.dp, 20.dp, 0.dp, 20.dp)
     ) {
         Column {
+            // Título de la sección
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -223,13 +226,14 @@ fun StartScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Contenedor de las categorías
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(16.dp), // Más espacio para que respire
+                verticalArrangement = Arrangement.spacedBy(16.dp) // Espaciado entre recuadros
             ) {
-                val numColumns = 3 // Número de columnas por fila
+                val numColumns = 2 // Reducido a 2 columnas para hacer los recuadros más grandes
                 val numRows = (buttonTexts.size + numColumns - 1) / numColumns
 
                 repeat(numRows) { rowIndex ->
@@ -242,38 +246,55 @@ fun StartScreen(
                         repeat(numColumns) { columnIndex ->
                             val index = rowIndex * numColumns + columnIndex
                             if (index < buttonTexts.size) {
+                                // Recuadro de cada categoría
                                 Box(
                                     modifier = Modifier
-                                        .size(120.dp, 180.dp) // Aumentar tamaño de los recuadros
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(Color.LightGray)
+                                        .size(180.dp, 200.dp) // Aumentado para mejor visibilidad
+                                        .clip(RoundedCornerShape(16.dp)) // Bordes más suaves
+                                        .background(Color.White)
+                                        .shadow(8.dp, RoundedCornerShape(16.dp)) // Sombras elegantes
                                         .clickable {
                                             navController.navigate("ProductsScreen/${buttonTexts[index]}")
                                         },
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.SpaceEvenly
+                                    // Imagen de fondo
+                                    Box(
+                                        modifier = Modifier
+                                            .matchParentSize() // Asegura que la imagen cubra todo el área del cuadro
+                                            .clip(RoundedCornerShape(16.dp)) // Mantiene el mismo borde redondeado
                                     ) {
                                         when (val icon = buttonIcons[index]) {
                                             is Int -> Image(
                                                 painter = painterResource(id = icon),
                                                 contentDescription = "Imagen de ${buttonTexts[index]}",
-                                                modifier = Modifier.size(80.dp) // Aumentar tamaño del ícono
+                                                modifier = Modifier
+                                                    .fillMaxSize() // Asegura que la imagen cubra todo el cuadro
+                                                    .clip(RoundedCornerShape(16.dp)), // Mantiene el borde redondeado
+                                                contentScale = ContentScale.Crop // Ajusta la escala de la imagen
                                             )
                                             is ImageVector -> Icon(
                                                 imageVector = icon,
                                                 contentDescription = "Ícono de ${buttonTexts[index]}",
-                                                modifier = Modifier.size(60.dp), // Aumentar tamaño del ícono
+                                                modifier = Modifier.size(80.dp), // Tamaño más grande del ícono
                                                 tint = Color.Black
                                             )
                                         }
-                                        Spacer(modifier = Modifier.height(4.dp))
+                                    }
+
+                                    // Contenido del cuadro
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.SpaceEvenly,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(8.dp) // Espaciado interno para el texto
+                                    ) {
                                         Text(
                                             text = buttonTexts[index],
-                                            fontSize = 16.sp, // Aumentar tamaño de la fuente
-                                            color = Color.Black,
+                                            fontSize = 18.sp, // Aumentar tamaño de la fuente para mayor claridad
+                                            fontWeight = FontWeight.Medium, // Texto más elegante
+                                            color = Color.DarkGray,
                                             textAlign = TextAlign.Center
                                         )
                                     }
@@ -293,6 +314,8 @@ data class Product(
     val price: Double,
     val image: Any // Puede ser un ImageVector o un Int (R.drawable)
 )
+
+
 
 
 @Composable
