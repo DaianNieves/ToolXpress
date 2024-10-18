@@ -24,7 +24,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
@@ -173,11 +175,28 @@ fun OfferCarousel() {
 }
 
 @Composable
-fun StartScreen(navController: NavController, allCategories: List<Pair<String, List<PostModel>>>) {
+fun StartScreen(
+    navController: NavController,
+    allCategories: List<Pair<String, List<PostModel>>>
+) {
+    // Nombres de las categorías
     val buttonTexts = allCategories.map { it.first }
-    val buttonIcons =
-        List(buttonTexts.size) { Icons.Default.Build } // Ajusta los íconos según tus necesidades
 
+    // Lista de íconos personalizada para cada categoría
+    val buttonIcons = listOf(
+        Icons.Default.Build,         // Ícono para la primera categoría
+        Icons.Default.Computer,      // Ícono para la segunda categoría
+        Icons.Default.ShoppingCart,  // Ícono para la tercera categoría
+        Icons.Default.Home,          // Ícono adicional para más categorías
+        Icons.Default.FitnessCenter  // Puedes añadir más íconos según sea necesario
+    )
+
+    // Validar que el número de íconos coincida con las categorías
+    require(buttonIcons.size >= buttonTexts.size) {
+        "El número de íconos debe ser igual o mayor al número de categorías"
+    }
+
+    // Estructura principal de la pantalla
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -185,6 +204,7 @@ fun StartScreen(navController: NavController, allCategories: List<Pair<String, L
             .padding(0.dp, 20.dp, 0.dp, 20.dp)
     ) {
         Column {
+            // Título "Categorías"
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -204,6 +224,7 @@ fun StartScreen(navController: NavController, allCategories: List<Pair<String, L
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Contenido con categorías e íconos personalizados
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -213,6 +234,7 @@ fun StartScreen(navController: NavController, allCategories: List<Pair<String, L
                 val numColumns = 3 // Número de columnas por fila
                 val numRows = (buttonTexts.size + numColumns - 1) / numColumns
 
+                // Repetir filas según el número de categorías
                 repeat(numRows) { rowIndex ->
                     Row(
                         modifier = Modifier
@@ -223,6 +245,7 @@ fun StartScreen(navController: NavController, allCategories: List<Pair<String, L
                         repeat(numColumns) { columnIndex ->
                             val index = rowIndex * numColumns + columnIndex
                             if (index < buttonTexts.size) {
+                                // Caja que contiene ícono y texto
                                 Box(
                                     modifier = Modifier
                                         .size(100.dp, 150.dp)
@@ -237,12 +260,14 @@ fun StartScreen(navController: NavController, allCategories: List<Pair<String, L
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.SpaceEvenly
                                     ) {
+                                        // Ícono personalizado para cada categoría
                                         Icon(
                                             imageVector = buttonIcons[index],
-                                            contentDescription = "Ícono de la herramienta",
+                                            contentDescription = "Ícono de ${buttonTexts[index]}",
                                             modifier = Modifier.size(40.dp),
                                             tint = Color.Black
                                         )
+                                        // Texto con el nombre de la categoría
                                         Text(
                                             text = buttonTexts[index],
                                             fontSize = 14.sp,
