@@ -2,16 +2,7 @@ package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,23 +40,65 @@ import com.example.toolxpress.data.model.ShoppingModel
 @Composable
 fun ShoppingCartScreen(navController: NavController) {
     var showDialog by remember { mutableStateOf(false) } // Estado del mensaje emergente
+    var productList = remember {
+        arrayListOf(
+            ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
+            ShoppingModel(2, "Producto 2", "Descripción del producto 2", R.drawable.ejemploimagen, "$15.00"),
+            ShoppingModel(3, "Producto 3", "Descripción del producto 3", R.drawable.ejemploimagen, "$20.00"),
+            ShoppingModel(4, "Producto 4", "Descripción del producto 4", R.drawable.ejemploimagen, "$25.00")
+        )
+    }
+
+    // Calcular el total
+    val totalAmount = productList.sumOf { product ->
+        product.price.replace("$", "").toDoubleOrNull() ?: 0.0
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(navController = navController)
-        // Usamos un LazyColumn para permitir el desplazamiento
-        LazyColumn {
 
-            val productList = arrayOf(
-                ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
-                ShoppingModel(2, "Producto 2", "Descripción del producto 2", R.drawable.ejemploimagen, "$15.00"),
-                ShoppingModel(3, "Producto 3", "Descripción del producto 3", R.drawable.ejemploimagen, "$20.00"),
-                ShoppingModel(4, "Producto 4", "Descripción del producto 4", R.drawable.ejemploimagen, "$25.00")
-            )
-
+        // Usamos una LazyColumn para hacer scroll en toda la pantalla
+        LazyColumn(modifier = Modifier.weight(1f)) {
             items(productList) { product ->
-                ProductItem(product)
+                ProductItem(product = product, onRemove = {
+                    // Eliminar el producto de la lista
+                    productList.remove(product)
+                })
             }
 
+            // Card que muestra el total
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    backgroundColor = Color.White,
+                    elevation = 4.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Total:",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            "$${"%.2f".format(totalAmount)}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = GreenPrice
+                        )
+                    }
+                }
+            }
+
+            // Contenedor de botones
             item {
                 Row(
                     modifier = Modifier
@@ -113,9 +146,6 @@ fun ShoppingCartScreen(navController: NavController) {
                         )
                     }
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
             }
         }
     }
@@ -174,7 +204,10 @@ fun ShoppingCartScreen(navController: NavController) {
 }
 
 @Composable
-fun ProductItem(product: ShoppingModel) {
+fun ProductItem(product: ShoppingModel, onRemove: () -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf("Selecciona cantidad") }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -199,18 +232,7 @@ fun ProductItem(product: ShoppingModel) {
                     Text(product.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Text(product.description, fontSize = 14.sp)
 
-                    Row {
-                        TextButton(onClick = {}) {
-                            Text("Guardar", color = Orange, fontSize = 16.sp)
-                        }
-                        TextButton(onClick = {}) {
-                            Text("Eliminar", color = Orange, fontSize = 16.sp)
-                        }
-                    }
-
-                    var expanded by remember { mutableStateOf(false) }
-                    var selectedOption by remember { mutableStateOf("Selecciona cantidad") }
-
+                    // Aquí se maneja el DropdownMenu correctamente
                     Box {
                         TextButton(onClick = { expanded = true }) {
                             Text(selectedOption, fontSize = 16.sp)
@@ -220,13 +242,19 @@ fun ProductItem(product: ShoppingModel) {
                             onDismissRequest = { expanded = false }
                         ) {
                             listOf("1", "2", "3", "4", "5", "6").forEach { option ->
-                                DropdownMenuItem(onClick = {
+                                DropdownMenuItem (onClick = {
                                     selectedOption = option
                                     expanded = false
                                 }) {
                                     Text(option)
                                 }
                             }
+                        }
+
+                    }
+                    Row {
+                        TextButton(onClick = onRemove) {
+                            Text("Eliminar del Carrito", color = Orange, fontSize = 16.sp)
                         }
                     }
                 }
