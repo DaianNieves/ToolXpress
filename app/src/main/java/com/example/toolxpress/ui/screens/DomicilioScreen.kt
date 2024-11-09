@@ -184,7 +184,7 @@ fun DomicilioScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // ¿Es tu trabajo o tu casa?
+                /* ¿Es tu trabajo o tu casa?
                 Text(
                     text = "¿Es tu trabajo o tu casa?",
                     fontSize = 16.sp,
@@ -208,7 +208,7 @@ fun DomicilioScreen(navController: NavController) {
                         onClick = { isHome = false }
                     )
                     Text(text = "Trabajo", modifier = Modifier.padding(start = 8.dp))
-                }
+                }*/
 
                 Spacer(modifier = Modifier.height(16.dp))
 
