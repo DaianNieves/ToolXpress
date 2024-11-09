@@ -15,11 +15,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,19 +35,23 @@ import com.example.toolxpress.data.model.ShoppingModel
 
 @Composable
 fun ShoppingCartScreen(navController: NavController) {
-    var showDialog by remember { mutableStateOf(false) } // Estado del mensaje emergente
-    var productList = remember {
-        arrayListOf(
-            ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
-            ShoppingModel(2, "Producto 2", "Descripción del producto 2", R.drawable.ejemploimagen, "$15.00"),
-            ShoppingModel(3, "Producto 3", "Descripción del producto 3", R.drawable.ejemploimagen, "$20.00"),
-            ShoppingModel(4, "Producto 4", "Descripción del producto 4", R.drawable.ejemploimagen, "$25.00")
+    var showDialog by remember { mutableStateOf(false) }
+    var productList by remember {
+        mutableStateOf(
+            arrayListOf(
+                ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
+                ShoppingModel(2, "Producto 2", "Descripción del producto 2", R.drawable.ejemploimagen, "$15.00"),
+                ShoppingModel(3, "Producto 3", "Descripción del producto 3", R.drawable.ejemploimagen, "$20.00"),
+                ShoppingModel(4, "Producto 4", "Descripción del producto 4", R.drawable.ejemploimagen, "$25.00")
+            )
         )
     }
 
-    // Calcular el total
-    val totalAmount = productList.sumOf { product ->
-        product.price.replace("$", "").toDoubleOrNull() ?: 0.0
+    var totalAmount by remember { mutableStateOf(0.0) }
+
+    // Calcular el total actualizado
+    totalAmount = productList.sumOf { product ->
+        (product.price.replace("$", "").toDoubleOrNull() ?: 0.0) * product.selectedQuantity
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -60,10 +60,18 @@ fun ShoppingCartScreen(navController: NavController) {
         // Usamos una LazyColumn para hacer scroll en toda la pantalla
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(productList) { product ->
-                ProductItem(product = product, onRemove = {
-                    // Eliminar el producto de la lista
-                    productList.remove(product)
-                })
+                ProductItem(
+                    product = product,
+                    onRemove = {
+                        productList.removeIf { it.id == product.id }
+                    },
+                    onQuantityChange = { newQuantity ->
+                        product.selectedQuantity = newQuantity
+                        totalAmount = productList.sumOf { p ->
+                            (p.price.replace("$", "").toDoubleOrNull() ?: 0.0) * p.selectedQuantity
+                        }
+                    }
+                )
             }
 
             // Card que muestra el total
@@ -104,9 +112,8 @@ fun ShoppingCartScreen(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp) // Espacio uniforme entre los botones
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // Botón "Comprar"
                     Button(
                         onClick = { navController.navigate("DomicilioScreen") },
                         modifier = Modifier
@@ -121,14 +128,13 @@ fun ShoppingCartScreen(navController: NavController) {
                             "Comprar",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center, // Centrado del texto
-                            color = Color.White // Color del texto en blanco
+                            textAlign = TextAlign.Center,
+                            color = Color.White
                         )
                     }
 
-                    // Botón "Apartar Carrito"
                     Button(
-                        onClick = { showDialog = true }, // Mostrar el mensaje emergente
+                        onClick = { showDialog = true },
                         modifier = Modifier
                             .weight(1f)
                             .height(50.dp),
@@ -141,8 +147,8 @@ fun ShoppingCartScreen(navController: NavController) {
                             text = "Apartar Carrito",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center, // Centrado del texto
-                            color = Color.White // Color del texto en blanco
+                            textAlign = TextAlign.Center,
+                            color = Color.White
                         )
                     }
                 }
@@ -150,7 +156,6 @@ fun ShoppingCartScreen(navController: NavController) {
         }
     }
 
-    // Mensaje emergente
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
@@ -160,8 +165,8 @@ fun ShoppingCartScreen(navController: NavController) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     color = Color.Black,
-                    textAlign = TextAlign.Center, // Centrar el texto del título
-                    modifier = Modifier.fillMaxWidth() // Llenar el ancho
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
                 )
             },
             text = {
@@ -169,44 +174,48 @@ fun ShoppingCartScreen(navController: NavController) {
                     "Solo tienen 48 horas para recoger y pagar en tienda.",
                     style = MaterialTheme.typography.body1.copy(
                         fontSize = 18.sp,
-                        color = Color.Gray // Color del texto del mensaje
+                        color = Color.Gray
                     ),
-                    textAlign = TextAlign.Center, // Centrar el texto
-                    modifier = Modifier.fillMaxWidth() // Llenar el ancho
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
                 )
             },
             confirmButton = {
                 Button(
                     onClick = { showDialog = false },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange, // Color del botón
-                        contentColor = Color.White // Color del texto del botón
+                        containerColor = Orange,
+                        contentColor = Color.White
                     ),
-                    shape = RoundedCornerShape(20.dp), // Esquinas redondeadas del botón
+                    shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
-                        .fillMaxWidth() // Llenar el ancho
-                        .padding(horizontal = 16.dp, vertical = 8.dp) // Espaciado del botón
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
                         "Aceptar",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp // Tamaño del texto del botón
+                        fontSize = 16.sp
                     )
                 }
             },
             properties = DialogProperties(),
             modifier = Modifier
-                .background(Color.White, shape = RoundedCornerShape(16.dp)) // Esquinas redondeadas
-                .padding(24.dp) // Espaciado adicional para el contenido
-                .fillMaxWidth(0.8f) // Ancho del diálogo
+                .background(Color.White, shape = RoundedCornerShape(16.dp))
+                .padding(24.dp)
+                .fillMaxWidth(0.8f)
         )
     }
 }
 
 @Composable
-fun ProductItem(product: ShoppingModel, onRemove: () -> Unit) {
+fun ProductItem(
+    product: ShoppingModel,
+    onRemove: () -> Unit,
+    onQuantityChange: (Int) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember { mutableStateOf("Selecciona cantidad") }
+    var selectedOption by remember { mutableStateOf(1) }
 
     Card(
         modifier = Modifier
@@ -232,26 +241,26 @@ fun ProductItem(product: ShoppingModel, onRemove: () -> Unit) {
                     Text(product.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Text(product.description, fontSize = 14.sp)
 
-                    // Aquí se maneja el DropdownMenu correctamente
                     Box {
                         TextButton(onClick = { expanded = true }) {
-                            Text(selectedOption, fontSize = 16.sp)
+                            Text("Cantidad: $selectedOption", fontSize = 16.sp)
                         }
                         DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false }
                         ) {
-                            listOf("1", "2", "3", "4", "5", "6").forEach { option ->
-                                DropdownMenuItem (onClick = {
+                            listOf(1, 2, 3, 4, 5, 6).forEach { option ->
+                                DropdownMenuItem(onClick = {
                                     selectedOption = option
+                                    onQuantityChange(option)
                                     expanded = false
                                 }) {
-                                    Text(option)
+                                    Text(option.toString())
                                 }
                             }
                         }
-
                     }
+
                     Row {
                         TextButton(onClick = onRemove) {
                             Text("Eliminar del Carrito", color = Orange, fontSize = 16.sp)
@@ -267,7 +276,8 @@ fun ProductItem(product: ShoppingModel, onRemove: () -> Unit) {
                 horizontalArrangement = Arrangement.End
             ) {
                 Text("Subtotal: ", fontSize = 18.sp)
-                Text(product.price, fontSize = 18.sp, color = GreenPrice)
+                val updatedPrice = (product.price.replace("$", "").toDoubleOrNull() ?: 0.0) * selectedOption
+                Text("$${"%.2f".format(updatedPrice)}", fontSize = 18.sp, color = GreenPrice)
             }
         }
     }
