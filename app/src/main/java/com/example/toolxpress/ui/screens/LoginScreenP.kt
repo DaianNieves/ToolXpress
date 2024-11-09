@@ -86,7 +86,7 @@ fun LoginScreenP(navController: NavController) {
                             BasicTextField(
                                 value = email,
                                 onValueChange = {
-                                    email = it
+                                    email = it.filter { char -> char != ' ' }
                                     hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
                                 },
                                 modifier = Modifier.weight(1f),
@@ -107,7 +107,9 @@ fun LoginScreenP(navController: NavController) {
                                     color = Color.Black,
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold
-                                )
+                                ),
+                                singleLine = true,  // Asegura que el input se mantenga en una sola línea
+                                maxLines = 1        // Limita el input a una línea
                             )
                         }
                         if (hasEmailError) {
@@ -150,7 +152,7 @@ fun LoginScreenP(navController: NavController) {
                             BasicTextField(
                                 value = password,
                                 onValueChange = {
-                                    password = it
+                                    password = it.filter { char -> char != ' ' }//filtrar espacios
                                     hasPasswordError = password.isEmpty()
                                 },
                                 modifier = Modifier.weight(1f),
@@ -172,7 +174,9 @@ fun LoginScreenP(navController: NavController) {
                                     color = Color.Black,
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold
-                                )
+                                ),
+                                singleLine = true,  // input se mantenga en una sola línea
+                                maxLines = 1
                             )
                             Icon(
                                 imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,

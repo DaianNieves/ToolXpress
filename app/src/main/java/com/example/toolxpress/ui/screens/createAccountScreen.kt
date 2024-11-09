@@ -2,8 +2,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -37,25 +39,16 @@ fun CreateAccountScreen(navController: NavController) {
     var hasPasswordError by remember { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    Box() {
+    Column(modifier = Modifier.fillMaxSize()) {
+        // TopBar permanece fijo, fuera del scroll
         TopBar(navController)
-    }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 40.dp)
-    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 100.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 40.dp)
         ) {
-
-            Spacer(modifier = Modifier.height(50.dp))
-
             // Imagen (Logo)
             Image(
                 painter = painterResource(id = R.drawable.logo),
@@ -122,7 +115,7 @@ fun CreateAccountScreen(navController: NavController) {
                     BasicTextField(
                         value = username,
                         onValueChange = {
-                            username = it
+                            username = it.filter { char -> char != ' ' }
                             //hasPasswordError = password.isEmpty()
                         },
                         modifier = Modifier.weight(1f),
@@ -143,7 +136,9 @@ fun CreateAccountScreen(navController: NavController) {
                             color = Color.Black,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
-                        )
+                        ),
+                        singleLine = true,  // input se mantenga en una sola línea
+                        maxLines = 1
                     )
                 }
             }
@@ -175,7 +170,7 @@ fun CreateAccountScreen(navController: NavController) {
                     BasicTextField(
                         value = email,
                         onValueChange = {
-                            email = it
+                            email = it.filter { char -> char != ' ' }
                             // Validar si el correo contiene '@' y tiene un formato adecuado
                             hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
                                 .matches() && email.isNotEmpty()
@@ -198,7 +193,10 @@ fun CreateAccountScreen(navController: NavController) {
                             color = Color.Black,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
-                        )
+                        ),
+                        singleLine = true,
+                        maxLines = 1
+
                     )
                 }// Mostrar mensaje de error si el correo no es válido
                 if (hasEmailError) {
@@ -239,7 +237,7 @@ fun CreateAccountScreen(navController: NavController) {
                     BasicTextField(
                         value = password,
                         onValueChange = {
-                            password = it
+                            password =  it.filter { char -> char != ' ' }
                             hasPasswordError = password.isEmpty()
                         },
                         modifier = Modifier.weight(1f),
