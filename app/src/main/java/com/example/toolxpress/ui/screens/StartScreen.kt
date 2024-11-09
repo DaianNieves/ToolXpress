@@ -4,6 +4,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -45,12 +47,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -184,9 +190,9 @@ fun StartScreen(
 
     // Lista personalizada de imágenes o íconos para cada categoría
     val buttonIcons = listOf(
-        R.drawable.logo,               // Imagen para la primera categoría
-        R.drawable.logo,
-        R.drawable.logo,
+        R.drawable.fondo1,               // Imagen para la primera categoría
+        R.drawable.fondo1,
+        R.drawable.fondo1,
         Icons.Default.Computer,         // Ícono para la segunda categoría
         Icons.Default.ShoppingCart,     // Ícono para la tercera categoría
         Icons.Default.Home,             // Ícono adicional
@@ -204,6 +210,7 @@ fun StartScreen(
             .padding(0.dp, 20.dp, 0.dp, 20.dp)
     ) {
         Column {
+            // Título de la sección
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -223,13 +230,14 @@ fun StartScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Contenedor de las categorías
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(16.dp), // Más espacio para que respire
+                verticalArrangement = Arrangement.spacedBy(16.dp) // Espaciado entre recuadros
             ) {
-                val numColumns = 3 // Número de columnas por fila
+                val numColumns = 2 // Reducido a 2 columnas para hacer los recuadros más grandes
                 val numRows = (buttonTexts.size + numColumns - 1) / numColumns
 
                 repeat(numRows) { rowIndex ->
@@ -242,38 +250,55 @@ fun StartScreen(
                         repeat(numColumns) { columnIndex ->
                             val index = rowIndex * numColumns + columnIndex
                             if (index < buttonTexts.size) {
+                                // Recuadro de cada categoría
                                 Box(
                                     modifier = Modifier
-                                        .size(120.dp, 180.dp) // Aumentar tamaño de los recuadros
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(Color.LightGray)
+                                        .size(180.dp, 200.dp) // Aumentado para mejor visibilidad
+                                        .clip(RoundedCornerShape(16.dp)) // Bordes más suaves
+                                        .background(Color.White)
+                                        .shadow(8.dp, RoundedCornerShape(16.dp)) // Sombras elegantes
                                         .clickable {
                                             navController.navigate("ProductsScreen/${buttonTexts[index]}")
                                         },
                                     contentAlignment = Alignment.Center
                                 ) {
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.SpaceEvenly
+                                    // Imagen de fondo
+                                    Box(
+                                        modifier = Modifier
+                                            .matchParentSize() // Asegura que la imagen cubra todo el área del cuadro
+                                            .clip(RoundedCornerShape(16.dp)) // Mantiene el mismo borde redondeado
                                     ) {
                                         when (val icon = buttonIcons[index]) {
                                             is Int -> Image(
                                                 painter = painterResource(id = icon),
                                                 contentDescription = "Imagen de ${buttonTexts[index]}",
-                                                modifier = Modifier.size(80.dp) // Aumentar tamaño del ícono
+                                                modifier = Modifier
+                                                    .fillMaxSize() // Asegura que la imagen cubra todo el cuadro
+                                                    .clip(RoundedCornerShape(16.dp)), // Mantiene el borde redondeado
+                                                contentScale = ContentScale.Crop // Ajusta la escala de la imagen
                                             )
                                             is ImageVector -> Icon(
                                                 imageVector = icon,
                                                 contentDescription = "Ícono de ${buttonTexts[index]}",
-                                                modifier = Modifier.size(60.dp), // Aumentar tamaño del ícono
+                                                modifier = Modifier.size(80.dp), // Tamaño más grande del ícono
                                                 tint = Color.Black
                                             )
                                         }
-                                        Spacer(modifier = Modifier.height(4.dp))
+                                    }
+
+                                    // Contenido del cuadro
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.SpaceEvenly,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(8.dp) // Espaciado interno para el texto
+                                    ) {
                                         Text(
                                             text = buttonTexts[index],
-                                            fontSize = 16.sp, // Aumentar tamaño de la fuente
-                                            color = Color.Black,
+                                            fontSize = 18.sp, // Aumentar tamaño de la fuente para mayor claridad
+                                            fontWeight = FontWeight.Medium, // Texto más elegante
+                                            color = Color.DarkGray,
                                             textAlign = TextAlign.Center
                                         )
                                     }
@@ -298,8 +323,12 @@ data class Product(
 @Composable
 fun ProductScreen(navController: NavController) {
     val products = listOf(
-        Product("Producto 1", "Descripción del producto 1", 100.00, R.drawable.logo),
-        Product("Producto 2", "Descripción del producto 2", 150.00, Icons.Default.ShoppingCart),
+        Product("Taladro Inalámbrico Electrico",
+            "NANWEI Kit de Taladro Inalámbrico Electrico con 3 Modos de Trabajo Atornillado/Taladrado/Impacto, 45N.m, Ajuste de Par de 25+1, Desatornillador Eléctrico con 2 Baterías Recargables y 28 Accesorios",
+            594.00, R.drawable.taladro),
+        Product("Taladro Inalámbrico Electrico",
+            "NANWEI Kit de Taladro Inalámbrico Electrico con 3 Modos de Trabajo Atornillado/Taladrado/Impacto, 45N.m, Ajuste de Par de 25+1, Desatornillador Eléctrico con 2 Baterías Recargables y 28 Accesorios",
+            594.00, R.drawable.taladro),
         Product("Producto 3", "Descripción del producto 3", 200.00, Icons.Default.FavoriteBorder),
         Product("Producto 4", "Descripción del producto 4", 250.00, Icons.Default.Star),
         Product("Producto 5", "Descripción del producto 5", 300.00, Icons.Default.Person),
@@ -315,10 +344,11 @@ fun ProductScreen(navController: NavController) {
             .padding(0.dp, 5.dp, 0.dp, 20.dp)
     ) {
         Column {
+            // Título "Destacados"
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(14.dp, 0.dp, 14.dp, 0.dp)
+                    .padding(14.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color(0xff2C2C2C)),
                 horizontalArrangement = Arrangement.Center
@@ -334,21 +364,21 @@ fun ProductScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Tarjetas de productos
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp) // Espaciado entre las filas
             ) {
-                val numColumns = 2 // Número de columnas por fila
+                val numColumns = 2
                 val numRows = (products.size + numColumns - 1) / numColumns
 
                 repeat(numRows) { rowIndex ->
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(Alignment.CenterHorizontally),
-                        horizontalArrangement = Arrangement.spacedBy(30.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp) // Espaciado entre columnas
                     ) {
                         repeat(numColumns) { columnIndex ->
                             val index = rowIndex * numColumns + columnIndex
@@ -356,50 +386,10 @@ fun ProductScreen(navController: NavController) {
                                 val product = products[index]
                                 Box(
                                     modifier = Modifier
-                                        .size(150.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(Color.LightGray)
-                                        .clickable { navController.navigate("CardProducts") },
-                                    contentAlignment = Alignment.Center
+                                        .weight(1f) // Para que las columnas tengan el mismo peso
+                                        .aspectRatio(0.7f) // Ajusta esta relación para mantener proporciones
                                 ) {
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center
-                                    ) {
-                                        // Verificar si el campo 'image' es un drawable o un ícono
-                                        when (val image = product.image) {
-                                            is Int -> Image(
-                                                painter = painterResource(id = image),
-                                                contentDescription = product.name,
-                                                modifier = Modifier.size(60.dp)
-                                            )
-                                            is ImageVector -> Icon(
-                                                imageVector = image,
-                                                contentDescription = product.name,
-                                                modifier = Modifier.size(40.dp),
-                                                tint = Color.Black
-                                            )
-                                        }
-
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = product.name,
-                                            fontSize = 14.sp,
-                                            color = Color.Black,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        Text(
-                                            text = product.description,
-                                            fontSize = 12.sp,
-                                            color = Color.Gray,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        Text(
-                                            text = "$${product.price}",
-                                            fontSize = 14.sp,
-                                            color = Color.Black
-                                        )
-                                    }
+                                    ProductCard(product = product, navController = navController)
                                 }
                             }
                         }
@@ -409,3 +399,73 @@ fun ProductScreen(navController: NavController) {
         }
     }
 }
+
+@Composable
+fun ProductCard(product: Product, navController: NavController) {
+    Box(
+        modifier = Modifier
+            .width(240.dp) // Aumentar el ancho de la tarjeta
+            .height(400.dp) // Aumentar la altura de la tarjeta
+            .clip(RoundedCornerShape(12.dp))
+            .background(Color.White)
+            .border(1.dp, Color.LightGray, RoundedCornerShape(12.dp)) // Borde sutil
+            .shadow(4.dp, RoundedCornerShape(12.dp)) // Sombra
+            .clickable { navController.navigate("CardProducts") },
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp), // Espacio más grande entre los elementos
+            modifier = Modifier.padding(12.dp) // Añadimos padding dentro de la tarjeta
+        ) {
+            // Imagen del producto o icono
+            when (val image = product.image) {
+                is Int -> Image(
+                    painter = painterResource(id = image),
+                    contentDescription = product.name,
+                    modifier = Modifier.size(140.dp) // Aumentar el tamaño de la imagen
+                )
+                is ImageVector -> Icon(
+                    imageVector = image,
+                    contentDescription = product.name,
+                    modifier = Modifier.size(80.dp), // Ícono más grande
+                    tint = Color.Black
+                )
+            }
+
+            // Nombre del producto
+            Text(
+                text = product.name,
+                fontSize = 18.sp, // Aumentar tamaño del texto
+                fontWeight = FontWeight.Bold, // Texto del nombre en negrita
+                color = Color.Black,
+                textAlign = TextAlign.Center,
+                maxLines = 1, // Limitar a una línea
+                overflow = TextOverflow.Ellipsis, // Puntos suspensivos si es muy largo
+                fontFamily = FontFamily.SansSerif // Fuente similar a Amazon
+            )
+
+            // Descripción del producto
+            Text(
+                text = product.description,
+                fontSize = 16.sp, // Aumentar tamaño de texto de descripción
+                color = Color.Gray,
+                textAlign = TextAlign.Justify, // Justificar el texto
+                maxLines = Int.MAX_VALUE, // Mostrar todas las líneas
+                overflow = TextOverflow.Visible, // Mostrar todo el texto
+                fontFamily = FontFamily.SansSerif // Fuente similar a Amazon
+            )
+
+            // Precio del producto
+            Text(
+                text = "$${product.price}",
+                fontSize = 20.sp, // Aumentar tamaño del precio
+                fontWeight = FontWeight.Bold, // Precio en negrita
+                color = Color.Black,
+                fontFamily = FontFamily.SansSerif // Fuente similar a Amazon
+            )
+        }
+    }
+}
+
+
