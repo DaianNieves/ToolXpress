@@ -39,10 +39,34 @@ fun ShoppingCartScreen(navController: NavController) {
     var productList by remember {
         mutableStateOf(
             arrayListOf(
-                ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
-                ShoppingModel(2, "Producto 2", "Descripción del producto 2", R.drawable.ejemploimagen, "$15.00"),
-                ShoppingModel(3, "Producto 3", "Descripción del producto 3", R.drawable.ejemploimagen, "$20.00"),
-                ShoppingModel(4, "Producto 4", "Descripción del producto 4", R.drawable.ejemploimagen, "$25.00")
+                ShoppingModel(
+                    1,
+                    "Producto 1",
+                    "Descripción del producto 1",
+                    R.drawable.ejemploimagen,
+                    "$10.00"
+                ),
+                ShoppingModel(
+                    2,
+                    "Producto 2",
+                    "Descripción del producto 2",
+                    R.drawable.ejemploimagen,
+                    "$15.00"
+                ),
+                ShoppingModel(
+                    3,
+                    "Producto 3",
+                    "Descripción del producto 3",
+                    R.drawable.ejemploimagen,
+                    "$20.00"
+                ),
+                ShoppingModel(
+                    4,
+                    "Producto 4",
+                    "Descripción del producto 4",
+                    R.drawable.ejemploimagen,
+                    "$25.00"
+                )
             )
         )
     }
@@ -276,7 +300,8 @@ fun ProductItem(
                 horizontalArrangement = Arrangement.End
             ) {
                 Text("Subtotal: ", fontSize = 18.sp)
-                val updatedPrice = (product.price.replace("$", "").toDoubleOrNull() ?: 0.0) * selectedOption
+                val updatedPrice =
+                    (product.price.replace("$", "").toDoubleOrNull() ?: 0.0) * selectedOption
                 Text("$${"%.2f".format(updatedPrice)}", fontSize = 18.sp, color = GreenPrice)
             }
         }

@@ -69,7 +69,7 @@ fun CardProducts(navController: NavController) {
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    
+
                     // Imagen del producto
                     Image(
                         painter = painterResource(id = R.drawable.ferreteria),
@@ -172,7 +172,8 @@ fun CardProducts(navController: NavController) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = YellowIcons,
                             contentColor = Color.Red
-                        )) {
+                        )
+                    ) {
                         Text(text = "Agregar al carrito", color = GrayProduct)
                     }
                 }

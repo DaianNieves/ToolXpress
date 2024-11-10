@@ -71,7 +71,10 @@ fun LoginScreenP(navController: NavController) {
                         )
                         Row(
                             modifier = Modifier
-                                .background(Color.LightGray.copy(alpha = 0.7f), shape = MaterialTheme.shapes.medium)
+                                .background(
+                                    Color.LightGray.copy(alpha = 0.7f),
+                                    shape = MaterialTheme.shapes.medium
+                                )
                                 .padding(14.dp)
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
@@ -87,7 +90,9 @@ fun LoginScreenP(navController: NavController) {
                                 value = email,
                                 onValueChange = {
                                     email = it.filter { char -> char != ' ' }
-                                    hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+                                    hasEmailError =
+                                        !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+                                            .matches() && email.isNotEmpty()
                                 },
                                 modifier = Modifier.weight(1f),
                                 decorationBox = { innerTextField ->
@@ -137,7 +142,10 @@ fun LoginScreenP(navController: NavController) {
                         )
                         Row(
                             modifier = Modifier
-                                .background(Color.LightGray.copy(alpha = 0.7f), shape = MaterialTheme.shapes.medium)
+                                .background(
+                                    Color.LightGray.copy(alpha = 0.7f),
+                                    shape = MaterialTheme.shapes.medium
+                                )
                                 .padding(14.dp)
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically

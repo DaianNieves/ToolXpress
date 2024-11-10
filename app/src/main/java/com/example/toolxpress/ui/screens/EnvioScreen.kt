@@ -71,8 +71,17 @@ fun EnvioScreen(navController: NavController) {
 
             when (sliderPosition) {
                 0f -> sendNotification(context, "Preparación", "Tu pedido está en preparación.")
-                0.5f -> sendNotification(context, "Pedido en Camino", "Tu pedido ha salido para la entrega.")
-                1f -> sendNotification(context, "Pedido Entregado", "Tu pedido ha sido entregado exitosamente.")
+                0.5f -> sendNotification(
+                    context,
+                    "Pedido en Camino",
+                    "Tu pedido ha salido para la entrega."
+                )
+
+                1f -> sendNotification(
+                    context,
+                    "Pedido Entregado",
+                    "Tu pedido ha sido entregado exitosamente."
+                )
             }
         }
     }
@@ -195,7 +204,7 @@ fun EnvioScreen(navController: NavController) {
                 isActive = sliderPosition == 1f
             )
         }
-        
+
         item {
             Spacer(modifier = Modifier.height(30.dp))
         }
@@ -259,12 +268,16 @@ fun ProgressIcon(isActive: Boolean, icon: ImageVector, label: String) {
         )
     }
 }
+
 @Composable
 fun OrderStatusItem(status: String, date: String, description: String, isActive: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(if (isActive) Color.LightGray else Color.White, shape = RoundedCornerShape(8.dp))
+            .background(
+                if (isActive) Color.LightGray else Color.White,
+                shape = RoundedCornerShape(8.dp)
+            )
             .padding(16.dp)
             .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically

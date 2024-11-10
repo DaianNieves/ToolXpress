@@ -177,6 +177,7 @@ fun MetodoPagoScreen(navController: NavController) {
                         )
                     }
                 }
+
                 "PayPal" -> {
                     OutlinedTextField(
                         value = paypalEmail,
@@ -187,7 +188,8 @@ fun MetodoPagoScreen(navController: NavController) {
                             .padding(bottom = 16.dp)
                     )
                 }
-                "GooglePay" ->{
+
+                "GooglePay" -> {
                     Log.d("MetodoPagoScreen", "Navegando a CheckoutActivity con Google Pay")
                     val context = navController.context
                     val intent = Intent(context, CheckoutActivity::class.java)

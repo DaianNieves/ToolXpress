@@ -122,7 +122,10 @@ fun OfferCarousel() {
                     // Avanza al siguiente índice con una animación más suave
                     pagerState.animateScrollToPage(
                         page = (pagerState.currentPage + 1) % offerImages.size,
-                        animationSpec = tween(durationMillis = 4000, easing = LinearEasing) // Animación más suave
+                        animationSpec = tween(
+                            durationMillis = 4000,
+                            easing = LinearEasing
+                        ) // Animación más suave
                     )
                 }
             }
@@ -253,7 +256,10 @@ fun StartScreen(
                                     modifier = Modifier
                                         .size(180.dp, 200.dp) // Aumentado para mejor visibilidad
                                         .clip(RoundedCornerShape(16.dp)) // Bordes más suaves
-                                        .shadow(8.dp, RoundedCornerShape(16.dp)) // Sombras elegantes
+                                        .shadow(
+                                            8.dp,
+                                            RoundedCornerShape(16.dp)
+                                        ) // Sombras elegantes
                                         .clickable {
                                             navController.navigate("ProductsScreen/${buttonTexts[index]}")
                                         },
@@ -274,6 +280,7 @@ fun StartScreen(
                                                     .clip(RoundedCornerShape(16.dp)), // Mantiene el borde redondeado
                                                 contentScale = ContentScale.Crop // Ajusta la escala de la imagen
                                             )
+
                                             is ImageVector -> Icon(
                                                 imageVector = icon,
                                                 contentDescription = "Ícono de ${buttonTexts[index]}",
@@ -320,31 +327,46 @@ data class Product(
 @Composable
 fun ProductScreen(navController: NavController) {
     val products = listOf(
-        Product("Taladro " +
-                "Inalámbrico",
+        Product(
+            "Taladro " +
+                    "Inalámbrico",
             "NANWEI Kit de Taladro Inalámbrico Electrico",
-            594.00, R.drawable.taladro),
-        Product("Pulidora inalámbrica",
+            594.00, R.drawable.taladro
+        ),
+        Product(
+            "Pulidora inalámbrica",
             "Esmeriladora Angular Pulidora Inalambrica Con Accesorios",
-            799.00, R.drawable.pulidora),
-        Product("Kit desarmador"
-            , "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas",
-            295.00, R.drawable.desarmador),
-        Product("Pistola de calor",
+            799.00, R.drawable.pulidora
+        ),
+        Product(
+            "Kit desarmador", "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas",
+            295.00, R.drawable.desarmador
+        ),
+        Product(
+            "Pistola de calor",
             "RexQualis de 2000w Temperatura Regulable 4 Boquillas",
-            384.0, R.drawable.pistolacalor),
-        Product("Engrapadora",
+            384.0, R.drawable.pistolacalor
+        ),
+        Product(
+            "Engrapadora",
             "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas",
-            188.00, R.drawable.engrapadora),
-        Product("Pinza de presión",
+            188.00, R.drawable.engrapadora
+        ),
+        Product(
+            "Pinza de presión",
             "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270",
-            94.00, R.drawable.pinza),
-        Product("Escalera Tubular",
+            94.00, R.drawable.pinza
+        ),
+        Product(
+            "Escalera Tubular",
             "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118",
-            595.00, R.drawable.escaleras),
-        Product("Martillo Uña Recta",
+            595.00, R.drawable.escaleras
+        ),
+        Product(
+            "Martillo Uña Recta",
             "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997",
-            149.00, R.drawable.martillo)
+            149.00, R.drawable.martillo
+        )
     )
 
     Box(
@@ -432,6 +454,7 @@ fun ProductCard(product: Product, navController: NavController) {
                     contentDescription = product.name,
                     modifier = Modifier.size(100.dp) // Aumentar el tamaño de la imagen
                 )
+
                 is ImageVector -> Icon(
                     imageVector = image,
                     contentDescription = product.name,

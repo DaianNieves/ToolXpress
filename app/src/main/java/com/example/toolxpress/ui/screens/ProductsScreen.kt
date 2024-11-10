@@ -74,7 +74,8 @@ fun ProductsScreen(
 @Composable
 fun ProductGrid(posts: List<PostModel>, navController: NavController) {
     BoxWithConstraints {
-        val columns = if (maxWidth < 600.dp) 2 else 4  // Cambiar el número de columnas según el ancho
+        val columns =
+            if (maxWidth < 600.dp) 2 else 4  // Cambiar el número de columnas según el ancho
 
         val totalItems = posts.size
         val rows = (totalItems + columns - 1) / columns

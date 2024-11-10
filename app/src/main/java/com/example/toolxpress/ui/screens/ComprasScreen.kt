@@ -189,7 +189,8 @@ fun ComprasScreen(navController: NavController) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Orange,
                             contentColor = Color.White
-                        )) {
+                        )
+                    ) {
                         Text(text = "Revisar Envio", color = Color.White)
                     }
                 }
