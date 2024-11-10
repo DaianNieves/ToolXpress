@@ -333,10 +333,18 @@ fun ProductScreen(navController: NavController) {
         Product("Pistola de calor",
             "RexQualis de 2000w Temperatura Regulable 4 Boquillas",
             384.0, R.drawable.pistolacalor),
-        Product("Producto 5", "Descripción del producto 5", 300.00, Icons.Default.Person),
-        Product("Producto 6", "Descripción del producto 6", 350.00, Icons.Default.Home),
-        Product("Producto 7", "Descripción del producto 7", 400.00, Icons.Default.Settings),
-        Product("Producto 8", "Descripción del producto 8", 450.00, Icons.Default.Info)
+        Product("Engrapadora",
+            "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas",
+            188.00, R.drawable.engrapadora),
+        Product("Pinza de presión",
+            "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270",
+            94.00, R.drawable.pinza),
+        Product("Escalera Tubular",
+            "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118",
+            595.00, R.drawable.escaleras),
+        Product("Martillo Uña Recta",
+            "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997",
+            149.00, R.drawable.martillo)
     )
 
     Box(
