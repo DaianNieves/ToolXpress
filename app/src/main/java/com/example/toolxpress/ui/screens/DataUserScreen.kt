@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun DataUserScreen(navController: NavController) {
@@ -49,6 +51,7 @@ fun DataUserScreen(navController: NavController) {
             ) {
                 Text(
                     text = "Datos de tu cuenta",
+                    color = YellowIcons,
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 16.dp)
@@ -81,7 +84,7 @@ fun DataUserScreen(navController: NavController) {
                                 Icon(
                                     imageVector = Icons.Filled.Person,
                                     contentDescription = "Datos del Usuario",
-                                    tint = Orange,
+                                    tint = BlueBackground,
                                     modifier = Modifier.size(40.dp) // Aumentamos el tamaño del ícono
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
@@ -92,7 +95,7 @@ fun DataUserScreen(navController: NavController) {
                                         text = "Datos del Usuario",
                                         fontSize = 22.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Orange
+                                        color = BlueBackground
                                     )
                                     Text(
                                         text = "Revisa y edita tus datos personales, como tu email y nombre de usuario.",
@@ -128,7 +131,7 @@ fun DataUserScreen(navController: NavController) {
                                 Icon(
                                     imageVector = Icons.Filled.Home,
                                     contentDescription = "Direcciones",
-                                    tint = Orange,
+                                    tint = BlueBackground,
                                     modifier = Modifier.size(40.dp) // Aumentamos el tamaño del ícono
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
@@ -139,7 +142,7 @@ fun DataUserScreen(navController: NavController) {
                                         text = "Direcciones",
                                         fontSize = 22.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Orange
+                                        color = BlueBackground
                                     )
                                     Text(
                                         text = "Gestiona tus direcciones de envío o facturación.",
@@ -198,14 +201,14 @@ fun AccountInfoCard(title: String, initialValue: String, isVerified: Boolean) {
                     text = title,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.Gray
+                    color = BlueBackground
                 )
                 if (isVerified) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = Icons.Filled.CheckCircle,
                         contentDescription = "Validado",
-                        tint = Color(0xFF4CAF50)
+                        tint = BlueBackground
                     )
                 }
             }
@@ -224,7 +227,7 @@ fun AccountInfoCard(title: String, initialValue: String, isVerified: Boolean) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = { isEditing = false },
-                    colors = ButtonDefaults.buttonColors(containerColor = Orange),
+                    colors = ButtonDefaults.buttonColors(containerColor = BlueBackground),
                     elevation = ButtonDefaults.elevatedButtonElevation(4.dp) // Sombra añadida al botón
                 ) {
                     Text("Guardar")
@@ -243,7 +246,7 @@ fun AccountInfoCard(title: String, initialValue: String, isVerified: Boolean) {
                     TextButton(onClick = { isEditing = true }) {
                         Text(
                             text = "Modificar",
-                            color = Orange,
+                            color = BlueBackground,
                             fontWeight = FontWeight.Bold
                         )
                     }

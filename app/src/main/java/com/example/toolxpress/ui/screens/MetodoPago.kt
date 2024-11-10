@@ -1,7 +1,10 @@
 package com.example.toolxpress.ui.screens
 
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -23,11 +27,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.payments.CheckoutActivity
+import com.example.toolxpress.ui.theme.BlueBackground
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.Purple80
+import com.example.toolxpress.ui.theme.YellowIcons
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MetodoPagoScreen(navController: NavController) {
+    val context = LocalContext.current
     var selectedPaymentMethod by remember { mutableStateOf("") }
     var selectedCardType by remember { mutableStateOf("") }
     var cardNumber by remember { mutableStateOf("") }
@@ -36,6 +44,16 @@ fun MetodoPagoScreen(navController: NavController) {
     var cardHolderName by remember { mutableStateOf("") }
     var paypalEmail by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+
+    // Lanzador para iniciar `CheckoutActivity` y recibir el resultado
+    val checkoutLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Navegar a `EnvioScreen` si el pago fue exitoso
+            navController.navigate("EnvioScreen")
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -51,13 +69,13 @@ fun MetodoPagoScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Orange)
+                    .background(YellowIcons)
                     .padding(16.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
-                    tint = Color.White,
+                    tint = BlueBackground,
                     modifier = Modifier.clickable {
                         navController.popBackStack() // Acción para regresar a la pantalla anterior
                     }
@@ -67,7 +85,7 @@ fun MetodoPagoScreen(navController: NavController) {
                     text = "Método de Pago",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = BlueBackground
                 )
             }
         }
@@ -82,7 +100,8 @@ fun MetodoPagoScreen(navController: NavController) {
                 text = "Selecciona un método de pago",
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Medium,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    color = YellowIcons
                 ),
                 modifier = Modifier.padding(bottom = 16.dp)
             )
@@ -110,10 +129,7 @@ fun MetodoPagoScreen(navController: NavController) {
                 text = "GooglePay",
                 isSelected = selectedPaymentMethod == "GooglePay",
                 onClick = {
-                    selectedPaymentMethod = "GooglePay"
-                    val intent = Intent(navController.context, CheckoutActivity::class.java)
-                    navController.context.startActivity(intent)
-                }
+                    selectedPaymentMethod = "GooglePay" }
             )
 
             Spacer(modifier = Modifier.height(48.dp))
@@ -122,6 +138,7 @@ fun MetodoPagoScreen(navController: NavController) {
                 "Tarjeta" -> {
                     Text(
                         text = "Selecciona el tipo de tarjeta",
+                        color = YellowIcons,
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
@@ -146,76 +163,108 @@ fun MetodoPagoScreen(navController: NavController) {
                     OutlinedTextField(
                         value = cardHolderName,
                         onValueChange = { cardHolderName = it },
-                        label = { Text("Nombre del titular") },
+                        label = { Text("Nombre del titular", color = Color.White) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 16.dp),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedTextColor = Color.White,                // Cambiar el color del texto
+                            focusedBorderColor = YellowIcons,      // Cambiar el color del borde cuando está enfocado
+                            unfocusedBorderColor = Color.White,     // Cambiar el color del borde cuando no está enfocado
+                            cursorColor = YellowIcons              // Cambiar el color del cursor
+                        )
                     )
+
                     OutlinedTextField(
                         value = cardNumber,
                         onValueChange = { cardNumber = it },
-                        label = { Text("Número de Tarjeta") },
+                        label = { Text("Número de Tarjeta", color = Color.White) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 16.dp),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedTextColor = Color.White,                // Cambiar el color del texto
+                            focusedBorderColor = YellowIcons,      // Cambiar el color del borde cuando está enfocado
+                            unfocusedBorderColor = Color.White,     // Cambiar el color del borde cuando no está enfocado
+                            cursorColor = YellowIcons              // Cambiar el color del cursor
+                        )
                     )
                     Row(modifier = Modifier.fillMaxWidth()) {
                         OutlinedTextField(
                             value = cardExpiry,
                             onValueChange = { cardExpiry = it },
-                            label = { Text("Fecha de Expiración") },
+                            label = { Text("Fecha de Expiración", color = Color.White) },
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(end = 8.dp)
+                                .padding(end = 8.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedTextColor = Color.White,                // Cambiar el color del texto
+                                focusedBorderColor = YellowIcons,      // Cambiar el color del borde cuando está enfocado
+                                unfocusedBorderColor = Color.White,     // Cambiar el color del borde cuando no está enfocado
+                                cursorColor = YellowIcons
+                            )
                         )
                         OutlinedTextField(
                             value = cardCVC,
                             onValueChange = { cardCVC = it },
-                            label = { Text("CVC") },
+                            label = { Text("CVC", color = Color.White) },
                             modifier = Modifier
-                                .weight(1f)
+                                .weight(1f),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedTextColor = Color.White,                // Cambiar el color del texto
+                                focusedBorderColor = YellowIcons,      // Cambiar el color del borde cuando está enfocado
+                                unfocusedBorderColor = Color.White,     // Cambiar el color del borde cuando no está enfocado
+                                cursorColor = YellowIcons
+                            )
                         )
                     }
                 }
+
                 "PayPal" -> {
                     OutlinedTextField(
                         value = paypalEmail,
                         onValueChange = { paypalEmail = it },
-                        label = { Text("Correo de PayPal") },
+                        label = { Text("Correo de PayPal", color = Color.White) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 16.dp)
+                            .padding(bottom = 16.dp),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            focusedTextColor = Color.White,                // Cambiar el color del texto
+                            focusedBorderColor = YellowIcons,      // Cambiar el color del borde cuando está enfocado
+                            unfocusedBorderColor = Color.White,     // Cambiar el color del borde cuando no está enfocado
+                            cursorColor = YellowIcons
+                        )
                     )
                 }
-                "GooglePay" ->{
-                    Log.d("MetodoPagoScreen", "Navegando a CheckoutActivity con Google Pay")
-                    val context = navController.context
-                    val intent = Intent(context, CheckoutActivity::class.java)
-                    context.startActivity(intent)
-                }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { navController.navigate("EnvioScreen") },
+                onClick = {
+                    if (selectedPaymentMethod == "GooglePay") {
+                        val intent = Intent(context, CheckoutActivity::class.java)
+                        checkoutLauncher.launch(intent)
+                    } else {
+                        navController.navigate("EnvioScreen") // Si no es Google Pay, navega directamente
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Orange)
+                colors = ButtonDefaults.buttonColors(containerColor = YellowIcons)
             ) {
                 Text(
                     text = "Confirmar Pago",
-                    color = Color.White,
+                    color = BlueBackground,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
-
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
+
 
 @Composable
 fun PaymentOptionItem(
@@ -228,7 +277,7 @@ fun PaymentOptionItem(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                if (isSelected) Purple80 else Color.White,
+                if (isSelected) YellowIcons else Color.White,
                 shape = RoundedCornerShape(8.dp)
             )
             .clickable(onClick = onClick)
@@ -246,7 +295,7 @@ fun PaymentOptionItem(
             text = text,
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                color = Color.Black
+                color = BlueBackground
             ),
             fontSize = 18.sp
         )
@@ -263,7 +312,7 @@ fun SubOptionItemWithImage(
     Column(
         modifier = Modifier
             .background(
-                if (isSelected) Purple80 else Color.White,
+                if (isSelected) YellowIcons else Color.White,
                 shape = RoundedCornerShape(8.dp)
             )
             .clickable(onClick = onClick)
@@ -282,7 +331,7 @@ fun SubOptionItemWithImage(
             text = text,
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                color = Color.Black
+                color = BlueBackground
             )
         )
     }
