@@ -42,6 +42,8 @@ import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.YellowShop
 import com.example.toolxpress.data.model.PostModel
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun TopBar(navController: NavController) {
@@ -53,7 +55,7 @@ fun TopBar(navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding() // Espacio de la barra de estado
-            .background(Orange)
+            .background(YellowIcons)
     ) {
         // Fila que contiene el menú, búsqueda, ícono de persona y el ícono del carrito
         Row(
@@ -72,7 +74,7 @@ fun TopBar(navController: NavController) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menú",
-                    tint = Color.White, // Color del ícono
+                    tint = BlueBackground, // Color del ícono
                     modifier = Modifier.size(30.dp)
                 )
             }
@@ -89,7 +91,7 @@ fun TopBar(navController: NavController) {
                     Icon(
                         imageVector = Icons.Filled.Search,
                         contentDescription = "Buscar",
-                        tint = Orange
+                        tint = BlueBackground
                     )
                 },
                 singleLine = true, // Mantener una sola línea
@@ -115,7 +117,7 @@ fun TopBar(navController: NavController) {
                 Icon(
                     imageVector = Icons.Filled.Person,
                     contentDescription = "Perfil",
-                    tint = Color.White,// Color del ícono
+                    tint = BlueBackground,// Color del ícono
                     modifier = Modifier.size(30.dp)
                 )
             }
@@ -124,12 +126,11 @@ fun TopBar(navController: NavController) {
             Box(modifier = Modifier.wrapContentSize()) {
                 IconButton(
                     onClick = { navController.navigate("ShoppingCart") },
-                    modifier = Modifier.background(Orange) // Fondo del botón
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ShoppingCart,
                         contentDescription = "Carrito de Compras",
-                        tint = Color.White,
+                        tint = BlueBackground,
                         modifier = Modifier.size(30.dp)
                     )
                 }
@@ -137,13 +138,13 @@ fun TopBar(navController: NavController) {
                 Box(
                     modifier = Modifier
                         .size(20.dp) // Tamaño del círculo
-                        .background(YellowShop, shape = CircleShape) // Color naranja
+                        .background(Color.Transparent, shape = CircleShape)// Color naranja
                         .align(Alignment.TopEnd) // Alineación en la esquina superior derecha
                 ) {
                     Text(
-                        text = "7", // Número de notificaciones
-                        color = Color.White,
-                        fontSize = 12.sp, // Tamaño de fuente
+                        text = "", // Número de notificaciones
+                        color = BlueBackground,
+                        fontSize = 16.sp, // Tamaño de fuente
                         modifier = Modifier.align(Alignment.Center) // Centrado en el círculo
                     )
                 }

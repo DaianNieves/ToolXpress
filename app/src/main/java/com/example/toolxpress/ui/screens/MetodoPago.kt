@@ -1,5 +1,7 @@
 package com.example.toolxpress.ui.screens
 
+import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.payments.CheckoutActivity
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.Purple80
 
@@ -44,7 +47,6 @@ fun MetodoPagoScreen(navController: NavController) {
                 .padding(horizontal = 0.dp)
                 .statusBarsPadding()
         ) {
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -76,7 +78,6 @@ fun MetodoPagoScreen(navController: NavController) {
                 .verticalScroll(scrollState)
                 .padding(16.dp)
         ) {
-            //Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = "Selecciona un método de pago",
                 style = MaterialTheme.typography.bodyLarge.copy(
@@ -100,6 +101,19 @@ fun MetodoPagoScreen(navController: NavController) {
                 text = "PayPal",
                 isSelected = selectedPaymentMethod == "PayPal",
                 onClick = { selectedPaymentMethod = "PayPal" }
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            PaymentOptionItem(
+                icon = painterResource(id = R.drawable.google_pay),
+                text = "GooglePay",
+                isSelected = selectedPaymentMethod == "GooglePay",
+                onClick = {
+                    selectedPaymentMethod = "GooglePay"
+                    val intent = Intent(navController.context, CheckoutActivity::class.java)
+                    navController.context.startActivity(intent)
+                }
             )
 
             Spacer(modifier = Modifier.height(48.dp))
@@ -173,12 +187,18 @@ fun MetodoPagoScreen(navController: NavController) {
                             .padding(bottom = 16.dp)
                     )
                 }
+                "GooglePay" ->{
+                    Log.d("MetodoPagoScreen", "Navegando a CheckoutActivity con Google Pay")
+                    val context = navController.context
+                    val intent = Intent(context, CheckoutActivity::class.java)
+                    context.startActivity(intent)
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = {navController.navigate("EnvioScreen")},
+                onClick = { navController.navigate("EnvioScreen") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
@@ -196,7 +216,6 @@ fun MetodoPagoScreen(navController: NavController) {
         }
     }
 }
-
 
 @Composable
 fun PaymentOptionItem(

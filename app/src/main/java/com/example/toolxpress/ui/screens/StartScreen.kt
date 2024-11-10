@@ -164,7 +164,6 @@ fun OfferCarousel() {
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(420.dp)
-                    .background(Color.White)
                     .padding(0.dp)
             ) {
                 Image(
@@ -206,7 +205,6 @@ fun StartScreen(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(0.dp, 20.dp, 0.dp, 20.dp)
     ) {
         Column {
@@ -255,7 +253,6 @@ fun StartScreen(
                                     modifier = Modifier
                                         .size(180.dp, 200.dp) // Aumentado para mejor visibilidad
                                         .clip(RoundedCornerShape(16.dp)) // Bordes más suaves
-                                        .background(Color.White)
                                         .shadow(8.dp, RoundedCornerShape(16.dp)) // Sombras elegantes
                                         .clickable {
                                             navController.navigate("ProductsScreen/${buttonTexts[index]}")
@@ -340,7 +337,6 @@ fun ProductScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(0.dp, 5.dp, 0.dp, 20.dp)
     ) {
         Column {

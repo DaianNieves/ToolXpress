@@ -25,6 +25,8 @@ import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
+import com.example.toolxpress.ui.theme.GrayProduct
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun CardProducts(navController: NavController) {
@@ -56,18 +58,6 @@ fun CardProducts(navController: NavController) {
                         .verticalScroll(rememberScrollState())
                         .padding(16.dp)
                 ) {
-                    // Imagen del producto
-                    Image(
-                        painter = painterResource(id = R.drawable.ferreteria),
-                        contentDescription = "Imagen del producto",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
                     // Nombre del producto
                     Text(
                         text = "Nombre del producto",
@@ -76,6 +66,18 @@ fun CardProducts(navController: NavController) {
                             fontSize = 22.sp
                         ),
                         modifier = Modifier.padding(top = 8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                    
+                    // Imagen del producto
+                    Image(
+                        painter = painterResource(id = R.drawable.ferreteria),
+                        contentDescription = "Imagen del producto",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -168,10 +170,10 @@ fun CardProducts(navController: NavController) {
                         modifier = Modifier
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Orange,
-                            contentColor = Color.White
+                            containerColor = YellowIcons,
+                            contentColor = Color.Red
                         )) {
-                        Text(text = "Agregar al carrito", color = Color.White)
+                        Text(text = "Agregar al carrito", color = GrayProduct)
                     }
                 }
             }
