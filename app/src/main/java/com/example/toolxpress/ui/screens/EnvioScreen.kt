@@ -30,7 +30,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import com.example.toolxpress.ui.theme.BlueBackground
-import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.YellowIcons
 import kotlinx.coroutines.delay
 

@@ -2,7 +2,6 @@ package com.example.toolxpress.ui.screens
 
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -28,8 +27,6 @@ import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.payments.CheckoutActivity
 import com.example.toolxpress.ui.theme.BlueBackground
-import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.theme.Purple80
 import com.example.toolxpress.ui.theme.YellowIcons
 
 @OptIn(ExperimentalMaterial3Api::class)
