@@ -238,7 +238,7 @@ fun CreateAccountScreen(navController: NavController) {
                     BasicTextField(
                         value = password,
                         onValueChange = {
-                            password =  it.filter { char -> char != ' ' }
+                            password = it.filter { char -> char != ' ' }
                             hasPasswordError = password.isEmpty()
                         },
                         modifier = Modifier.weight(1f),
@@ -285,7 +285,7 @@ fun CreateAccountScreen(navController: NavController) {
 
             //Crear cuenta
             Button(
-                onClick = {navController.navigate("login")},
+                onClick = { navController.navigate("login") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),

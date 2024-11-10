@@ -122,7 +122,10 @@ fun OfferCarousel() {
                     // Avanza al siguiente índice con una animación más suave
                     pagerState.animateScrollToPage(
                         page = (pagerState.currentPage + 1) % offerImages.size,
-                        animationSpec = tween(durationMillis = 4000, easing = LinearEasing) // Animación más suave
+                        animationSpec = tween(
+                            durationMillis = 4000,
+                            easing = LinearEasing
+                        ) // Animación más suave
                     )
                 }
             }
@@ -253,7 +256,10 @@ fun StartScreen(
                                     modifier = Modifier
                                         .size(180.dp, 200.dp) // Aumentado para mejor visibilidad
                                         .clip(RoundedCornerShape(16.dp)) // Bordes más suaves
-                                        .shadow(8.dp, RoundedCornerShape(16.dp)) // Sombras elegantes
+                                        .shadow(
+                                            8.dp,
+                                            RoundedCornerShape(16.dp)
+                                        ) // Sombras elegantes
                                         .clickable {
                                             navController.navigate("ProductsScreen/${buttonTexts[index]}")
                                         },
@@ -274,6 +280,7 @@ fun StartScreen(
                                                     .clip(RoundedCornerShape(16.dp)), // Mantiene el borde redondeado
                                                 contentScale = ContentScale.Crop // Ajusta la escala de la imagen
                                             )
+
                                             is ImageVector -> Icon(
                                                 imageVector = icon,
                                                 contentDescription = "Ícono de ${buttonTexts[index]}",
@@ -320,24 +327,52 @@ data class Product(
 @Composable
 fun ProductScreen(navController: NavController) {
     val products = listOf(
-        Product("Taladro Inalámbrico Electrico",
-            "NANWEI Kit de Taladro Inalámbrico Electrico con 3 Modos de Trabajo Atornillado/Taladrado/Impacto, 45N.m, Ajuste de Par de 25+1, Desatornillador Eléctrico con 2 Baterías Recargables y 28 Accesorios",
-            594.00, R.drawable.taladro),
-        Product("Taladro Inalámbrico Electrico",
-            "NANWEI Kit de Taladro Inalámbrico Electrico con 3 Modos de Trabajo Atornillado/Taladrado/Impacto, 45N.m, Ajuste de Par de 25+1, Desatornillador Eléctrico con 2 Baterías Recargables y 28 Accesorios",
-            594.00, R.drawable.taladro),
-        Product("Producto 3", "Descripción del producto 3", 200.00, Icons.Default.FavoriteBorder),
-        Product("Producto 4", "Descripción del producto 4", 250.00, Icons.Default.Star),
-        Product("Producto 5", "Descripción del producto 5", 300.00, Icons.Default.Person),
-        Product("Producto 6", "Descripción del producto 6", 350.00, Icons.Default.Home),
-        Product("Producto 7", "Descripción del producto 7", 400.00, Icons.Default.Settings),
-        Product("Producto 8", "Descripción del producto 8", 450.00, Icons.Default.Info)
+        Product(
+            "Taladro " +
+                    "Inalámbrico",
+            "NANWEI Kit de Taladro Inalámbrico Electrico",
+            594.00, R.drawable.taladro
+        ),
+        Product(
+            "Pulidora inalámbrica",
+            "Esmeriladora Angular Pulidora Inalambrica Con Accesorios",
+            799.00, R.drawable.pulidora
+        ),
+        Product(
+            "Kit desarmador", "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas",
+            295.00, R.drawable.desarmador
+        ),
+        Product(
+            "Pistola de calor",
+            "RexQualis de 2000w Temperatura Regulable 4 Boquillas",
+            384.0, R.drawable.pistolacalor
+        ),
+        Product(
+            "Engrapadora",
+            "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas",
+            188.00, R.drawable.engrapadora
+        ),
+        Product(
+            "Pinza de presión",
+            "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270",
+            94.00, R.drawable.pinza
+        ),
+        Product(
+            "Escalera Tubular",
+            "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118",
+            595.00, R.drawable.escaleras
+        ),
+        Product(
+            "Martillo Uña Recta",
+            "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997",
+            149.00, R.drawable.martillo
+        )
     )
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 5.dp, 0.dp, 20.dp)
+            .padding(0.dp, 20.dp, 0.dp, 20.dp)
     ) {
         Column {
             // Título "Destacados"
@@ -400,12 +435,10 @@ fun ProductScreen(navController: NavController) {
 fun ProductCard(product: Product, navController: NavController) {
     Box(
         modifier = Modifier
-            .width(240.dp) // Aumentar el ancho de la tarjeta
-            .height(400.dp) // Aumentar la altura de la tarjeta
+            .width(600.dp) // Aumentar el ancho de la tarjeta
+            .height(800.dp) // Aumentar la altura de la tarjeta
             .clip(RoundedCornerShape(12.dp))
             .background(Color.White)
-            .border(1.dp, Color.LightGray, RoundedCornerShape(12.dp)) // Borde sutil
-            .shadow(4.dp, RoundedCornerShape(12.dp)) // Sombra
             .clickable { navController.navigate("CardProducts") },
         contentAlignment = Alignment.Center
     ) {
@@ -419,12 +452,13 @@ fun ProductCard(product: Product, navController: NavController) {
                 is Int -> Image(
                     painter = painterResource(id = image),
                     contentDescription = product.name,
-                    modifier = Modifier.size(140.dp) // Aumentar el tamaño de la imagen
+                    modifier = Modifier.size(100.dp) // Aumentar el tamaño de la imagen
                 )
+
                 is ImageVector -> Icon(
                     imageVector = image,
                     contentDescription = product.name,
-                    modifier = Modifier.size(80.dp), // Ícono más grande
+                    modifier = Modifier.size(60.dp), // Ícono más grande
                     tint = Color.Black
                 )
             }

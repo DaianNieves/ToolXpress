@@ -108,13 +108,25 @@ fun DataUserScreen(navController: NavController) {
 
                         // Mostrar las opciones de "Datos del Usuario" si está expandido
                         if (isUserDataExpanded) {
-                            AccountInfoCard(title = "E-mail", initialValue = "daianieves10@gmail.com", isVerified = true)
+                            AccountInfoCard(
+                                title = "E-mail",
+                                initialValue = "daianieves10@gmail.com",
+                                isVerified = true
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            AccountInfoCard(title = "Teléfono", initialValue = "+524493134220", isVerified = true)
+                            AccountInfoCard(
+                                title = "Teléfono",
+                                initialValue = "+524493134220",
+                                isVerified = true
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            AccountInfoCard(title = "Nombre de usuario", initialValue = "NIEVESDAIÁN20230403051727", isVerified = false)
+                            AccountInfoCard(
+                                title = "Nombre de usuario",
+                                initialValue = "NIEVESDAIÁN20230403051727",
+                                isVerified = false
+                            )
                         }
 
                         // Texto clickeable para Direcciones
@@ -156,19 +168,39 @@ fun DataUserScreen(navController: NavController) {
                         // Mostrar las opciones de "Direcciones" si está expandido
                         if (isAddressDataExpanded) {
                             Spacer(modifier = Modifier.height(8.dp))
-                            AccountInfoCard(title = "Código postal", initialValue = "12345", isVerified = false)
+                            AccountInfoCard(
+                                title = "Código postal",
+                                initialValue = "12345",
+                                isVerified = false
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            AccountInfoCard(title = "Estado", initialValue = "Tu estado", isVerified = false)
+                            AccountInfoCard(
+                                title = "Estado",
+                                initialValue = "Tu estado",
+                                isVerified = false
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            AccountInfoCard(title = "Municipio/Alcaldía", initialValue = "Tu municipio", isVerified = false)
+                            AccountInfoCard(
+                                title = "Municipio/Alcaldía",
+                                initialValue = "Tu municipio",
+                                isVerified = false
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            AccountInfoCard(title = "Colonia", initialValue = "Tu colonia", isVerified = false)
+                            AccountInfoCard(
+                                title = "Colonia",
+                                initialValue = "Tu colonia",
+                                isVerified = false
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            AccountInfoCard(title = "Calle", initialValue = "Tu calle", isVerified = false)
+                            AccountInfoCard(
+                                title = "Calle",
+                                initialValue = "Tu calle",
+                                isVerified = false
+                            )
                         }
                     }
                 }
