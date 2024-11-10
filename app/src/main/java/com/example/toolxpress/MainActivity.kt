@@ -1,6 +1,6 @@
 package com.example.toolxpress
 
-import CreateAccountScreen
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.toolxpress.ui.components.ProductDataProvider
 import com.example.toolxpress.ui.screens.CardProducts
 import com.example.toolxpress.ui.screens.ComprasScreen
+import com.example.toolxpress.ui.screens.CreateAccountScreen
 import com.example.toolxpress.ui.screens.DataUserScreen
 import com.example.toolxpress.ui.screens.DomicilioScreen
 import com.example.toolxpress.ui.screens.EnvioScreen
@@ -27,6 +28,21 @@ import com.example.toolxpress.ui.screens.ShoppingCartScreen
 import com.example.toolxpress.ui.theme.BlueBackground
 
 class MainActivity : ComponentActivity() {
+    private var onActivityResultListener: ((Int, Int, Intent?) -> Unit)? = null
+
+    fun onActivityResultListener(listener: (Int, Int, Intent?) -> Unit) {
+        onActivityResultListener = listener
+    }
+
+    fun removeOnActivityResultListener(listener: (Int, Int, Intent?) -> Unit) {
+        if (onActivityResultListener == listener) onActivityResultListener = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        onActivityResultListener?.invoke(requestCode, resultCode, data)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

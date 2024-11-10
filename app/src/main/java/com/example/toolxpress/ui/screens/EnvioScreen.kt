@@ -29,7 +29,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
-import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.YellowIcons
 import kotlinx.coroutines.delay
 
 @Composable
@@ -71,17 +72,8 @@ fun EnvioScreen(navController: NavController) {
 
             when (sliderPosition) {
                 0f -> sendNotification(context, "Preparación", "Tu pedido está en preparación.")
-                0.5f -> sendNotification(
-                    context,
-                    "Pedido en Camino",
-                    "Tu pedido ha salido para la entrega."
-                )
-
-                1f -> sendNotification(
-                    context,
-                    "Pedido Entregado",
-                    "Tu pedido ha sido entregado exitosamente."
-                )
+                0.5f -> sendNotification(context, "Pedido en Camino", "Tu pedido ha salido para la entrega.")
+                1f -> sendNotification(context, "Pedido Entregado", "Tu pedido ha sido entregado exitosamente.")
             }
         }
     }
@@ -97,13 +89,13 @@ fun EnvioScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Orange)
+                    .background(YellowIcons)
                     .padding(16.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
-                    tint = Color.White,
+                    tint = BlueBackground,
                     modifier = Modifier.clickable {
                         navController.navigate("ComprasScreen")
                     }
@@ -113,7 +105,7 @@ fun EnvioScreen(navController: NavController) {
                     text = "Estado de la compra",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = BlueBackground
                 )
             }
         }
@@ -127,7 +119,7 @@ fun EnvioScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                color = Orange
+                color = YellowIcons
             )
         }
 
@@ -204,7 +196,7 @@ fun EnvioScreen(navController: NavController) {
                 isActive = sliderPosition == 1f
             )
         }
-
+        
         item {
             Spacer(modifier = Modifier.height(30.dp))
         }
@@ -257,27 +249,23 @@ fun ProgressIcon(isActive: Boolean, icon: ImageVector, label: String) {
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = if (isActive) Orange else Color.Gray,
+            tint = if (isActive) YellowIcons else Color.White,
             modifier = Modifier.size(40.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = label,
-            color = if (isActive) Orange else Color.Gray,
+            color = if (isActive) YellowIcons else Color.White,
             fontWeight = FontWeight.Bold
         )
     }
 }
-
 @Composable
 fun OrderStatusItem(status: String, date: String, description: String, isActive: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                if (isActive) Color.LightGray else Color.White,
-                shape = RoundedCornerShape(8.dp)
-            )
+            .background(if (isActive) Color.White else Color.White, shape = RoundedCornerShape(8.dp))
             .padding(16.dp)
             .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -294,7 +282,7 @@ fun OrderStatusItem(status: String, date: String, description: String, isActive:
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = "Check",
-                tint = Orange,
+                tint = YellowIcons,
                 modifier = Modifier.size(24.dp)
             )
         }

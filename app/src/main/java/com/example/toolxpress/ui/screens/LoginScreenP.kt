@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
@@ -22,13 +23,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
-import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun LoginScreenP(navController: NavController) {
@@ -64,17 +67,14 @@ fun LoginScreenP(navController: NavController) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = "Email or Username",
-                            color = Color.Black,
+                            color = YellowIcons,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
                         )
                         Row(
                             modifier = Modifier
-                                .background(
-                                    Color.LightGray.copy(alpha = 0.7f),
-                                    shape = MaterialTheme.shapes.medium
-                                )
+                                .background(Color.White.copy(alpha = 0.7f), shape = MaterialTheme.shapes.medium)
                                 .padding(14.dp)
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
@@ -83,16 +83,14 @@ fun LoginScreenP(navController: NavController) {
                                 imageVector = Icons.Default.PermIdentity,
                                 contentDescription = "User Icon",
                                 modifier = Modifier.size(28.dp),
-                                tint = Color.DarkGray
+                                tint = BlueBackground
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             BasicTextField(
                                 value = email,
                                 onValueChange = {
                                     email = it.filter { char -> char != ' ' }
-                                    hasEmailError =
-                                        !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
-                                            .matches() && email.isNotEmpty()
+                                    hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
                                 },
                                 modifier = Modifier.weight(1f),
                                 decorationBox = { innerTextField ->
@@ -100,7 +98,7 @@ fun LoginScreenP(navController: NavController) {
                                         if (email.isEmpty()) {
                                             Text(
                                                 "Enter your email or username",
-                                                color = Color.Gray,
+                                                color = BlueBackground,
                                                 fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold
                                             )
@@ -120,7 +118,7 @@ fun LoginScreenP(navController: NavController) {
                         if (hasEmailError) {
                             Text(
                                 text = "Please enter a valid email address.",
-                                color = Color.Red,
+                                color = YellowIcons,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
                             )
@@ -135,17 +133,14 @@ fun LoginScreenP(navController: NavController) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = "Password",
-                            color = Color.Black,
+                            color = YellowIcons,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
                         )
                         Row(
                             modifier = Modifier
-                                .background(
-                                    Color.LightGray.copy(alpha = 0.7f),
-                                    shape = MaterialTheme.shapes.medium
-                                )
+                                .background(Color.White.copy(alpha = 0.7f), shape = MaterialTheme.shapes.medium)
                                 .padding(14.dp)
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically
@@ -154,7 +149,7 @@ fun LoginScreenP(navController: NavController) {
                                 imageVector = Icons.Default.Password,
                                 contentDescription = "User Icon",
                                 modifier = Modifier.size(28.dp),
-                                tint = Color.DarkGray
+                                tint = BlueBackground
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             BasicTextField(
@@ -170,7 +165,7 @@ fun LoginScreenP(navController: NavController) {
                                         if (password.isEmpty()) {
                                             Text(
                                                 "Enter your password",
-                                                color = Color.Gray,
+                                                color = BlueBackground,
                                                 fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold
                                             )
@@ -192,13 +187,13 @@ fun LoginScreenP(navController: NavController) {
                                 modifier = Modifier
                                     .size(28.dp)
                                     .clickable { passwordVisible = !passwordVisible },
-                                tint = Color.DarkGray
+                                tint = BlueBackground
                             )
                         }
                         if (hasPasswordError) {
                             Text(
                                 text = "Please enter your password.",
-                                color = Color.Red,
+                                color = YellowIcons,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
                             )
@@ -216,11 +211,16 @@ fun LoginScreenP(navController: NavController) {
                     ) {
                         Checkbox(
                             checked = keepLoggedIn,
-                            onCheckedChange = { keepLoggedIn = it }
+                            onCheckedChange = { keepLoggedIn = it },
+                            colors = CheckboxDefaults.colors(
+                                checkmarkColor = BlueBackground, // Color de la marca cuando está seleccionado
+                                uncheckedColor = Color.White, // Borde blanco cuando está desmarcado
+                                checkedColor = YellowIcons // Borde y relleno amarillo cuando está seleccionado
+                            )
                         )
                         Text(
                             text = "Remember me",
-                            color = Color.Black,
+                            color = Color.White,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -230,24 +230,30 @@ fun LoginScreenP(navController: NavController) {
                 }
 
                 item {
-                    // inicio de sesión
+                    // Botón de inicio de sesión
                     Button(
                         onClick = { navController.navigate("DataUserScreen") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 25.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Orange),
-                        enabled = !hasEmailError && !hasPasswordError && email.isNotEmpty() && password.isNotEmpty()
+                            .padding(horizontal = 25.dp)
+                            .height(50.dp), // Altura ajustada a 50.dp
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = YellowIcons, // Color de fondo amarillo
+                            contentColor = Color.White // Color del contenido, en este caso el texto
+                        ),
+                        shape = RoundedCornerShape(16.dp) // Borde redondeado para mejor diseño
                     ) {
                         Text(
                             text = "Login",
-                            color = Color.White,
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold
+                            fontSize = 30.sp, // Ajuste del tamaño de fuente a 15.sp
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = BlueBackground // Color del texto blanco
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))
                 }
+
 
                 item {
                     Box(
@@ -260,7 +266,7 @@ fun LoginScreenP(navController: NavController) {
                                 navController.navigate("createAccount")
                             },
                             style = LocalTextStyle.current.copy(
-                                color = Color.Black,
+                                color = Color.White,
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold,
                                 textDecoration = TextDecoration.Underline

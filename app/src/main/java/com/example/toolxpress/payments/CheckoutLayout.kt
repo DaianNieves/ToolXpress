@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,12 +26,13 @@ import com.google.pay.button.PayButton
 @Composable
 fun SimpleCheckoutLayout(
     onGooglePayButtonClick: () -> Unit,
-    payUiState: PaymentUiState = PaymentUiState.NotStarted,
+    payUiState: PaymentUiState = PaymentUiState.NotStarted
 ) {
     val padding = 20.dp
     val grey = Color(0xffeeeeee.toInt())
 
     if (payUiState is PaymentUiState.PaymentCompleted) {
+        // Este bloque mostrará un mensaje de éxito, y `CheckoutActivity` se cerrará después
         Column(
             modifier = Modifier
                 .testTag("successScreen")
