@@ -42,6 +42,7 @@ import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.YellowShop
 import com.example.toolxpress.data.model.PostModel
+import com.example.toolxpress.ui.screens.Product
 import com.example.toolxpress.ui.theme.BlueBackground
 import com.example.toolxpress.ui.theme.YellowIcons
 
@@ -391,14 +392,12 @@ fun ProductCard(
 }
 
 
-
 @Composable
 fun CategoryHeader(categoryName: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clip(RoundedCornerShape(16.dp))
             .background(GrayProduct)
             .padding(8.dp),
         horizontalArrangement = Arrangement.Center
@@ -417,29 +416,38 @@ fun CategoryHeader(categoryName: String) {
 fun ProductDataProvider(
     content: @Composable (categories: List<Pair<String, List<PostModel>>>) -> Unit
 ) {
-    val postsCategory1 = listOf(
-        PostModel(1, "Producto 1", "Precio$1", painterResource(R.drawable.ejemploimagen)),
-        PostModel(2, "Producto 2", "Precio$2", painterResource(R.drawable.ejemploimagen)),
-        PostModel(3, "Producto 3", "Precio$3", painterResource(R.drawable.ejemploimagen))
-    )
 
+    val postsCategory1 = listOf(
+        PostModel(1, "Engrapadora", "$188.0", painterResource(R.drawable.engrapadora)),
+        //Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas
+        PostModel(2, "Kit desarmador", "$295", painterResource(R.drawable.desarmador)),
+        //Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas
+        PostModel(3, "Pinza de presión", "$94", painterResource(R.drawable.pinza))
+        //Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270
+    )
     val postsCategory2 = listOf(
-        PostModel(4, "Producto 4", "Precio$4", painterResource(R.drawable.ejemploimagen)),
-        PostModel(5, "Producto 5", "Precio$5", painterResource(R.drawable.ejemploimagen)),
-        PostModel(6, "Producto 6", "Precio$6", painterResource(R.drawable.ejemploimagen))
+        PostModel(4, "Taladro", "$594", painterResource(R.drawable.taladro)),
+        //NANWEI Kit de Taladro Inalámbrico Electrico
+        PostModel(5, "Pulidora inalámbrica", "$799", painterResource(R.drawable.pulidora)),
+        //smeriladora Angular Pulidora Inalambrica Con Accesorios
+        PostModel(6, "Lijadora", "$748", painterResource(R.drawable.lijadora))
+        //Lijadora Roto Orbital Profesional Shawty C/16 Lija 14000 Opm
     )
 
     val postsCategory3 = listOf(
-        PostModel(7, "Producto 7", "Precio$7", painterResource(R.drawable.ejemploimagen)),
-        PostModel(8, "Producto 8", "Precio$8", painterResource(R.drawable.ejemploimagen)),
-        PostModel(9, "Producto 9", "Precio$9", painterResource(R.drawable.ejemploimagen)),
-        PostModel(10, "Producto 10", "Precio$10", painterResource(R.drawable.ejemploimagen))
+        PostModel(7, "Multimetro Digital", "$93", painterResource(R.drawable.multimetro)),
+        ////Multímetro Digital Profesional Xl830l Medidor Corriente Mano
+        PostModel(8, "Calibrador digital", "$249", painterResource(R.drawable.calibrador)),
+        //Calibrador Digital RexQualis 6in Precisión 0.01mm Metal
+        PostModel(9, "Multimetro de gancho", "610", painterResource(R.drawable.calibradorgancho)),
+        //AstroAI Multimetro de Gancho, Pinza Amperimétrica, Multímetro Digital Automático, Medidor de Corriente Voltaje AC/DC, Corriente alterna，Resistencia, Continua, Diodos Pinza, Indicador de seguridad
+        PostModel(10, "flexometro", "$199", painterResource(R.drawable.flexometro))
     )
 
     val categories = listOf(
-        "Categoría 1" to postsCategory1,
-        "Categoría 2" to postsCategory2,
-        "Categoría 3" to postsCategory3
+        "Herrramientas manuales" to postsCategory1,
+        "Herramientas electricas" to postsCategory2,
+        "Herrramientas de medición" to postsCategory3
     )
 
     // Llama al contenido, pasando las categorías
@@ -447,7 +455,7 @@ fun ProductDataProvider(
 }
 
 @Composable
-fun ProductCardCompact(id:Int,title:String,text:String,image:Painter){
+fun ProductCardCompact(id: Int, title: String, text: String, image: Painter) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -457,7 +465,7 @@ fun ProductCardCompact(id:Int,title:String,text:String,image:Painter){
             contentColor = Color.White
         )
     ) {
-        Row(){
+        Row() {
             Image(
                 modifier = Modifier
                     .width(80.dp)
@@ -468,7 +476,8 @@ fun ProductCardCompact(id:Int,title:String,text:String,image:Painter){
                 contentScale = ContentScale.FillBounds
             )
             Column {
-                Text(text = title,
+                Text(
+                    text = title,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(10.dp)

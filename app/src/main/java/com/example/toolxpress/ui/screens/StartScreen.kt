@@ -216,7 +216,6 @@ fun StartScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(14.dp, 20.dp, 14.dp, 0.dp)
-                    .clip(RoundedCornerShape(16.dp))
                     .background(GrayProduct),
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -380,7 +379,6 @@ fun ProductScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(14.dp)
-                    .clip(RoundedCornerShape(16.dp))
                     .background(Color(0xff2C2C2C)),
                 horizontalArrangement = Arrangement.Center
             ) {
