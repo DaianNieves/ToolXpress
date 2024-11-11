@@ -91,7 +91,7 @@ fun EstableDomicilioScreen(navController: NavController) {
                         Icon(
                             imageVector = Icons.Default.Home,
                             contentDescription = "Enviar a domicilio",
-                            tint = if (selectedOption == Option.ENVIAR_DOMICILIO) Color.White else Color.Black,
+                            tint = if (selectedOption == Option.ENVIAR_DOMICILIO) BlueBackground else Color.Black,
                             modifier = Modifier.padding(end = 16.dp)
                         )
                         Column {
@@ -99,12 +99,12 @@ fun EstableDomicilioScreen(navController: NavController) {
                                 text = "Enviar a domicilio",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = if (selectedOption == Option.ENVIAR_DOMICILIO) Color.White else Color.Black
+                                color = if (selectedOption == Option.ENVIAR_DOMICILIO) BlueBackground else Color.Black
                             )
                             Text(
                                 text = "Te enviaremos el pedido a tu dirección.",
                                 fontSize = 14.sp,
-                                color = if (selectedOption == Option.ENVIAR_DOMICILIO) Color.White else Color.Gray
+                                color = if (selectedOption == Option.ENVIAR_DOMICILIO) Color.DarkGray else Color.Gray
                             )
                         }
                     }
@@ -132,7 +132,7 @@ fun EstableDomicilioScreen(navController: NavController) {
                         Icon(
                             imageVector = Icons.Default.Store,
                             contentDescription = "Recoger en establecimiento",
-                            tint = if (selectedOption == Option.RECOGER_ESTABLECIMIENTO) Color.White else Color.Black,
+                            tint = if (selectedOption == Option.RECOGER_ESTABLECIMIENTO) BlueBackground else Color.Black,
                             modifier = Modifier.padding(end = 16.dp)
                         )
                         Column {
@@ -140,12 +140,12 @@ fun EstableDomicilioScreen(navController: NavController) {
                                 text = "Recoger en establecimiento",
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = if (selectedOption == Option.RECOGER_ESTABLECIMIENTO) Color.White else Color.Black
+                                color = if (selectedOption == Option.RECOGER_ESTABLECIMIENTO) BlueBackground else Color.Black
                             )
                             Text(
                                 text = "Recoge tu pedido en nuestra tienda.",
                                 fontSize = 14.sp,
-                                color = if (selectedOption == Option.RECOGER_ESTABLECIMIENTO) Color.White else Color.Gray
+                                color = if (selectedOption == Option.RECOGER_ESTABLECIMIENTO) Color.DarkGray else Color.Gray
                             )
                         }
                     }
@@ -164,7 +164,8 @@ fun EstableDomicilioScreen(navController: NavController) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = YellowIcons,
                         disabledContainerColor = Color.Gray,
-                        contentColor = Color.White
+                        contentColor = BlueBackground,
+                        disabledContentColor = BlueBackground
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
