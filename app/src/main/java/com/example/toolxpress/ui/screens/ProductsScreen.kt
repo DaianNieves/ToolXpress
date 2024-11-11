@@ -1,6 +1,7 @@
 package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,15 +18,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.ui.components.CategoryHeader
+import com.example.toolxpress.ui.components.Product
 import com.example.toolxpress.ui.components.ProductCard
 import com.example.toolxpress.ui.components.TopBar
-import com.example.toolxpress.data.model.PostModel
 
 @Composable
 fun ProductsScreen(
     navController: NavController,
     categoryName: String?,
-    allCategories: List<Pair<String, List<PostModel>>>
+    allCategories: List<Pair<String, List<Product>>>
 ) {
     val selectedProducts = if (categoryName != null) {
         allCategories.find { it.first == categoryName }?.second ?: emptyList()
@@ -42,16 +43,14 @@ fun ProductsScreen(
                 .weight(1f)
         ) {
             if (categoryName == null) {
-                allCategories.forEach { (categoryName, posts) ->
+                allCategories.forEach { (categoryName, products) ->
                     item { CategoryHeader(categoryName) }
-
                     item {
-                        ProductGrid(posts, navController)
+                        ProductGrid(products, navController)
                     }
                 }
             } else {
                 item { CategoryHeader(categoryName) }
-
                 if (selectedProducts.isEmpty()) {
                     item {
                         Text(
@@ -72,33 +71,41 @@ fun ProductsScreen(
 }
 
 @Composable
-fun ProductGrid(posts: List<PostModel>, navController: NavController) {
+fun ProductGrid(products: List<Product>, navController: NavController) {
     BoxWithConstraints {
-        val columns = if (maxWidth < 600.dp) 2 else 4  // Cambiar el número de columnas según el ancho
+        // Detectar la orientación y definir el número de columnas
+        val columns = if (maxWidth < 600.dp) 2 else 4
 
-        val totalItems = posts.size
-        val rows = (totalItems + columns - 1) / columns
+        val totalItems = products.size
+        val rows = (totalItems + columns - 1) / columns // Número de filas
+
+        // Para evitar el espaciado excesivo al estar en modo horizontal, ajustamos el espaciado
+        val horizontalPadding = 28.dp
+        val verticalPadding = 16.dp
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = horizontalPadding, vertical = verticalPadding),
+            verticalArrangement = Arrangement.spacedBy(verticalPadding) // Espaciado entre las filas
         ) {
             repeat(rows) { rowIndex ->
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(horizontalPadding) // Espaciado entre columnas
                 ) {
-                    for (colIndex in 0 until columns) {
-                        val itemIndex = rowIndex * columns + colIndex
-                        if (itemIndex < totalItems) {
-                            val post = posts[itemIndex]
-                            ProductCard(post = post, navController = navController)
-                        } else {
-                            Spacer(modifier = Modifier.weight(1f))  // Espacio vacío para rellenar columnas
+                    repeat(columns) { colIndex ->
+                        val index = rowIndex * columns + colIndex
+                        if (index < totalItems) {
+                            val product = products[index]
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f) // Para que las columnas tengan el mismo tamaño
+                                    .fillMaxWidth() // Aseguramos que las tarjetas llenen todo el ancho disponible
+                            ) {
+                                ProductCard(product = product, navController = navController)
+                            }
                         }
                     }
                 }

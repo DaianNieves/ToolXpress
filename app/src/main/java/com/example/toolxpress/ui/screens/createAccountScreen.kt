@@ -1,3 +1,5 @@
+package com.example.toolxpress.ui.screens
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,7 +29,8 @@ import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
-
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun CreateAccountScreen(navController: NavController) {
@@ -62,15 +65,6 @@ fun CreateAccountScreen(navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 16.dp,
-                            topEnd = 16.dp,
-                            bottomStart = 16.dp,
-                            bottomEnd = 16.dp
-                        )
-                    )
-                    .background(GrayProduct)
                     .height(60.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -94,7 +88,7 @@ fun CreateAccountScreen(navController: NavController) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Username",
-                    color = Color.Black,
+                    color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
@@ -102,7 +96,7 @@ fun CreateAccountScreen(navController: NavController) {
                 Row(
                     modifier = Modifier
                         .background(
-                            Color.LightGray.copy(alpha = 0.7f),
+                            Color.White.copy(alpha = 0.7f),
                             shape = MaterialTheme.shapes.medium
                         )
                         .padding(14.dp)
@@ -124,7 +118,7 @@ fun CreateAccountScreen(navController: NavController) {
                                 if (username.isEmpty()) {
                                     Text(
                                         "Enter your Username",
-                                        color = Color.Gray,
+                                        color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -150,7 +144,7 @@ fun CreateAccountScreen(navController: NavController) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Email",
-                    color = Color.Black,
+                    color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
@@ -158,7 +152,7 @@ fun CreateAccountScreen(navController: NavController) {
                 Row(
                     modifier = Modifier
                         .background(
-                            Color.LightGray.copy(alpha = 0.7f),
+                            Color.White.copy(alpha = 0.7f),
                             shape = MaterialTheme.shapes.medium
                         )
                         .padding(14.dp)
@@ -181,7 +175,7 @@ fun CreateAccountScreen(navController: NavController) {
                                 if (email.isEmpty()) {
                                     Text(
                                         "Enter your email address",
-                                        color = Color.Gray,
+                                        color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -202,7 +196,7 @@ fun CreateAccountScreen(navController: NavController) {
                 if (hasEmailError) {
                     Text(
                         text = "Please enter a valid email address.",
-                        color = Color.Red,
+                        color = YellowIcons,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp, top = 4.dp)
                     )
@@ -216,7 +210,7 @@ fun CreateAccountScreen(navController: NavController) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Password",
-                    color = Color.Black,
+                    color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 8.dp, bottom = 6.dp)
@@ -224,7 +218,7 @@ fun CreateAccountScreen(navController: NavController) {
                 Row(
                     modifier = Modifier
                         .background(
-                            Color.LightGray.copy(alpha = 0.7f),
+                            Color.White.copy(alpha = 0.7f),
                             shape = MaterialTheme.shapes.medium
                         )
                         .padding(14.dp)
@@ -237,7 +231,7 @@ fun CreateAccountScreen(navController: NavController) {
                     BasicTextField(
                         value = password,
                         onValueChange = {
-                            password =  it.filter { char -> char != ' ' }
+                            password = it.filter { char -> char != ' ' }
                             hasPasswordError = password.isEmpty()
                         },
                         modifier = Modifier.weight(1f),
@@ -247,7 +241,7 @@ fun CreateAccountScreen(navController: NavController) {
                                 if (password.isEmpty()) {
                                     Text(
                                         "Enter your password",
-                                        color = Color.Gray,
+                                        color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -267,13 +261,13 @@ fun CreateAccountScreen(navController: NavController) {
                         modifier = Modifier
                             .size(28.dp)
                             .clickable { passwordVisible = !passwordVisible },
-                        tint = Color.DarkGray
+                        tint = BlueBackground
                     )
                 }
                 if (hasPasswordError) {
                     Text(
                         text = "Please enter your password.",
-                        color = Color.Red,
+                        color = YellowIcons,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp, top = 4.dp)
                     )
@@ -284,16 +278,16 @@ fun CreateAccountScreen(navController: NavController) {
 
             //Crear cuenta
             Button(
-                onClick = {navController.navigate("login")},
+                onClick = { navController.navigate("DomicilioScreen") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Orange),
+                colors = ButtonDefaults.buttonColors(containerColor = YellowIcons),
                 enabled = !hasEmailError && !hasPasswordError && email.isNotEmpty() && password.isNotEmpty() // Deshabilitar si hay errores o campos vacíos
             ) {
                 Text(
                     text = "Create Account",
-                    color = Color.White,
+                    color = BlueBackground,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
                 )

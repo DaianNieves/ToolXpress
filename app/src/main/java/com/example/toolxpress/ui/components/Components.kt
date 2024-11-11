@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,8 +41,8 @@ import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.theme.YellowShop
-import com.example.toolxpress.data.model.PostModel
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun TopBar(navController: NavController) {
@@ -53,7 +54,7 @@ fun TopBar(navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding() // Espacio de la barra de estado
-            .background(Orange)
+            .background(YellowIcons)
     ) {
         // Fila que contiene el menú, búsqueda, ícono de persona y el ícono del carrito
         Row(
@@ -72,7 +73,7 @@ fun TopBar(navController: NavController) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Menú",
-                    tint = Color.White, // Color del ícono
+                    tint = BlueBackground, // Color del ícono
                     modifier = Modifier.size(30.dp)
                 )
             }
@@ -89,7 +90,7 @@ fun TopBar(navController: NavController) {
                     Icon(
                         imageVector = Icons.Filled.Search,
                         contentDescription = "Buscar",
-                        tint = Orange
+                        tint = BlueBackground
                     )
                 },
                 singleLine = true, // Mantener una sola línea
@@ -115,7 +116,7 @@ fun TopBar(navController: NavController) {
                 Icon(
                     imageVector = Icons.Filled.Person,
                     contentDescription = "Perfil",
-                    tint = Color.White,// Color del ícono
+                    tint = BlueBackground,// Color del ícono
                     modifier = Modifier.size(30.dp)
                 )
             }
@@ -124,12 +125,11 @@ fun TopBar(navController: NavController) {
             Box(modifier = Modifier.wrapContentSize()) {
                 IconButton(
                     onClick = { navController.navigate("ShoppingCart") },
-                    modifier = Modifier.background(Orange) // Fondo del botón
                 ) {
                     Icon(
                         imageVector = Icons.Filled.ShoppingCart,
                         contentDescription = "Carrito de Compras",
-                        tint = Color.White,
+                        tint = BlueBackground,
                         modifier = Modifier.size(30.dp)
                     )
                 }
@@ -137,13 +137,13 @@ fun TopBar(navController: NavController) {
                 Box(
                     modifier = Modifier
                         .size(20.dp) // Tamaño del círculo
-                        .background(YellowShop, shape = CircleShape) // Color naranja
+                        .background(Color.Transparent, shape = CircleShape)// Color naranja
                         .align(Alignment.TopEnd) // Alineación en la esquina superior derecha
                 ) {
                     Text(
-                        text = "7", // Número de notificaciones
-                        color = Color.White,
-                        fontSize = 12.sp, // Tamaño de fuente
+                        text = "", // Número de notificaciones
+                        color = BlueBackground,
+                        fontSize = 16.sp, // Tamaño de fuente
                         modifier = Modifier.align(Alignment.Center) // Centrado en el círculo
                     )
                 }
@@ -339,57 +339,103 @@ fun ReturnBar(navController: NavController, title: String) {
     }
 }
 
+data class Product(
+    val id: Int,
+    val name: String,
+    val description: String,
+    val price: Double,
+    val image: Int)
+
 @Composable
 fun ProductCard(
-    post: PostModel,
+    product: Product,
     navController: NavController,
-    width: Dp = 170.dp,  // Ancho personalizable con valor predeterminado
-    height: Dp = 250.dp  // Alto personalizable con valor predeterminado
+    width: Dp = 170.dp,
+    height: Dp = 250.dp
 ) {
     Box(
         modifier = Modifier
-            .width(width)  // Ancho adaptable
-            .height(height) // Alto adaptable
+            .width(width)
+            .height(height)
             .clip(RoundedCornerShape(10.dp))
-            .background(GrayProduct)
-            .clickable {
-                navController.navigate("CardProducts") // Navegar al detalle del producto
-            },
+            .background(Color.White)
+            .clickable { navController.navigate("CardProducts") },
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()  // Llenar el espacio del contenedor padre
-                .padding(8.dp), // Espaciado interior para evitar que el contenido quede pegado a los bordes
+                .fillMaxSize()
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Image(
-                painter = post.image,
+                painter = painterResource(id = product.image),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp)
-                    .clip(RoundedCornerShape(4.dp))  // Opcional: Redondear la imagen
+                    .clip(RoundedCornerShape(4.dp))
             )
-            Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = post.title,
+                text = product.name,
                 fontSize = 20.sp,
-                color = Color.Gray,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = post.text,
-                fontSize = 25.sp,
-                color = Orange,
-                textAlign = TextAlign.Center
+                text = product.description,
+                fontSize = 16.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis // Añade puntos suspensivos si el texto es muy largo
+            )
+            Text(
+                text = "$${product.price}",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
         }
     }
 }
 
 
+@Composable
+fun ProductDataProvider(
+    content: @Composable (categories: List<Pair<String, List<Product>>>) -> Unit
+) {
+    val tools = listOf(
+        Product(1, "Engrapadora", "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas", 188.0, R.drawable.engrapadora),
+        Product(2, "Kit desarmador", "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas", 295.0, R.drawable.desarmador),
+        Product(3, "Pinza de presión", "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270", 94.0, R.drawable.pinza),
+        Product(4, "Martillo Uña Recta", "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997", 149.00, R.drawable.martillo),
+        Product(5, "Pinza de presión", "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270", 94.00, R.drawable.pinza),
+        Product(6, "Escalera Tubular", "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118", 595.00, R.drawable.escaleras)
+    )
+
+    val powerTools = listOf(
+        Product(7, "Taladro Inalámbrico", "NANWEI Kit de Taladro Inalámbrico Electrico", 594.0, R.drawable.taladro),
+        Product(8, "Pulidora inalámbrica", "Esmeriladora Angular Pulidora Inalambrica Con Accesorios", 799.0, R.drawable.pulidora),
+        Product(9, "Lijadora", "Lijadora Roto Orbital Profesional Shawty C/16 Lija 14000 Opm", 748.0, R.drawable.lijadora),
+        Product(10, "Pistola de calor", "RexQualis de 2000w Temperatura Regulable 4 Boquillas", 384.0, R.drawable.pistolacalor)
+    )
+
+    val measurementTools = listOf(
+        Product(11, "Multímetro Digital", "Multímetro Digital Profesional Xl830l Medidor Corriente Mano", 93.0, R.drawable.multimetro),
+        Product(12, "Calibrador digital", "Calibrador Digital RexQualis 6in Precisión 0.01mm Metal", 249.0, R.drawable.calibrador),
+        Product(13, "Multímetro de gancho", "AstroAI Multimetro de Gancho, Pinza Amperimétrica", 610.0, R.drawable.calibradorgancho)
+    )
+
+    val categories = listOf(
+        "Herramientas manuales" to tools,
+        "Herramientas eléctricas" to powerTools,
+        "Herramientas de medición" to measurementTools
+    )
+
+    content(categories)
+}
 
 @Composable
 fun CategoryHeader(categoryName: String) {
@@ -397,7 +443,6 @@ fun CategoryHeader(categoryName: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clip(RoundedCornerShape(16.dp))
             .background(GrayProduct)
             .padding(8.dp),
         horizontalArrangement = Arrangement.Center
@@ -413,40 +458,7 @@ fun CategoryHeader(categoryName: String) {
 }
 
 @Composable
-fun ProductDataProvider(
-    content: @Composable (categories: List<Pair<String, List<PostModel>>>) -> Unit
-) {
-    val postsCategory1 = listOf(
-        PostModel(1, "Producto 1", "Precio$1", painterResource(R.drawable.ejemploimagen)),
-        PostModel(2, "Producto 2", "Precio$2", painterResource(R.drawable.ejemploimagen)),
-        PostModel(3, "Producto 3", "Precio$3", painterResource(R.drawable.ejemploimagen))
-    )
-
-    val postsCategory2 = listOf(
-        PostModel(4, "Producto 4", "Precio$4", painterResource(R.drawable.ejemploimagen)),
-        PostModel(5, "Producto 5", "Precio$5", painterResource(R.drawable.ejemploimagen)),
-        PostModel(6, "Producto 6", "Precio$6", painterResource(R.drawable.ejemploimagen))
-    )
-
-    val postsCategory3 = listOf(
-        PostModel(7, "Producto 7", "Precio$7", painterResource(R.drawable.ejemploimagen)),
-        PostModel(8, "Producto 8", "Precio$8", painterResource(R.drawable.ejemploimagen)),
-        PostModel(9, "Producto 9", "Precio$9", painterResource(R.drawable.ejemploimagen)),
-        PostModel(10, "Producto 10", "Precio$10", painterResource(R.drawable.ejemploimagen))
-    )
-
-    val categories = listOf(
-        "Categoría 1" to postsCategory1,
-        "Categoría 2" to postsCategory2,
-        "Categoría 3" to postsCategory3
-    )
-
-    // Llama al contenido, pasando las categorías
-    content(categories)
-}
-
-@Composable
-fun ProductCardCompact(id:Int,title:String,text:String,image:Painter){
+fun ProductCardCompact(id: Int, title: String, text: String, image: Painter) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -456,7 +468,7 @@ fun ProductCardCompact(id:Int,title:String,text:String,image:Painter){
             contentColor = Color.White
         )
     ) {
-        Row(){
+        Row() {
             Image(
                 modifier = Modifier
                     .width(80.dp)
@@ -467,7 +479,8 @@ fun ProductCardCompact(id:Int,title:String,text:String,image:Painter){
                 contentScale = ContentScale.FillBounds
             )
             Column {
-                Text(text = title,
+                Text(
+                    text = title,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(10.dp)

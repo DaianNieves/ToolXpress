@@ -18,8 +18,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.ui.text.TextStyle
 import androidx.navigation.NavController
+import com.example.toolxpress.ui.theme.BlueBackground
 import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun DomicilioScreen(navController: NavController) {
@@ -53,13 +56,13 @@ fun DomicilioScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Orange)
+                    .background(YellowIcons)
                     .padding(16.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
-                    tint = Color.White,
+                    tint = BlueBackground,
                     modifier = Modifier.clickable {
                         navController.popBackStack() // Acción para regresar a la pantalla anterior
                     }
@@ -69,7 +72,7 @@ fun DomicilioScreen(navController: NavController) {
                     text = "Información Necesaria",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = BlueBackground
                 )
             }
         }
@@ -87,13 +90,13 @@ fun DomicilioScreen(navController: NavController) {
                     .padding(16.dp)
             ) {
 
-                // Nombre y apellido
                 TextFieldWithLabel(
                     label = "Nombre y apellido",
                     value = name,
                     onValueChange = { name = it },
-                    placeholder = "Tal cual figure en el INE o IFE."
+                    placeholder = "Tal cual figure en el INE o IFE.",
                 )
+
 
                 // Espaciado uniforme
                 Spacer(modifier = Modifier.height(12.dp))
@@ -210,8 +213,6 @@ fun DomicilioScreen(navController: NavController) {
                     Text(text = "Trabajo", modifier = Modifier.padding(start = 8.dp))
                 }*/
 
-                Spacer(modifier = Modifier.height(16.dp))
-
                 // Teléfono de contacto (Validar que solo se ingresen números)
                 TextFieldWithLabel(
                     label = "Teléfono de contacto",
@@ -226,20 +227,24 @@ fun DomicilioScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(24.dp)) // Espaciado antes del botón
 
-                // Botón de guardar
-                Button(
-                    onClick = {
-                        navController.navigate("MetodoPagoScreen")
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = Orange)
+                Box(
+                    modifier = Modifier.fillMaxSize(), // El Box ocupa toda el área disponible
+                    contentAlignment = Alignment.Center // Centra el contenido (el botón)
                 ) {
-                    Text(
-                        text = "Guardar Información",
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Button(
+                        onClick = {
+                            navController.navigate("StartScreen")
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = YellowIcons),
+                        modifier = Modifier.align(Alignment.Center) // Asegura que el botón esté centrado
+                    ) {
+                        Text(
+                            text = "Guardar Información",
+                            color = BlueBackground,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(30.dp))
             }
@@ -261,6 +266,7 @@ fun TextFieldWithLabel(
             Text(
                 text = label,
                 fontSize = 16.sp,
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
@@ -268,7 +274,7 @@ fun TextFieldWithLabel(
         TextField(
             value = value,
             onValueChange = onValueChange,
-            placeholder = { Text(placeholder) },
+            placeholder = { Text(placeholder, color = BlueBackground) },
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),  // Ajuste para el tipo de teclado
             visualTransformation = visualTransformation,
             modifier = Modifier

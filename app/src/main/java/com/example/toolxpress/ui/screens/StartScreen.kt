@@ -4,7 +4,6 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -25,16 +24,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Computer
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,17 +46,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.ui.components.CategoryHeader
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.components.TopBar
-import com.example.toolxpress.data.model.PostModel
+import com.example.toolxpress.ui.components.Product
+import com.example.toolxpress.ui.components.ProductCard
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -71,7 +64,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(navController: NavController, allCategories: List<Pair<String, List<PostModel>>>) {
+fun MainScreen(navController: NavController, allCategories: List<Pair<String, List<Product>>>) {
     Column {
         // La barra superior fija
         Box {
@@ -122,7 +115,10 @@ fun OfferCarousel() {
                     // Avanza al siguiente índice con una animación más suave
                     pagerState.animateScrollToPage(
                         page = (pagerState.currentPage + 1) % offerImages.size,
-                        animationSpec = tween(durationMillis = 4000, easing = LinearEasing) // Animación más suave
+                        animationSpec = tween(
+                            durationMillis = 4000,
+                            easing = LinearEasing
+                        ) // Animación más suave
                     )
                 }
             }
@@ -163,8 +159,7 @@ fun OfferCarousel() {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(420.dp)
-                    .background(Color.White)
+                    .width(380.dp)  // Reducido el tamaño de la imagen
                     .padding(0.dp)
             ) {
                 Image(
@@ -172,8 +167,9 @@ fun OfferCarousel() {
                     contentDescription = "Oferta",
                     modifier = Modifier
                         .fillMaxSize()
-                        .height(200.dp)
-                        .clip(RoundedCornerShape(30.dp)) // Bordes redondeados para la imagen
+                        .clip(RoundedCornerShape(20.dp)) // Bordes redondeados para la imagen
+                        .padding(8.dp), // Ajustar el padding si es necesario
+                    contentScale = ContentScale.Fit // Ajuste para que la imagen no se recorte
                 )
             }
         }
@@ -183,7 +179,7 @@ fun OfferCarousel() {
 @Composable
 fun StartScreen(
     navController: NavController,
-    allCategories: List<Pair<String, List<PostModel>>>
+    allCategories: List<Pair<String, List<Product>>>
 ) {
     // Nombres de las categorías
     val buttonTexts = allCategories.map { it.first }
@@ -206,29 +202,13 @@ fun StartScreen(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(0.dp, 20.dp, 0.dp, 20.dp)
     ) {
         Column {
-            // Título de la sección
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(14.dp, 20.dp, 14.dp, 0.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(GrayProduct),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Categorías",
-                    color = Color.White,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            }
+            // Usando el CategoryHeader para el título
+            CategoryHeader(categoryName = "Categorías")
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             // Contenedor de las categorías
             Column(
@@ -255,8 +235,10 @@ fun StartScreen(
                                     modifier = Modifier
                                         .size(180.dp, 200.dp) // Aumentado para mejor visibilidad
                                         .clip(RoundedCornerShape(16.dp)) // Bordes más suaves
-                                        .background(Color.White)
-                                        .shadow(8.dp, RoundedCornerShape(16.dp)) // Sombras elegantes
+                                        .shadow(
+                                            8.dp,
+                                            RoundedCornerShape(16.dp)
+                                        ) // Sombras elegantes
                                         .clickable {
                                             navController.navigate("ProductsScreen/${buttonTexts[index]}")
                                         },
@@ -277,6 +259,7 @@ fun StartScreen(
                                                     .clip(RoundedCornerShape(16.dp)), // Mantiene el borde redondeado
                                                 contentScale = ContentScale.Crop // Ajusta la escala de la imagen
                                             )
+
                                             is ImageVector -> Icon(
                                                 imageVector = icon,
                                                 contentDescription = "Ícono de ${buttonTexts[index]}",
@@ -312,160 +295,64 @@ fun StartScreen(
     }
 }
 
-data class Product(
-    val name: String,
-    val description: String,
-    val price: Double,
-    val image: Any // Puede ser un ImageVector o un Int (R.drawable)
-)
-
-
 @Composable
 fun ProductScreen(navController: NavController) {
+    Column {
+        // Usando el CategoryHeader para el título
+        CategoryHeader(categoryName = "Destacados")
+
+        Spacer(modifier = Modifier.height(24.dp))
+    }
+
     val products = listOf(
-        Product("Taladro Inalámbrico Electrico",
-            "NANWEI Kit de Taladro Inalámbrico Electrico con 3 Modos de Trabajo Atornillado/Taladrado/Impacto, 45N.m, Ajuste de Par de 25+1, Desatornillador Eléctrico con 2 Baterías Recargables y 28 Accesorios",
-            594.00, R.drawable.taladro),
-        Product("Taladro Inalámbrico Electrico",
-            "NANWEI Kit de Taladro Inalámbrico Electrico con 3 Modos de Trabajo Atornillado/Taladrado/Impacto, 45N.m, Ajuste de Par de 25+1, Desatornillador Eléctrico con 2 Baterías Recargables y 28 Accesorios",
-            594.00, R.drawable.taladro),
-        Product("Producto 3", "Descripción del producto 3", 200.00, Icons.Default.FavoriteBorder),
-        Product("Producto 4", "Descripción del producto 4", 250.00, Icons.Default.Star),
-        Product("Producto 5", "Descripción del producto 5", 300.00, Icons.Default.Person),
-        Product("Producto 6", "Descripción del producto 6", 350.00, Icons.Default.Home),
-        Product("Producto 7", "Descripción del producto 7", 400.00, Icons.Default.Settings),
-        Product("Producto 8", "Descripción del producto 8", 450.00, Icons.Default.Info)
+        Product(
+            7,
+            "Taladro Inalámbrico",
+            "NANWEI Kit de Taladro Inalámbrico Electrico",
+            594.00, R.drawable.taladro
+        ),
+        Product(
+            8,
+            "Pulidora inalámbrica",
+            "Esmeriladora Angular Pulidora Inalambrica Con Accesorios",
+            799.00, R.drawable.pulidora
+        ),
+        Product(
+            2,
+            "Kit desarmador",
+            "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas",
+            295.00, R.drawable.desarmador
+        ),
+        Product(
+            10,
+            "Pistola de calor",
+            "RexQualis de 2000w Temperatura Regulable 4 Boquillas",
+            384.0, R.drawable.pistolacalor
+        ),
+        Product(
+            1,
+            "Engrapadora",
+            "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas",
+            188.00, R.drawable.engrapadora
+        ),
+        Product(
+            5,
+            "Pinza de presión",
+            "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270",
+            94.00, R.drawable.pinza
+        ),
+        Product(
+            6,
+            "Escalera Tubular",
+            "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118",
+            595.00, R.drawable.escaleras
+        ),
+        Product(
+            4,
+            "Martillo Uña Recta",
+            "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997",
+            149.00, R.drawable.martillo
+        )
     )
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(0.dp, 5.dp, 0.dp, 20.dp)
-    ) {
-        Column {
-            // Título "Destacados"
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(14.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(Color(0xff2C2C2C)),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Destacados",
-                    color = Color.White,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Tarjetas de productos
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp) // Espaciado entre las filas
-            ) {
-                val numColumns = 2
-                val numRows = (products.size + numColumns - 1) / numColumns
-
-                repeat(numRows) { rowIndex ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp) // Espaciado entre columnas
-                    ) {
-                        repeat(numColumns) { columnIndex ->
-                            val index = rowIndex * numColumns + columnIndex
-                            if (index < products.size) {
-                                val product = products[index]
-                                Box(
-                                    modifier = Modifier
-                                        .weight(1f) // Para que las columnas tengan el mismo peso
-                                        .aspectRatio(0.7f) // Ajusta esta relación para mantener proporciones
-                                ) {
-                                    ProductCard(product = product, navController = navController)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    ProductGrid(products = products, navController = navController)
     }
-}
-
-@Composable
-fun ProductCard(product: Product, navController: NavController) {
-    Box(
-        modifier = Modifier
-            .width(240.dp) // Aumentar el ancho de la tarjeta
-            .height(400.dp) // Aumentar la altura de la tarjeta
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color.White)
-            .border(1.dp, Color.LightGray, RoundedCornerShape(12.dp)) // Borde sutil
-            .shadow(4.dp, RoundedCornerShape(12.dp)) // Sombra
-            .clickable { navController.navigate("CardProducts") },
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp), // Espacio más grande entre los elementos
-            modifier = Modifier.padding(12.dp) // Añadimos padding dentro de la tarjeta
-        ) {
-            // Imagen del producto o icono
-            when (val image = product.image) {
-                is Int -> Image(
-                    painter = painterResource(id = image),
-                    contentDescription = product.name,
-                    modifier = Modifier.size(140.dp) // Aumentar el tamaño de la imagen
-                )
-                is ImageVector -> Icon(
-                    imageVector = image,
-                    contentDescription = product.name,
-                    modifier = Modifier.size(80.dp), // Ícono más grande
-                    tint = Color.Black
-                )
-            }
-
-            // Nombre del producto
-            Text(
-                text = product.name,
-                fontSize = 18.sp, // Aumentar tamaño del texto
-                fontWeight = FontWeight.Bold, // Texto del nombre en negrita
-                color = Color.Black,
-                textAlign = TextAlign.Center,
-                maxLines = 1, // Limitar a una línea
-                overflow = TextOverflow.Ellipsis, // Puntos suspensivos si es muy largo
-                fontFamily = FontFamily.SansSerif // Fuente similar a Amazon
-            )
-
-            // Descripción del producto
-            Text(
-                text = product.description,
-                fontSize = 16.sp, // Aumentar tamaño de texto de descripción
-                color = Color.Gray,
-                textAlign = TextAlign.Justify, // Justificar el texto
-                maxLines = Int.MAX_VALUE, // Mostrar todas las líneas
-                overflow = TextOverflow.Visible, // Mostrar todo el texto
-                fontFamily = FontFamily.SansSerif // Fuente similar a Amazon
-            )
-
-            // Precio del producto
-            Text(
-                text = "$${product.price}",
-                fontSize = 20.sp, // Aumentar tamaño del precio
-                fontWeight = FontWeight.Bold, // Precio en negrita
-                color = Color.Black,
-                fontFamily = FontFamily.SansSerif // Fuente similar a Amazon
-            )
-        }
-    }
-}
-
-

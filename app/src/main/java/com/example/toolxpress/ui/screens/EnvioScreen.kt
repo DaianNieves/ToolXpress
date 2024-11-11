@@ -1,5 +1,13 @@
 package com.example.toolxpress.ui.screens
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,23 +21,60 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
-import com.example.toolxpress.ui.theme.Orange
-
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.YellowIcons
+import kotlinx.coroutines.delay
 
 @Composable
 fun EnvioScreen(navController: NavController) {
     var sliderPosition by remember { mutableStateOf(0f) }
+    val context = LocalContext.current
 
-    // Simular progreso automáticamente
+    // Solicitar permisos si es necesario
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (!isGranted) {
+            // Manejar caso en que el permiso no fue concedido
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    // Crear el canal de notificación al iniciar la pantalla
+    LaunchedEffect(Unit) {
+        createNotificationChannel(context)
+    }
+
+    // Simular progreso automáticamente y enviar notificaciones
     LaunchedEffect(Unit) {
         while (sliderPosition < 1f) {
             delay(9000) // Espera 9 segundos
             sliderPosition += 0.5f // Avanza el progreso en un 50%
+
+            when (sliderPosition) {
+                0f -> sendNotification(context, "Preparación", "Tu pedido está en preparación.")
+                0.5f -> sendNotification(context, "Pedido en Camino", "Tu pedido ha salido para la entrega.")
+                1f -> sendNotification(context, "Pedido Entregado", "Tu pedido ha sido entregado exitosamente.")
+            }
         }
     }
 
@@ -37,7 +82,6 @@ fun EnvioScreen(navController: NavController) {
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-
     ) {
         // Barra superior
         item {
@@ -45,15 +89,15 @@ fun EnvioScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Orange)
+                    .background(YellowIcons)
                     .padding(16.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back",
-                    tint = Color.White,
+                    tint = BlueBackground,
                     modifier = Modifier.clickable {
-                        navController.navigate("ComprasScreen")
+                        navController.navigate("StartScreen")
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -61,7 +105,7 @@ fun EnvioScreen(navController: NavController) {
                     text = "Estado de la compra",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = BlueBackground
                 )
             }
         }
@@ -75,7 +119,7 @@ fun EnvioScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp),
-                color = Orange
+                color = YellowIcons
             )
         }
 
@@ -152,12 +196,48 @@ fun EnvioScreen(navController: NavController) {
                 isActive = sliderPosition == 1f
             )
         }
-
-        // Spacer al final para proporcionar espacio adicional
+        
         item {
             Spacer(modifier = Modifier.height(30.dp))
         }
     }
+}
+
+fun createNotificationChannel(context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val channel = NotificationChannel(
+            "envio_channel",
+            "Notificaciones de Envío",
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "Canal para notificaciones de estado de envío"
+        }
+
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}
+
+fun sendNotification(context: Context, title: String, message: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+        ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        return
+    }
+
+    val notification = NotificationCompat.Builder(context, "envio_channel")
+        .setSmallIcon(android.R.drawable.ic_dialog_info)
+        .setContentTitle(title)
+        .setContentText(message)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setAutoCancel(true)
+        .build()
+
+    NotificationManagerCompat.from(context).notify(System.currentTimeMillis().toInt(), notification)
 }
 
 @Composable
@@ -169,24 +249,23 @@ fun ProgressIcon(isActive: Boolean, icon: ImageVector, label: String) {
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = if (isActive) Orange else Color.Gray,
+            tint = if (isActive) YellowIcons else Color.White,
             modifier = Modifier.size(40.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = label,
-            color = if (isActive) Orange else Color.Gray,
+            color = if (isActive) YellowIcons else Color.White,
             fontWeight = FontWeight.Bold
         )
     }
 }
-
 @Composable
 fun OrderStatusItem(status: String, date: String, description: String, isActive: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(if (isActive) Color.LightGray else Color.White, shape = RoundedCornerShape(8.dp))
+            .background(if (isActive) Color.White else Color.White, shape = RoundedCornerShape(8.dp))
             .padding(16.dp)
             .padding(vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -199,13 +278,12 @@ fun OrderStatusItem(status: String, date: String, description: String, isActive:
             Text(text = date, color = Color.Black, fontSize = 14.sp)
             Text(text = description, color = Color.Black, fontSize = 14.sp)
         }
-        // Mostrar ícono de check si está activo
         if (isActive) {
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = "Check",
-                tint = Orange,
-                modifier = Modifier.size(24.dp) // Ajusta el tamaño del ícono según sea necesario
+                tint = YellowIcons,
+                modifier = Modifier.size(24.dp)
             )
         }
     }

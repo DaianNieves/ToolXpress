@@ -2,16 +2,7 @@ package com.example.toolxpress.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,11 +15,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,136 +32,176 @@ import com.example.toolxpress.ui.theme.GreenPrice
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
 import com.example.toolxpress.data.model.ShoppingModel
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.GrayProduct
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun ShoppingCartScreen(navController: NavController) {
-    var showDialog by remember { mutableStateOf(false) } // Estado del mensaje emergente
+    var showDialog by remember { mutableStateOf(false) }
+    var productList by remember {
+        mutableStateOf(
+            arrayListOf(
+                ShoppingModel(
+                    7,
+                    "Taladro Inalámbrico",
+                    "NANWEI Kit de Taladro Inalámbrico Electrico",
+                    R.drawable.taladro,
+                    "$594.00"
+                ),
+                ShoppingModel(
+                    8,
+                    "Pulidora inalámbrica",
+                    "Esmeriladora Angular Pulidora Inalambrica Con Accesorios",
+                    R.drawable.pulidora,
+                    "$799.00"
+                ),
+                ShoppingModel(
+                    2,
+                    "Kit desarmador",
+                    "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas",
+                    R.drawable.desarmador,
+                    "$295.00"
+                ),
+                ShoppingModel(
+                    10,
+                    "Pistola de calor",
+                    "RexQualis de 2000w Temperatura Regulable 4 Boquillas",
+                    R.drawable.pistolacalor,
+                    "$384.00"
+                ),
+                ShoppingModel(
+                    1,
+                    "Engrapadora",
+                    "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas",
+                    R.drawable.engrapadora,
+                    "$188.00"
+                ),
+                ShoppingModel(
+                    5,
+                    "Pinza de presión",
+                    "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270",
+                    R.drawable.pinza,
+                    "$94.00"
+                ),
+                ShoppingModel(
+                    6,
+                    "Escalera Tubular",
+                    "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118",
+                    R.drawable.escaleras,
+                    "$595.00"
+                ),
+                ShoppingModel(
+                    4,
+                    "Martillo Uña Recta",
+                    "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997",
+                    R.drawable.martillo,
+                    "$149.00"
+                )
+            )
+        )
+    }
+
+    var totalAmount by remember { mutableStateOf(0.0) }
+
+    // Calcular el total actualizado
+    totalAmount = productList.sumOf { product ->
+        (product.price.replace("$", "").toDoubleOrNull() ?: 0.0) * product.selectedQuantity
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(navController = navController)
-        // Usamos un LazyColumn para permitir el desplazamiento
-        LazyColumn {
 
-            val productList = arrayOf(
-                ShoppingModel(1, "Producto 1", "Descripción del producto 1", R.drawable.ejemploimagen, "$10.00"),
-                ShoppingModel(2, "Producto 2", "Descripción del producto 2", R.drawable.ejemploimagen, "$15.00"),
-                ShoppingModel(3, "Producto 3", "Descripción del producto 3", R.drawable.ejemploimagen, "$20.00"),
-                ShoppingModel(4, "Producto 4", "Descripción del producto 4", R.drawable.ejemploimagen, "$25.00")
-            )
-
+        // Usamos una LazyColumn para hacer scroll en toda la pantalla
+        LazyColumn(modifier = Modifier.weight(1f)) {
             items(productList) { product ->
-                ProductItem(product)
+                ProductItem(
+                    product = product,
+                    onRemove = {
+                        productList.removeIf { it.id == product.id }
+                    },
+                    onQuantityChange = { newQuantity ->
+                        product.selectedQuantity = newQuantity
+                        totalAmount = productList.sumOf { p ->
+                            (p.price.replace("$", "").toDoubleOrNull() ?: 0.0) * p.selectedQuantity
+                        }
+                    }
+                )
             }
 
+            // Card que muestra el total
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    backgroundColor = GrayProduct,
+                    elevation = 4.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Total:",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            "$${"%.2f".format(totalAmount)}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = YellowIcons
+                        )
+                    }
+                }
+            }
+
+            // Contenedor de botones
             item {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp) // Espacio uniforme entre los botones
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // Botón "Comprar"
                     Button(
-                        onClick = { navController.navigate("DomicilioScreen") },
+                        onClick = { navController.navigate("EstableDomicilioScreen") },
                         modifier = Modifier
                             .weight(1f)
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Orange,
-                            contentColor = Color.White
+                            containerColor = YellowIcons,
                         )
                     ) {
                         Text(
                             "Comprar",
-                            fontSize = 15.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center, // Centrado del texto
-                            color = Color.White // Color del texto en blanco
-                        )
-                    }
-
-                    // Botón "Apartar Carrito"
-                    Button(
-                        onClick = { showDialog = true }, // Mostrar el mensaje emergente
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Orange,
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Text(
-                            text = "Apartar Carrito",
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center, // Centrado del texto
-                            color = Color.White // Color del texto en blanco
+                            textAlign = TextAlign.Center,
+                            color = BlueBackground
                         )
                     }
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
             }
         }
-    }
-
-    // Mensaje emergente
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = {
-                Text(
-                    "Productos apartados",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center, // Centrar el texto del título
-                    modifier = Modifier.fillMaxWidth() // Llenar el ancho
-                )
-            },
-            text = {
-                Text(
-                    "Solo tienen 48 horas para recoger y pagar en tienda.",
-                    style = MaterialTheme.typography.body1.copy(
-                        fontSize = 18.sp,
-                        color = Color.Gray // Color del texto del mensaje
-                    ),
-                    textAlign = TextAlign.Center, // Centrar el texto
-                    modifier = Modifier.fillMaxWidth() // Llenar el ancho
-                )
-            },
-            confirmButton = {
-                Button(
-                    onClick = { showDialog = false },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange, // Color del botón
-                        contentColor = Color.White // Color del texto del botón
-                    ),
-                    shape = RoundedCornerShape(20.dp), // Esquinas redondeadas del botón
-                    modifier = Modifier
-                        .fillMaxWidth() // Llenar el ancho
-                        .padding(horizontal = 16.dp, vertical = 8.dp) // Espaciado del botón
-                ) {
-                    Text(
-                        "Aceptar",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp // Tamaño del texto del botón
-                    )
-                }
-            },
-            properties = DialogProperties(),
-            modifier = Modifier
-                .background(Color.White, shape = RoundedCornerShape(16.dp)) // Esquinas redondeadas
-                .padding(24.dp) // Espaciado adicional para el contenido
-                .fillMaxWidth(0.8f) // Ancho del diálogo
-        )
     }
 }
 
 @Composable
-fun ProductItem(product: ShoppingModel) {
+fun ProductItem(
+    product: ShoppingModel,
+    onRemove: () -> Unit,
+    onQuantityChange: (Int) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(1) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -199,34 +226,29 @@ fun ProductItem(product: ShoppingModel) {
                     Text(product.name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Text(product.description, fontSize = 14.sp)
 
-                    Row {
-                        TextButton(onClick = {}) {
-                            Text("Guardar", color = Orange, fontSize = 16.sp)
-                        }
-                        TextButton(onClick = {}) {
-                            Text("Eliminar", color = Orange, fontSize = 16.sp)
-                        }
-                    }
-
-                    var expanded by remember { mutableStateOf(false) }
-                    var selectedOption by remember { mutableStateOf("Selecciona cantidad") }
-
                     Box {
                         TextButton(onClick = { expanded = true }) {
-                            Text(selectedOption, fontSize = 16.sp)
+                            Text("Cantidad: $selectedOption", fontSize = 16.sp)
                         }
                         DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false }
                         ) {
-                            listOf("1", "2", "3", "4", "5", "6").forEach { option ->
+                            listOf(1, 2, 3, 4, 5, 6).forEach { option ->
                                 DropdownMenuItem(onClick = {
                                     selectedOption = option
+                                    onQuantityChange(option)
                                     expanded = false
                                 }) {
-                                    Text(option)
+                                    Text(option.toString())
                                 }
                             }
+                        }
+                    }
+
+                    Row {
+                        TextButton(onClick = onRemove) {
+                            Text("Eliminar del Carrito", color = Orange, fontSize = 16.sp)
                         }
                     }
                 }
@@ -239,7 +261,9 @@ fun ProductItem(product: ShoppingModel) {
                 horizontalArrangement = Arrangement.End
             ) {
                 Text("Subtotal: ", fontSize = 18.sp)
-                Text(product.price, fontSize = 18.sp, color = GreenPrice)
+                val updatedPrice =
+                    (product.price.replace("$", "").toDoubleOrNull() ?: 0.0) * selectedOption
+                Text("$${"%.2f".format(updatedPrice)}", fontSize = 18.sp, color = GreenPrice)
             }
         }
     }

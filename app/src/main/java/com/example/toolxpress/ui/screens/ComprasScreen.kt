@@ -5,16 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -27,11 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,12 +31,15 @@ import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.components.TopBar
 import com.example.toolxpress.ui.theme.Orange
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun ComprasScreen(navController: NavController) {
     var quantity by remember { mutableStateOf(1) }
     var expanded by remember { mutableStateOf(false) }
     val quantityOptions = (1..6).toList()
+    val unitPrice = 199.99
+    val totalPrice = unitPrice * quantity
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -59,40 +49,40 @@ fun ComprasScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp), // Reducido para dar más espacio al Card
             contentAlignment = Alignment.TopCenter
         ) {
             Card(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .padding(16.dp),
+                    .fillMaxWidth(0.95f) // Aumenta el tamaño del cuadro
+                    .padding(8.dp), // Menor padding para que ocupe más espacio
                 shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(8.dp)
+                elevation = CardDefaults.cardElevation(12.dp) // Aumentada la elevación
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = 16.dp, vertical = 16.dp) // Aumentado el padding vertical
                 ) {
                     // Imagen del producto
                     Image(
-                        painter = painterResource(id = R.drawable.ferreteria),
+                        painter = painterResource(id = R.drawable.taladro),
                         contentDescription = "Imagen del producto",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
+                            .height(250.dp) // Aumentada la altura de la imagen
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
                     // Nombre del producto
                     Text(
-                        text = "Nombre del producto",
+                        text = "Taladro Profesional 800W con Percusión",
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
-                            fontSize = 22.sp
+                            fontSize = 24.sp // Aumentada la fuente
                         ),
                         modifier = Modifier.padding(top = 8.dp)
                     )
@@ -101,95 +91,95 @@ fun ComprasScreen(navController: NavController) {
 
                     // Descripción del producto
                     Text(
-                        text = "Esta es una breve descripción del producto.",
+                        text = "Ideal para trabajos de construcción y reparación en casa. Potente motor de 800W con función de percusión para taladrar en superficies duras.",
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            fontSize = 16.sp,
-                            color = Color.Gray
+                            fontSize = 18.sp, // Aumentada la fuente
+                            color = Color.Black
                         ),
                         modifier = Modifier.padding(horizontal = 8.dp)
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Selector de cantidad de productos
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(8.dp))
-                                .clickable { expanded = !expanded }
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = quantity.toString(),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = 20.sp
-                                ),
-                                textAlign = androidx.compose.ui.text.style.TextAlign.Center // Centrar texto
-                            )
-                            // Icono de flecha
-                            Icon(
-                                imageVector = Icons.Filled.KeyboardArrowDown, // Flecha hacia abajo
-                                contentDescription = "Expandir opciones",
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-
-                        // Mostrar menú desplegable
-                        if (expanded) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.White)
-                                    .padding(8.dp)
-                            ) {
-                                quantityOptions.forEach { option ->
-                                    Text(
-                                        text = option.toString(),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp)
-                                            .clickable {
-                                                quantity = option
-                                                expanded = false
-                                            },
-                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                            fontSize = 18.sp
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    // Sección de detalles
+                    Text(
+                        text = "Detalles del producto:",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp // Aumentada la fuente
+                        ),
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                    Text(
+                        text = """
+                            • Potencia: 800W
+                            • Velocidad: hasta 3000 RPM
+                            • Capacidad de perforación: 13 mm en hormigón
+                            • Peso: 2.2 kg
+                        """.trimIndent(),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 16.sp, // Aumentada la fuente
+                            color = Color.Black
+                        ),
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Precio del producto
+                    // Precio total según la cantidad
                     Text(
-                        text = "$199.99",
+                        text = "Precio unitario: $199.99",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 16.sp,
+                            color = Color.Black
+                        ),
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                    Text(
+                        text = "Total: $${"%.2f".format(totalPrice)}",
                         style = MaterialTheme.typography.titleLarge.copy(
                             color = Color.Green,
-                            fontSize = 24.sp,
+                            fontSize = 26.sp, // Aumentada la fuente
                             fontWeight = FontWeight.Bold
                         ),
                         modifier = Modifier.padding(top = 8.dp)
                     )
 
+                    // Detalles de envío y disponibilidad
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Llega mañana si compras en la próxima hora",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 16.sp, // Aumentada la fuente
+                            color = Color.Black
+                        ),
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+                    Text(
+                        text = "Envío gratis",
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 16.sp, // Aumentada la fuente
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Botón en la parte inferior
+                    // Botón de compra
                     Button(
                         onClick = {
                             navController.navigate("EnvioScreen")
                         },
                         modifier = Modifier
-                            .height(50.dp),
+                            .fillMaxWidth()
+                            .height(60.dp), // Aumentada la altura del botón
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Orange,
+                            containerColor = YellowIcons,
                             contentColor = Color.White
-                        )) {
+                        )
+                    ) {
                         Text(text = "Revisar Envio", color = Color.White)
                     }
                 }
