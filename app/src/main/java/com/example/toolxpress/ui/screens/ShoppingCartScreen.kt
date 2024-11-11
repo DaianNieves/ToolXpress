@@ -171,7 +171,7 @@ fun ShoppingCartScreen(navController: NavController) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Button(
-                        onClick = { navController.navigate("DomicilioScreen") },
+                        onClick = { navController.navigate("EstableDomicilioScreen") },
                         modifier = Modifier
                             .weight(1f)
                             .height(50.dp),
@@ -187,78 +187,9 @@ fun ShoppingCartScreen(navController: NavController) {
                             color = BlueBackground
                         )
                     }
-
-                    Button(
-                        onClick = { showDialog = true },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = YellowIcons,
-                        )
-                    ) {
-                        Text(
-                            text = "Apartar Carrito",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            color = BlueBackground
-                        )
-                    }
                 }
             }
         }
-    }
-
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = {
-                Text(
-                    "Productos apartados",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            },
-            text = {
-                Text(
-                    "Solo tienen 48 horas para recoger y pagar en tienda.",
-                    style = MaterialTheme.typography.body1.copy(
-                        fontSize = 18.sp,
-                        color = BlueBackground
-                    ),
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            },
-            confirmButton = {
-                Button(
-                    onClick = { showDialog = false },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = YellowIcons,
-                        contentColor = BlueBackground
-                    ),
-                    shape = RoundedCornerShape(20.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Text(
-                        "Aceptar",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                }
-            },
-            properties = DialogProperties(),
-            modifier = Modifier
-                .background(BlueBackground, shape = RoundedCornerShape(16.dp))
-                .padding(24.dp)
-                .fillMaxWidth(0.8f)
-        )
     }
 }
 

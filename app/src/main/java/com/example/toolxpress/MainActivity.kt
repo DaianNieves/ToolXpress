@@ -20,6 +20,7 @@ import com.example.toolxpress.ui.screens.CreateAccountScreen
 import com.example.toolxpress.ui.screens.DataUserScreen
 import com.example.toolxpress.ui.screens.DomicilioScreen
 import com.example.toolxpress.ui.screens.EnvioScreen
+import com.example.toolxpress.ui.screens.EstableDomicilioScreen
 import com.example.toolxpress.ui.screens.LoginScreenP
 import com.example.toolxpress.ui.screens.MainScreen
 import com.example.toolxpress.ui.screens.MetodoPagoScreen
@@ -84,6 +85,8 @@ fun SetupNavGraph(navController: NavHostController) {
                 ProductsScreen(navController, null, allCategories)
             }
             composable("DataUserScreen") { DataUserScreen(navController) }
+            composable("EstableDomicilioScreen") { EstableDomicilioScreen(navController) }
+
         }
     }
 }
