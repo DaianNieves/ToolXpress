@@ -97,7 +97,7 @@ fun EnvioScreen(navController: NavController) {
                     contentDescription = "Back",
                     tint = BlueBackground,
                     modifier = Modifier.clickable {
-                        navController.navigate("ComprasScreen")
+                        navController.navigate("StartScreen")
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
