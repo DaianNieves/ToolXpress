@@ -233,7 +233,7 @@ fun DomicilioScreen(navController: NavController) {
                 ) {
                     Button(
                         onClick = {
-                            navController.navigate("MetodoPagoScreen")
+                            navController.navigate("StartScreen")
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = YellowIcons),
                         modifier = Modifier.align(Alignment.Center) // Asegura que el botón esté centrado
