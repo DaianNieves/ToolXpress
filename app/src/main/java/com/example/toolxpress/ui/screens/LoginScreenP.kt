@@ -232,7 +232,7 @@ fun LoginScreenP(navController: NavController) {
                 item {
                     // Botón de inicio de sesión
                     Button(
-                        onClick = { navController.navigate("DataUserScreen") },
+                        onClick = { navController.navigate("StartScreen") },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 25.dp)

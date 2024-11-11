@@ -278,7 +278,7 @@ fun CreateAccountScreen(navController: NavController) {
 
             //Crear cuenta
             Button(
-                onClick = { navController.navigate("login") },
+                onClick = { navController.navigate("DomicilioScreen") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),
