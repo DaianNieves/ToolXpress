@@ -74,14 +74,14 @@ fun SetupNavGraph(navController: NavHostController) {
             composable("DomicilioScreen") { DomicilioScreen(navController) }
             composable("CardProducts") { CardProducts(navController) }
             composable("EnvioScreen") { EnvioScreen(navController) }
-            composable("MetodoPagoScreen") { MetodoPagoScreen(navController) } // Aquí está registrado
+            composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }
             composable("ComprasScreen") { ComprasScreen(navController) }
             composable("ProductsScreen/{categoryName}") { backStackEntry ->
                 val categoryName = backStackEntry.arguments?.getString("categoryName")
                 ProductsScreen(navController, categoryName, allCategories)
             }
-            composable("ProductsScreen") { // Ruta para acceder a todos los productos
-                ProductsScreen(navController, null, allCategories) // Pasar null para todos los productos
+            composable("ProductsScreen") {
+                ProductsScreen(navController, null, allCategories)
             }
             composable("DataUserScreen") { DataUserScreen(navController) }
         }

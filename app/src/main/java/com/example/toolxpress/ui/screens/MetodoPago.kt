@@ -236,26 +236,30 @@ fun MetodoPagoScreen(navController: NavController) {
             }
                 Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
-                onClick = {
-                    if (selectedPaymentMethod == "GooglePay") {
-                        val intent = Intent(context, CheckoutActivity::class.java)
-                        checkoutLauncher.launch(intent)
-                    } else {
-                        navController.navigate("EnvioScreen") // Si no es Google Pay, navega directamente
-                    }
-                },
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = YellowIcons)
+                    .fillMaxWidth() // Ocupa todo el ancho disponible
+                    .padding(horizontal = 16.dp), // Padding para los bordes
+                contentAlignment = Alignment.Center // Centra el contenido horizontalmente
             ) {
-                Text(
-                    text = "Confirmar Pago",
-                    color = BlueBackground,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Button(
+                    onClick = {
+                        if (selectedPaymentMethod == "GooglePay") {
+                            val intent = Intent(context, CheckoutActivity::class.java)
+                            checkoutLauncher.launch(intent)
+                        } else {
+                            navController.navigate("EnvioScreen") // Si no es Google Pay, navega directamente
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = YellowIcons)
+                ) {
+                    Text(
+                        text = "Confirmar Pago",
+                        color = BlueBackground,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
         }

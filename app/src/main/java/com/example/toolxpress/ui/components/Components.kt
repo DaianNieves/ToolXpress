@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,9 +41,6 @@ import androidx.navigation.NavController
 import com.example.toolxpress.R
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
-import com.example.toolxpress.ui.theme.YellowShop
-import com.example.toolxpress.data.model.PostModel
-import com.example.toolxpress.ui.screens.Product
 import com.example.toolxpress.ui.theme.BlueBackground
 import com.example.toolxpress.ui.theme.YellowIcons
 
@@ -341,56 +339,103 @@ fun ReturnBar(navController: NavController, title: String) {
     }
 }
 
+data class Product(
+    val id: Int,
+    val name: String,
+    val description: String,
+    val price: Double,
+    val image: Int)
+
 @Composable
 fun ProductCard(
-    post: PostModel,
+    product: Product,
     navController: NavController,
-    width: Dp = 170.dp,  // Ancho personalizable con valor predeterminado
-    height: Dp = 250.dp  // Alto personalizable con valor predeterminado
+    width: Dp = 170.dp,
+    height: Dp = 250.dp
 ) {
     Box(
         modifier = Modifier
-            .width(width)  // Ancho adaptable
-            .height(height) // Alto adaptable
+            .width(width)
+            .height(height)
             .clip(RoundedCornerShape(10.dp))
-            .background(GrayProduct)
-            .clickable {
-                navController.navigate("CardProducts") // Navegar al detalle del producto
-            },
+            .background(Color.White)
+            .clickable { navController.navigate("CardProducts") },
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()  // Llenar el espacio del contenedor padre
-                .padding(8.dp), // Espaciado interior para evitar que el contenido quede pegado a los bordes
+                .fillMaxSize()
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Image(
-                painter = post.image,
+                painter = painterResource(id = product.image),
                 contentDescription = null,
                 modifier = Modifier
                     .size(100.dp)
-                    .clip(RoundedCornerShape(4.dp))  // Opcional: Redondear la imagen
+                    .clip(RoundedCornerShape(4.dp))
             )
-            Spacer(modifier = Modifier.height(20.dp))
             Text(
-                text = post.title,
+                text = product.name,
                 fontSize = 20.sp,
-                color = Color.Gray,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(40.dp))
             Text(
-                text = post.text,
-                fontSize = 25.sp,
-                color = Orange,
-                textAlign = TextAlign.Center
+                text = product.description,
+                fontSize = 16.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis // Añade puntos suspensivos si el texto es muy largo
+            )
+            Text(
+                text = "$${product.price}",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
             )
         }
     }
 }
 
+
+@Composable
+fun ProductDataProvider(
+    content: @Composable (categories: List<Pair<String, List<Product>>>) -> Unit
+) {
+    val tools = listOf(
+        Product(1, "Engrapadora", "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas", 188.0, R.drawable.engrapadora),
+        Product(2, "Kit desarmador", "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas", 295.0, R.drawable.desarmador),
+        Product(3, "Pinza de presión", "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270", 94.0, R.drawable.pinza),
+        Product(4, "Martillo Uña Recta", "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997", 149.00, R.drawable.martillo),
+        Product(5, "Pinza de presión", "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270", 94.00, R.drawable.pinza),
+        Product(6, "Escalera Tubular", "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118", 595.00, R.drawable.escaleras)
+    )
+
+    val powerTools = listOf(
+        Product(7, "Taladro Inalámbrico", "NANWEI Kit de Taladro Inalámbrico Electrico", 594.0, R.drawable.taladro),
+        Product(8, "Pulidora inalámbrica", "Esmeriladora Angular Pulidora Inalambrica Con Accesorios", 799.0, R.drawable.pulidora),
+        Product(9, "Lijadora", "Lijadora Roto Orbital Profesional Shawty C/16 Lija 14000 Opm", 748.0, R.drawable.lijadora),
+        Product(10, "Pistola de calor", "RexQualis de 2000w Temperatura Regulable 4 Boquillas", 384.0, R.drawable.pistolacalor)
+    )
+
+    val measurementTools = listOf(
+        Product(11, "Multímetro Digital", "Multímetro Digital Profesional Xl830l Medidor Corriente Mano", 93.0, R.drawable.multimetro),
+        Product(12, "Calibrador digital", "Calibrador Digital RexQualis 6in Precisión 0.01mm Metal", 249.0, R.drawable.calibrador),
+        Product(13, "Multímetro de gancho", "AstroAI Multimetro de Gancho, Pinza Amperimétrica", 610.0, R.drawable.calibradorgancho)
+    )
+
+    val categories = listOf(
+        "Herramientas manuales" to tools,
+        "Herramientas eléctricas" to powerTools,
+        "Herramientas de medición" to measurementTools
+    )
+
+    content(categories)
+}
 
 @Composable
 fun CategoryHeader(categoryName: String) {
@@ -410,48 +455,6 @@ fun CategoryHeader(categoryName: String) {
             textAlign = TextAlign.Center
         )
     }
-}
-
-@Composable
-fun ProductDataProvider(
-    content: @Composable (categories: List<Pair<String, List<PostModel>>>) -> Unit
-) {
-
-    val postsCategory1 = listOf(
-        PostModel(1, "Engrapadora", "$188.0", painterResource(R.drawable.engrapadora)),
-        //Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas
-        PostModel(2, "Kit desarmador", "$295", painterResource(R.drawable.desarmador)),
-        //Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas
-        PostModel(3, "Pinza de presión", "$94", painterResource(R.drawable.pinza))
-        //Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270
-    )
-    val postsCategory2 = listOf(
-        PostModel(4, "Taladro", "$594", painterResource(R.drawable.taladro)),
-        //NANWEI Kit de Taladro Inalámbrico Electrico
-        PostModel(5, "Pulidora inalámbrica", "$799", painterResource(R.drawable.pulidora)),
-        //smeriladora Angular Pulidora Inalambrica Con Accesorios
-        PostModel(6, "Lijadora", "$748", painterResource(R.drawable.lijadora))
-        //Lijadora Roto Orbital Profesional Shawty C/16 Lija 14000 Opm
-    )
-
-    val postsCategory3 = listOf(
-        PostModel(7, "Multimetro Digital", "$93", painterResource(R.drawable.multimetro)),
-        ////Multímetro Digital Profesional Xl830l Medidor Corriente Mano
-        PostModel(8, "Calibrador digital", "$249", painterResource(R.drawable.calibrador)),
-        //Calibrador Digital RexQualis 6in Precisión 0.01mm Metal
-        PostModel(9, "Multimetro de gancho", "610", painterResource(R.drawable.calibradorgancho)),
-        //AstroAI Multimetro de Gancho, Pinza Amperimétrica, Multímetro Digital Automático, Medidor de Corriente Voltaje AC/DC, Corriente alterna，Resistencia, Continua, Diodos Pinza, Indicador de seguridad
-        PostModel(10, "flexometro", "$199", painterResource(R.drawable.flexometro))
-    )
-
-    val categories = listOf(
-        "Herrramientas manuales" to postsCategory1,
-        "Herramientas electricas" to postsCategory2,
-        "Herrramientas de medición" to postsCategory3
-    )
-
-    // Llama al contenido, pasando las categorías
-    content(categories)
 }
 
 @Composable

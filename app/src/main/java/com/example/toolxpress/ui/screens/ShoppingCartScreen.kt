@@ -32,6 +32,9 @@ import com.example.toolxpress.ui.theme.GreenPrice
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
 import com.example.toolxpress.data.model.ShoppingModel
+import com.example.toolxpress.ui.theme.BlueBackground
+import com.example.toolxpress.ui.theme.GrayProduct
+import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun ShoppingCartScreen(navController: NavController) {
@@ -40,32 +43,60 @@ fun ShoppingCartScreen(navController: NavController) {
         mutableStateOf(
             arrayListOf(
                 ShoppingModel(
-                    1,
-                    "Producto 1",
-                    "Descripción del producto 1",
-                    R.drawable.ejemploimagen,
-                    "$10.00"
+                    7,
+                    "Taladro Inalámbrico",
+                    "NANWEI Kit de Taladro Inalámbrico Electrico",
+                    R.drawable.taladro,
+                    "$594.00"
+                ),
+                ShoppingModel(
+                    8,
+                    "Pulidora inalámbrica",
+                    "Esmeriladora Angular Pulidora Inalambrica Con Accesorios",
+                    R.drawable.pulidora,
+                    "$799.00"
                 ),
                 ShoppingModel(
                     2,
-                    "Producto 2",
-                    "Descripción del producto 2",
-                    R.drawable.ejemploimagen,
-                    "$15.00"
+                    "Kit desarmador",
+                    "Juego P/reparación De Celulares Y Disp. Electrónicos,77 Pzas",
+                    R.drawable.desarmador,
+                    "$295.00"
                 ),
                 ShoppingModel(
-                    3,
-                    "Producto 3",
-                    "Descripción del producto 3",
-                    R.drawable.ejemploimagen,
-                    "$20.00"
+                    10,
+                    "Pistola de calor",
+                    "RexQualis de 2000w Temperatura Regulable 4 Boquillas",
+                    R.drawable.pistolacalor,
+                    "$384.00"
+                ),
+                ShoppingModel(
+                    1,
+                    "Engrapadora",
+                    "Engrapadora Tipo Pistola Para Tapiceria Con 3000 Grapas",
+                    R.drawable.engrapadora,
+                    "$188.00"
+                ),
+                ShoppingModel(
+                    5,
+                    "Pinza de presión",
+                    "Pinza Presión 10' Mordaza Recta Pretul Granel Pretul 2270",
+                    R.drawable.pinza,
+                    "$94.00"
+                ),
+                ShoppingModel(
+                    6,
+                    "Escalera Tubular",
+                    "Escalera Tubular, Plegable, 2 Peldaños, Pretul Pretul 24118",
+                    R.drawable.escaleras,
+                    "$595.00"
                 ),
                 ShoppingModel(
                     4,
-                    "Producto 4",
-                    "Descripción del producto 4",
-                    R.drawable.ejemploimagen,
-                    "$25.00"
+                    "Martillo Uña Recta",
+                    "Martillo Uña Recta, 16oz, Mango Fibra De Vidrio Truper 19997",
+                    R.drawable.martillo,
+                    "$149.00"
                 )
             )
         )
@@ -105,7 +136,7 @@ fun ShoppingCartScreen(navController: NavController) {
                         .fillMaxWidth()
                         .padding(16.dp),
                     shape = RoundedCornerShape(8.dp),
-                    backgroundColor = Color.White,
+                    backgroundColor = GrayProduct,
                     elevation = 4.dp
                 ) {
                     Row(
@@ -118,13 +149,14 @@ fun ShoppingCartScreen(navController: NavController) {
                         Text(
                             "Total:",
                             fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
                         )
                         Text(
                             "$${"%.2f".format(totalAmount)}",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color = GreenPrice
+                            color = YellowIcons
                         )
                     }
                 }
@@ -144,16 +176,15 @@ fun ShoppingCartScreen(navController: NavController) {
                             .weight(1f)
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Orange,
-                            contentColor = Color.White
+                            containerColor = YellowIcons,
                         )
                     ) {
                         Text(
                             "Comprar",
-                            fontSize = 15.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
-                            color = Color.White
+                            color = BlueBackground
                         )
                     }
 
@@ -163,16 +194,15 @@ fun ShoppingCartScreen(navController: NavController) {
                             .weight(1f)
                             .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Orange,
-                            contentColor = Color.White
+                            containerColor = YellowIcons,
                         )
                     ) {
                         Text(
                             text = "Apartar Carrito",
-                            fontSize = 15.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
-                            color = Color.White
+                            color = BlueBackground
                         )
                     }
                 }
@@ -187,7 +217,7 @@ fun ShoppingCartScreen(navController: NavController) {
                 Text(
                     "Productos apartados",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
+                    fontSize = 24.sp,
                     color = Color.Black,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -198,7 +228,7 @@ fun ShoppingCartScreen(navController: NavController) {
                     "Solo tienen 48 horas para recoger y pagar en tienda.",
                     style = MaterialTheme.typography.body1.copy(
                         fontSize = 18.sp,
-                        color = Color.Gray
+                        color = BlueBackground
                     ),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -208,8 +238,8 @@ fun ShoppingCartScreen(navController: NavController) {
                 Button(
                     onClick = { showDialog = false },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange,
-                        contentColor = Color.White
+                        containerColor = YellowIcons,
+                        contentColor = BlueBackground
                     ),
                     shape = RoundedCornerShape(20.dp),
                     modifier = Modifier
@@ -225,7 +255,7 @@ fun ShoppingCartScreen(navController: NavController) {
             },
             properties = DialogProperties(),
             modifier = Modifier
-                .background(Color.White, shape = RoundedCornerShape(16.dp))
+                .background(BlueBackground, shape = RoundedCornerShape(16.dp))
                 .padding(24.dp)
                 .fillMaxWidth(0.8f)
         )
