@@ -46,6 +46,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inicializar el gestor global de notificaciones
+        NotificationManagerSingleton.initialize(this)
+
         enableEdgeToEdge()
         setContent {
             ComposableMultiScreenApp()
