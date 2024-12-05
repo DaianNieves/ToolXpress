@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.toolxpress.notifications.NotificationManagerSingleton
 import com.example.toolxpress.ui.components.ProductDataProvider
 import com.example.toolxpress.ui.screens.CardProducts
 import com.example.toolxpress.ui.screens.ComprasScreen
@@ -46,6 +47,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inicializar el gestor global de notificaciones
+        NotificationManagerSingleton.initialize(this)
+
         enableEdgeToEdge()
         setContent {
             ComposableMultiScreenApp()

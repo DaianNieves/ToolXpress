@@ -66,7 +66,7 @@ fun LoginScreenP(navController: NavController) {
                     // Email/Usuario
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "Email or Username",
+                            text = "Correo o Nombre de usuario",
                             color = YellowIcons,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
@@ -97,7 +97,7 @@ fun LoginScreenP(navController: NavController) {
                                     Box(Modifier.fillMaxWidth()) {
                                         if (email.isEmpty()) {
                                             Text(
-                                                "Enter your email or username",
+                                                "Ingrese su correo electrónico o nombre de usuario",
                                                 color = BlueBackground,
                                                 fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold
@@ -117,7 +117,7 @@ fun LoginScreenP(navController: NavController) {
                         }
                         if (hasEmailError) {
                             Text(
-                                text = "Please enter a valid email address.",
+                                text = "Por favor, introduzca una dirección de correo electrónico válida.",
                                 color = YellowIcons,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -132,7 +132,7 @@ fun LoginScreenP(navController: NavController) {
                     // Campo de texto para contraseña - mostrar/ocultar contraseña
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "Password",
+                            text = "Contraseña",
                             color = YellowIcons,
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
@@ -164,7 +164,7 @@ fun LoginScreenP(navController: NavController) {
                                     Box(Modifier.fillMaxWidth()) {
                                         if (password.isEmpty()) {
                                             Text(
-                                                "Enter your password",
+                                                "Ingrese su contraseña",
                                                 color = BlueBackground,
                                                 fontSize = 18.sp,
                                                 fontWeight = FontWeight.Bold
@@ -219,7 +219,7 @@ fun LoginScreenP(navController: NavController) {
                             )
                         )
                         Text(
-                            text = "Remember me",
+                            text = "Recuérdame",
                             color = Color.White,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
@@ -244,7 +244,7 @@ fun LoginScreenP(navController: NavController) {
                         shape = RoundedCornerShape(16.dp) // Borde redondeado para mejor diseño
                     ) {
                         Text(
-                            text = "Login",
+                            text = "Iniciar sesión",
                             fontSize = 30.sp, // Ajuste del tamaño de fuente a 15.sp
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
@@ -261,7 +261,7 @@ fun LoginScreenP(navController: NavController) {
                         contentAlignment = Alignment.Center
                     ) {
                         ClickableText(
-                            text = AnnotatedString("Create a new account"),
+                            text = AnnotatedString("Crear una nueva cuenta"),
                             onClick = {
                                 navController.navigate("createAccount")
                             },
