@@ -33,12 +33,12 @@ fun EnvioScreen(navController: NavController) {
     val context = LocalContext.current
     val progress by NotificationManagerSingleton.progress.collectAsState()
 
-    // Solicitar permisos si es necesario
+    // Solicitar permisos
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (!isGranted) {
-            // Manejar caso en que el permiso no fue concedido
+
         }
     }
 
@@ -54,7 +54,7 @@ fun EnvioScreen(navController: NavController) {
             }
         }
 
-        // Iniciar las notificaciones globales si no están corriendo
+        //notificaciones globales
         NotificationManagerSingleton.startProgressNotifications(context)
     }
 
@@ -63,7 +63,7 @@ fun EnvioScreen(navController: NavController) {
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        // Barra superior
+
         item {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -92,7 +92,7 @@ fun EnvioScreen(navController: NavController) {
 
         item { Spacer(modifier = Modifier.height(50.dp)) }
 
-        // Indicador de progreso
+
         item {
             LinearProgressIndicator(
                 progress = progress,
@@ -105,7 +105,6 @@ fun EnvioScreen(navController: NavController) {
 
         item { Spacer(modifier = Modifier.height(24.dp)) }
 
-        // Estado del envío (ajusta los iconos según el progreso)
         item {
             Row(
                 modifier = Modifier

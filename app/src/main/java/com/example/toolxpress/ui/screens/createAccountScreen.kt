@@ -73,7 +73,7 @@ fun CreateAccountScreen(navController: NavController) {
                     contentAlignment = Alignment.Center // Alinea el contenido (texto) en el centro del Box
                 ) {
                     Text(
-                        text = "Create a New Account",
+                        text = "Crear una Nueva Cuenta",
                         textAlign = TextAlign.Center,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
@@ -87,7 +87,7 @@ fun CreateAccountScreen(navController: NavController) {
             //Usuario
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Username",
+                    text = "Nombre de usuario",
                     color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
@@ -117,7 +117,7 @@ fun CreateAccountScreen(navController: NavController) {
                             Box(Modifier.fillMaxWidth()) {
                                 if (username.isEmpty()) {
                                     Text(
-                                        "Enter your Username",
+                                        "Ingrese su nombre de usuario",
                                         color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
@@ -143,7 +143,7 @@ fun CreateAccountScreen(navController: NavController) {
             //Correo electrónico
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Email",
+                    text = "Correo electrónico",
                     color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
@@ -174,7 +174,7 @@ fun CreateAccountScreen(navController: NavController) {
                             Box(Modifier.fillMaxWidth()) {
                                 if (email.isEmpty()) {
                                     Text(
-                                        "Enter your email address",
+                                        "Ingrese su dirección de correo electrónico",
                                         color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
@@ -195,7 +195,7 @@ fun CreateAccountScreen(navController: NavController) {
                 }// Mostrar mensaje de error si el correo no es válido
                 if (hasEmailError) {
                     Text(
-                        text = "Please enter a valid email address.",
+                        text = "Por favor, introduzca una dirección de correo electrónico válida.",
                         color = YellowIcons,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -209,7 +209,7 @@ fun CreateAccountScreen(navController: NavController) {
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Password",
+                    text = "Contraseña",
                     color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
@@ -240,7 +240,7 @@ fun CreateAccountScreen(navController: NavController) {
                             Box(Modifier.fillMaxWidth()) {
                                 if (password.isEmpty()) {
                                     Text(
-                                        "Enter your password",
+                                        "Ingrese su contraseña",
                                         color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
@@ -257,7 +257,7 @@ fun CreateAccountScreen(navController: NavController) {
                     )
                     Icon(
                         imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                        contentDescription = "Toggle Password Visibility",
+                        contentDescription = "Alternar visibilidad de contraseña",
                         modifier = Modifier
                             .size(28.dp)
                             .clickable { passwordVisible = !passwordVisible },
@@ -266,7 +266,7 @@ fun CreateAccountScreen(navController: NavController) {
                 }
                 if (hasPasswordError) {
                     Text(
-                        text = "Please enter your password.",
+                        text = "Por favor ingrese su contraseña.",
                         color = YellowIcons,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -286,7 +286,7 @@ fun CreateAccountScreen(navController: NavController) {
                 enabled = !hasEmailError && !hasPasswordError && email.isNotEmpty() && password.isNotEmpty() // Deshabilitar si hay errores o campos vacíos
             ) {
                 Text(
-                    text = "Create Account",
+                    text = "Crear cuenta",
                     color = BlueBackground,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold
