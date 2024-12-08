@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -51,6 +52,9 @@ android {
 }
 
 dependencies {
+    //
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -99,6 +103,10 @@ dependencies {
 
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.5")
+
+    //
+    val room_version= "2.6.1"
+    ksp("androidx.room:room-compiler:$room_version")
 }
 
 
