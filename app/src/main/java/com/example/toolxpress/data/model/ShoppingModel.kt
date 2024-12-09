@@ -14,13 +14,5 @@ data class ShoppingModel(
     val description: String,
     val imageResId: Int,
     val price: String,
-    var selectedQuantity: Int
+    var selectedQuantity: Int = 1
 )
-
-fun ShoppingModel.toCarritoEntity(userId: Int): Carrito {
-    return Carrito(
-        idUsuario = userId,
-        idProducto = this.id,
-        cantidadProducto = this.selectedQuantity
-    )
-}

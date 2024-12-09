@@ -1,13 +1,7 @@
 package com.example.toolxpress.data.model
 
-import android.app.Application
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.toolxpress.Database.AppDatabase
-import kotlinx.coroutines.launch
 
 class ShoppingCartViewModel : ViewModel() {
     // Lista de productos en el carrito

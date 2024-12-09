@@ -3,6 +3,7 @@ package com.example.toolxpress.ServiceDao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.toolxpress.data.model.Carrito
@@ -89,4 +90,7 @@ interface ServiceDao {
 
     @Query("SELECT * FROM carrito")
     suspend fun getAllCarritos(): List<Carrito>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE) // Si el producto ya está en el carrito, lo actualizamos
+    suspend fun insertOrUpdateCarrito(carrito: Carrito)
 }
