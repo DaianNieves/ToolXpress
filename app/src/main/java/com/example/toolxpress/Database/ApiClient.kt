@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
     private var retrofit: Retrofit? = null
-    private const val BASE_URL = "http://10.0.2.2:5000/"
+    private const val BASE_URL = "https://backend-joq6.onrender.com/"
 
     val client: Retrofit?
         get() {
