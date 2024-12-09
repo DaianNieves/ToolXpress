@@ -35,13 +35,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.toolxpress.data.model.ShoppingCartViewModel
 import com.example.toolxpress.ui.theme.YellowIcons
 import com.example.toolxpress.ui.theme.BlueBackground
 import com.example.toolxpress.ui.components.TopBar
 
 @Composable
-fun EstableDomicilioScreen(navController: NavController) {
+fun EstableDomicilioScreen(navController: NavController, shoppingCartViewModel: ShoppingCartViewModel = viewModel()) {
     // Estado para el seguimiento de la selección y el diálogo
     var selectedOption by remember { mutableStateOf<Option?>(null) }
     var showDialog by remember { mutableStateOf(false) }
@@ -204,7 +206,8 @@ fun EstableDomicilioScreen(navController: NavController) {
                     Button(
                         onClick = {
                             showDialog = false
-                            navController.navigate("StartScreen")
+                            shoppingCartViewModel.clearCart() // Limpiar el carrito
+                            navController.navigate("StartScreen") // Navegar a la pantalla de inicio
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = YellowIcons,
@@ -216,7 +219,8 @@ fun EstableDomicilioScreen(navController: NavController) {
                     ) {
                         Text("Aceptar", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
-                },
+                }
+                ,
                 properties = DialogProperties(),
                 modifier = Modifier
                     .background(BlueBackground, shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp))

@@ -28,7 +28,6 @@ import com.example.toolxpress.data.model.ShoppingCartViewModel
 import com.example.toolxpress.data.model.ShoppingModel
 import com.example.toolxpress.ui.components.TopBar
 import com.example.toolxpress.ui.theme.BlueBackground
-import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable

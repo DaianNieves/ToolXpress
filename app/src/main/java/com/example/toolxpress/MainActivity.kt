@@ -99,7 +99,7 @@ fun SetupNavGraph(navController: NavHostController) {
                 ProductsScreen(navController, null, allCategories) // Pasa todas las categorías sin filtro
             }
             composable("DataUserScreen") { DataUserScreen(navController) }
-            composable("EstableDomicilioScreen") { EstableDomicilioScreen(navController) }
+            composable("EstableDomicilioScreen") { EstableDomicilioScreen(navController, shoppingCartViewModel) }
         }
     }
 }

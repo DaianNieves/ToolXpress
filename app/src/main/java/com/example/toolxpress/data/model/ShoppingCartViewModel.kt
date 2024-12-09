@@ -10,6 +10,7 @@ class ShoppingCartViewModel : ViewModel() {
 
     // Añadir un producto al carrito (si ya está, aumentar la cantidad)
     fun addProductToCart(product: ShoppingModel) {
+        println("Antes de agregar: ${_shoppingCart.size}")  // Imprimir tamaño del carrito
         val existingProduct = _shoppingCart.find { it.id == product.id }
         if (existingProduct != null) {
             // Si el producto ya está en el carrito, actualizamos la cantidad
@@ -21,6 +22,7 @@ class ShoppingCartViewModel : ViewModel() {
             // Si no está, lo agregamos
             _shoppingCart.add(product)
         }
+        println("Después de agregar: ${_shoppingCart.size}")  // Imprimir tamaño después
     }
 
     // Eliminar un producto del carrito
@@ -28,10 +30,17 @@ class ShoppingCartViewModel : ViewModel() {
         _shoppingCart.removeIf { it.id == productId }
     }
 
-    // Actualizar la cantidad de un producto existente
+    // Limpiar el carrito
+    fun clearCart() {
+        println("Antes de borrar: ${_shoppingCart.size}")
+        _shoppingCart.clear()
+        println("Después de borrar: ${_shoppingCart.size}")
+    }
+
+    // Actualizar la cantidad de un producto existente en el carrito
     fun updateProductQuantity(productId: Int, newQuantity: Int) {
         val productIndex = _shoppingCart.indexOfFirst { it.id == productId }
-        if (productIndex != -1) {
+        if (productIndex != -1 && newQuantity > 0) {
             val product = _shoppingCart[productIndex]
             val updatedProduct = product.copy(selectedQuantity = newQuantity)
             updateProductInCart(updatedProduct)
@@ -40,10 +49,12 @@ class ShoppingCartViewModel : ViewModel() {
 
     // Calcular el total del carrito
     fun calculateTotal(): Double {
-        return _shoppingCart.sumOf { (it.price.replace("$", "").toDoubleOrNull() ?: 0.0) * it.selectedQuantity }
+        return _shoppingCart.sumOf {
+            (it.price.replace("$", "").toDoubleOrNull() ?: 0.0) * it.selectedQuantity
+        }
     }
 
-    // Método privado para actualizar un producto en la lista
+    // Método privado para actualizar un producto en el carrito
     private fun updateProductInCart(updatedProduct: ShoppingModel) {
         val productIndex = _shoppingCart.indexOfFirst { it.id == updatedProduct.id }
         if (productIndex != -1) {
@@ -51,3 +62,4 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 }
+

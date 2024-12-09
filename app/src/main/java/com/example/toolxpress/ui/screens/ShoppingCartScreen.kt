@@ -15,7 +15,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.data.model.ShoppingCartViewModel
 import com.example.toolxpress.ui.theme.GreenPrice
-import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
 import com.example.toolxpress.data.model.ShoppingModel
 import com.example.toolxpress.ui.theme.BlueBackground
