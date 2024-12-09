@@ -158,6 +158,8 @@ fun EstableDomicilioScreen(navController: NavController, shoppingCartViewModel: 
                     onClick = {
                         if (selectedOption == Option.ENVIAR_DOMICILIO) {
                             navController.navigate("MetodoPagoScreen")
+                            shoppingCartViewModel.completePurchase()
+                            shoppingCartViewModel.clearCart() // Limpiar el carrito
                         } else if (selectedOption == Option.RECOGER_ESTABLECIMIENTO) {
                             showDialog = true
                         }
@@ -195,7 +197,7 @@ fun EstableDomicilioScreen(navController: NavController, shoppingCartViewModel: 
                 },
                 text = {
                     Text(
-                        "Solo tienen 48 horas para recoger y pagar en tienda.",
+                        "Solo tienen 48 horas para recoger y pagar en tienda. Por favor acuda a la sucursal sur",
                         fontSize = 18.sp,
                         color = BlueBackground,
                         textAlign = TextAlign.Center,
@@ -206,6 +208,7 @@ fun EstableDomicilioScreen(navController: NavController, shoppingCartViewModel: 
                     Button(
                         onClick = {
                             showDialog = false
+                            shoppingCartViewModel.completePurchase()
                             shoppingCartViewModel.clearCart() // Limpiar el carrito
                             navController.navigate("StartScreen") // Navegar a la pantalla de inicio
                         },

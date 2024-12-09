@@ -288,6 +288,7 @@ fun CreateAccountScreen(navController: NavController) {
                 onClick = {
                     if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
                         isLoading = true // Mostrar el indicador de carga
+                        navController.navigate("DomicilioScreen")
                         CoroutineScope(Dispatchers.IO).launch {
                             try {
                                 // Crear un nuevo usuario con el nuevo ID
