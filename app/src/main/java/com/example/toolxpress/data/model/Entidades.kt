@@ -1,10 +1,11 @@
 package com.example.toolxpress.data.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-
+import androidx.room.Relation
 
 @Entity(tableName = "usuarios")
 data class Usuario(
@@ -72,3 +73,14 @@ data class Carrito(
     @ColumnInfo(name = "idProducto") val idProducto: Int,
     @ColumnInfo(name = "cantidadProducto") val cantidadProducto: Int
 )
+
+data class CarritoConProducto(
+    @Embedded val carrito: Carrito,
+    @Relation(
+        parentColumn = "idProducto",
+        entityColumn = "idProducto"
+    )
+    val producto: Producto
+)
+
+

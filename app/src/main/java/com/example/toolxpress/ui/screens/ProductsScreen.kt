@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,52 +16,55 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.toolxpress.data.model.Product
 import com.example.toolxpress.ui.components.CategoryHeader
-import com.example.toolxpress.ui.components.Product
 import com.example.toolxpress.ui.components.ProductCard
+import com.example.toolxpress.ui.components.ProductDataProvider
 import com.example.toolxpress.ui.components.TopBar
 
 @Composable
 fun ProductsScreen(
     navController: NavController,
-    categoryName: String?,
+    categoryName: String? = null,
     allCategories: List<Pair<String, List<Product>>>
 ) {
-    val selectedProducts = if (categoryName != null) {
-        allCategories.find { it.first == categoryName }?.second ?: emptyList()
-    } else {
-        allCategories.flatMap { it.second }
-    }
+    ProductDataProvider { allCategories ->
+        val selectedProducts = if (categoryName != null) {
+            allCategories.find { it.first == categoryName }?.second ?: emptyList()
+        } else {
+            allCategories.flatMap { it.second }
+        }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(navController = navController)
+        Column(modifier = Modifier.fillMaxSize()) {
+            TopBar(navController = navController)
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
-        ) {
-            if (categoryName == null) {
-                allCategories.forEach { (categoryName, products) ->
-                    item { CategoryHeader(categoryName) }
-                    item {
-                        ProductGrid(products, navController)
-                    }
-                }
-            } else {
-                item { CategoryHeader(categoryName) }
-                if (selectedProducts.isEmpty()) {
-                    item {
-                        Text(
-                            text = "No hay productos disponibles para esta categoría.",
-                            modifier = Modifier.padding(16.dp),
-                            fontSize = 18.sp,
-                            color = Color.Gray
-                        )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                if (categoryName == null) {
+                    allCategories.forEach { (categoryName, products) ->
+                        item { CategoryHeader(categoryName) }
+                        item {
+                            ProductGrid(products, navController)
+                        }
                     }
                 } else {
-                    item {
-                        ProductGrid(selectedProducts, navController)
+                    item { CategoryHeader(categoryName) }
+                    if (selectedProducts.isEmpty()) {
+                        item {
+                            Text(
+                                text = "No hay productos disponibles para esta categoría.",
+                                modifier = Modifier.padding(16.dp),
+                                fontSize = 18.sp,
+                                color = Color.Gray
+                            )
+                        }
+                    } else {
+                        item {
+                            ProductGrid(selectedProducts, navController)
+                        }
                     }
                 }
             }
@@ -104,7 +106,11 @@ fun ProductGrid(products: List<Product>, navController: NavController) {
                                     .weight(1f) // Para que las columnas tengan el mismo tamaño
                                     .fillMaxWidth() // Aseguramos que las tarjetas llenen todo el ancho disponible
                             ) {
-                                ProductCard(product = product, navController = navController)
+                                // Actualizamos el evento de clic para navegar a la pantalla del producto con su ID
+                                ProductCard(
+                                    product = product,
+                                    navController = navController
+                                )
                             }
                         }
                     }

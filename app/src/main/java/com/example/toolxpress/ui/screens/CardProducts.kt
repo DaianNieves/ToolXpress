@@ -21,45 +21,58 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.toolxpress.R
+import com.example.toolxpress.data.model.ProductViewModel
+import com.example.toolxpress.data.model.ShoppingCartViewModel
+import com.example.toolxpress.data.model.ShoppingModel
 import com.example.toolxpress.ui.components.TopBar
+import com.example.toolxpress.ui.theme.BlueBackground
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
-fun CardProducts(navController: NavController) {
-    var quantity by remember { mutableStateOf(1) }
+fun CardProducts(
+    navController: NavController,
+    productId: Int, // Recibimos el ID del producto
+    shoppingCartViewModel: ShoppingCartViewModel,
+    productViewModel: ProductViewModel = viewModel()
+) {
+    // Intentamos obtener el producto por su ID, si no lo encontramos, asignamos null
+    val product = remember { productViewModel.getProductById(productId) }
+
+    // Si no encontramos el producto, mostramos un mensaje de error
+    if (product == null) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "Producto no encontrado",
+            )
+        }
+        return
+    }
+
+    // Si encontramos el producto, continuamos con la UI normal
+    var quantity by remember { mutableIntStateOf(1) }
     var expanded by remember { mutableStateOf(false) }
     val quantityOptions = (1..6).toList()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
         TopBar(navController)
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            contentAlignment = Alignment.TopCenter
-        ) {
+        Box(modifier = Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.TopCenter) {
             Card(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxWidth(0.9f).padding(16.dp),
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(8.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(16.dp)
-                ) {
+                Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(16.dp)) {
                     // Nombre del producto
                     Text(
-                        text = "Nombre del producto",
+                        text = product.name,
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp
@@ -71,7 +84,7 @@ fun CardProducts(navController: NavController) {
 
                     // Imagen del producto
                     Image(
-                        painter = painterResource(id = R.drawable.ferreteria),
+                        painter = painterResource(id = product.image),
                         contentDescription = "Imagen del producto",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -83,7 +96,7 @@ fun CardProducts(navController: NavController) {
 
                     // Descripción del producto
                     Text(
-                        text = "Esta es una breve descripción del producto.",
+                        text = product.description,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontSize = 16.sp,
                             color = Color.Gray
@@ -93,7 +106,7 @@ fun CardProducts(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // Selector de cantidad de productos
+                    // Selector de cantidad
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             modifier = Modifier
@@ -150,9 +163,9 @@ fun CardProducts(navController: NavController) {
 
                     // Precio del producto
                     Text(
-                        text = "$199.99",
+                        text = "$${product.price}",
                         style = MaterialTheme.typography.titleLarge.copy(
-                            color = Color.Green,
+                            color = BlueBackground,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold
                         ),
@@ -164,6 +177,15 @@ fun CardProducts(navController: NavController) {
                     // Botón en la parte inferior
                     Button(
                         onClick = {
+                            val shoppingItem = ShoppingModel(
+                                id = product.id,
+                                name = product.name,
+                                description = product.description,
+                                imageResId = product.image,
+                                price = "$${product.price}",
+                                selectedQuantity = quantity
+                            )
+                            shoppingCartViewModel.addProductToCart(shoppingItem)
                             navController.navigate("ShoppingCart")
                         },
                         modifier = Modifier
@@ -173,7 +195,7 @@ fun CardProducts(navController: NavController) {
                             contentColor = Color.Red
                         )
                     ) {
-                        Text(text = "Agregar al carrito", color = GrayProduct)
+                        Text(text = "Agregar al carrito", color = BlueBackground)
                     }
                 }
             }
