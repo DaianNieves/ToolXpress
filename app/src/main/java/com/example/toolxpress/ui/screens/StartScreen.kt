@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -52,10 +54,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.data.model.Product
 import com.example.toolxpress.ui.components.CategoryHeader
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.components.TopBar
-import com.example.toolxpress.ui.components.Product
 import com.example.toolxpress.ui.components.ProductCard
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -66,21 +68,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(navController: NavController, allCategories: List<Pair<String, List<Product>>>) {
     Column {
-        // La barra superior fija
         Box {
             TopBar(navController)
         }
+        Spacer(modifier = Modifier.height(14.dp))
 
-        // Contenedor con scroll para StartScreen
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())  // Activar el scroll solo en este bloque
+                .verticalScroll(rememberScrollState())
         ) {
-            // Contenido desplazable
+
             OfferCarousel()
             StartScreen(navController, allCategories)
             ProductScreen(navController)
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -88,7 +90,6 @@ fun MainScreen(navController: NavController, allCategories: List<Pair<String, Li
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OfferCarousel() {
-    // Lista de recursos de imágenes para las ofertas
     val offerImages = listOf(
         R.drawable.promo3,
         R.drawable.promo2,
@@ -97,198 +98,126 @@ fun OfferCarousel() {
         R.drawable.promo5
     )
 
-    // Estado del Pager
-    val pagerState = rememberPagerState(initialPage = 0) // Crear el PagerState una sola vez
-
-    // Estado para controlar si se debe iniciar el desplazamiento automático
+    val pagerState = rememberPagerState(initialPage = 0)
     var autoScroll by remember { mutableStateOf(true) }
-
-    // Usar un CoroutineScope para manejar el desplazamiento automático
     val coroutineScope = rememberCoroutineScope()
 
-    // Inicia un LaunchedEffect para el desplazamiento automático
     LaunchedEffect(autoScroll) {
         if (autoScroll) {
             while (true) {
                 delay(5000) // Espera 5 segundos
                 coroutineScope.launch {
-                    // Avanza al siguiente índice con una animación más suave
                     pagerState.animateScrollToPage(
                         page = (pagerState.currentPage + 1) % offerImages.size,
                         animationSpec = tween(
                             durationMillis = 4000,
                             easing = LinearEasing
-                        ) // Animación más suave
+                        )
                     )
                 }
             }
         }
     }
 
-    // Contenedor principal para el carrusel de ofertas
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragStart = {
-                        // Cuando el usuario comienza a arrastrar, detener el desplazamiento automático
-                        autoScroll = false
-                    },
-                    onDragEnd = {
-                        // Reiniciar el desplazamiento automático al soltar
-                        autoScroll = true
-                    },
-                    onDrag = { change, dragAmount ->
-                        // Consume el cambio de toque
-                        change.consume()
-                    }
-                )
-            },
-        contentAlignment = Alignment.Center // Centra el contenido del Box
+            .aspectRatio(16f / 9f) // Relación uniforme para el contenedor del carrusel
     ) {
-        // Carrusel horizontal de imágenes de ofertas
         HorizontalPager(
             count = offerImages.size,
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            itemSpacing = 8.dp
+            verticalAlignment = Alignment.CenterVertically
         ) { page ->
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .width(380.dp)  // Reducido el tamaño de la imagen
-                    .padding(0.dp)
+                    .fillMaxSize()
+                    .background(Color.Black) // Fondo opcional para los bordes vacíos
             ) {
                 Image(
-                    painter = painterResource(id = offerImages[page]), // Carga la imagen
+                    painter = painterResource(id = offerImages[page]),
                     contentDescription = "Oferta",
                     modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(20.dp)) // Bordes redondeados para la imagen
-                        .padding(8.dp), // Ajustar el padding si es necesario
-                    contentScale = ContentScale.Fit // Ajuste para que la imagen no se recorte
+                        .fillMaxWidth()
+                        .aspectRatio(16f / 9f), // Ajusta todas las imágenes a la misma proporción
+                    contentScale = ContentScale.Fit // Asegura que las imágenes se vean completas
                 )
             }
         }
     }
 }
 
+
 @Composable
 fun StartScreen(
     navController: NavController,
     allCategories: List<Pair<String, List<Product>>>
 ) {
-    // Nombres de las categorías
     val buttonTexts = allCategories.map { it.first }
 
-    // Lista personalizada de imágenes o íconos para cada categoría
     val buttonIcons = listOf(
-        R.drawable.fondo1,               // Imagen para la primera categoría
         R.drawable.fondo1,
         R.drawable.fondo1,
-        Icons.Default.Computer,         // Ícono para la segunda categoría
-        Icons.Default.ShoppingCart,     // Ícono para la tercera categoría
-        Icons.Default.Home,             // Ícono adicional
-        Icons.Default.FitnessCenter     // Ícono adicional
+        R.drawable.fondo1,
+        Icons.Default.Computer,
+        Icons.Default.ShoppingCart,
+        Icons.Default.Home,
+        Icons.Default.FitnessCenter
     )
 
     require(buttonIcons.size >= buttonTexts.size) {
         "El número de íconos debe ser igual o mayor al número de categorías"
     }
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
+            .fillMaxSize()
             .padding(0.dp, 20.dp, 0.dp, 20.dp)
+
+
     ) {
-        Column {
-            // Usando el CategoryHeader para el título
-            CategoryHeader(categoryName = "Categorías")
 
-            Spacer(modifier = Modifier.height(10.dp))
+        CategoryHeader(categoryName = "Categorías")
 
-            // Contenedor de las categorías
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp), // Más espacio para que respire
-                verticalArrangement = Arrangement.spacedBy(16.dp) // Espaciado entre recuadros
-            ) {
-                val numColumns = 2 // Reducido a 2 columnas para hacer los recuadros más grandes
-                val numRows = (buttonTexts.size + numColumns - 1) / numColumns
+        Spacer(modifier = Modifier.height(10.dp))
 
-                repeat(numRows) { rowIndex ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(Alignment.CenterHorizontally),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        repeat(numColumns) { columnIndex ->
-                            val index = rowIndex * numColumns + columnIndex
-                            if (index < buttonTexts.size) {
-                                // Recuadro de cada categoría
-                                Box(
-                                    modifier = Modifier
-                                        .size(180.dp, 200.dp) // Aumentado para mejor visibilidad
-                                        .clip(RoundedCornerShape(16.dp)) // Bordes más suaves
-                                        .shadow(
-                                            8.dp,
-                                            RoundedCornerShape(16.dp)
-                                        ) // Sombras elegantes
-                                        .clickable {
-                                            navController.navigate("ProductsScreen/${buttonTexts[index]}")
-                                        },
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    // Imagen de fondo
-                                    Box(
-                                        modifier = Modifier
-                                            .matchParentSize() // Asegura que la imagen cubra todo el área del cuadro
-                                            .clip(RoundedCornerShape(16.dp)) // Mantiene el mismo borde redondeado
-                                    ) {
-                                        when (val icon = buttonIcons[index]) {
-                                            is Int -> Image(
-                                                painter = painterResource(id = icon),
-                                                contentDescription = "Imagen de ${buttonTexts[index]}",
-                                                modifier = Modifier
-                                                    .fillMaxSize() // Asegura que la imagen cubra todo el cuadro
-                                                    .clip(RoundedCornerShape(16.dp)), // Mantiene el borde redondeado
-                                                contentScale = ContentScale.Crop // Ajusta la escala de la imagen
-                                            )
 
-                                            is ImageVector -> Icon(
-                                                imageVector = icon,
-                                                contentDescription = "Ícono de ${buttonTexts[index]}",
-                                                modifier = Modifier.size(80.dp), // Tamaño más grande del ícono
-                                                tint = Color.Black
-                                            )
-                                        }
-                                    }
-
-                                    // Contenido del cuadro
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.SpaceEvenly,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(8.dp) // Espaciado interno para el texto
-                                    ) {
-                                        Text(
-                                            text = buttonTexts[index],
-                                            fontSize = 18.sp, // Aumentar tamaño de la fuente para mayor claridad
-                                            fontWeight = FontWeight.Medium, // Texto más elegante
-                                            color = Color.DarkGray,
-                                            textAlign = TextAlign.Center
-                                        )
-                                    }
-                                }
-                            }
-                        }
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(buttonTexts.size) { index ->
+                // Caja de cada categoría
+                Box(
+                    modifier = Modifier
+                        .size(150.dp) // Tamaño estándar para cada tarjeta
+                        .clip(RoundedCornerShape(16.dp))
+                        .clickable {
+                            navController.navigate("ProductsScreen/${buttonTexts[index]}")
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    // Imagen de fondo
+                    when (val icon = buttonIcons[index]) {
+                        is Int -> Image(
+                            painter = painterResource(id = icon),
+                            contentDescription = "Imagen de ${buttonTexts[index]}",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
                     }
+
+                    // Texto sobre la imagen
+                    Text(
+                        text = buttonTexts[index],
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
         }
@@ -355,4 +284,4 @@ fun ProductScreen(navController: NavController) {
         )
     )
     ProductGrid(products = products, navController = navController)
-    }
+}

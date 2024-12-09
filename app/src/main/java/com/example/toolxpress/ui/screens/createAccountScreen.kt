@@ -1,5 +1,7 @@
 package com.example.toolxpress.ui.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -25,22 +28,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.room.Room
+import com.example.toolxpress.Database.AppDatabase
 import com.example.toolxpress.R
+import com.example.toolxpress.data.model.Usuario
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.components.TopBar
 import com.example.toolxpress.ui.theme.BlueBackground
 import com.example.toolxpress.ui.theme.YellowIcons
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun CreateAccountScreen(navController: NavController) {
-    // Variables de estado
+    val context = LocalContext.current
+    val db = remember { Room.databaseBuilder(context, AppDatabase::class.java, "app-database").build() }
+    val serviceDao = remember { db.serviceDao() } // Obtener el ServiceDao
+
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var hasEmailError by remember { mutableStateOf(false) }
     var hasPasswordError by remember { mutableStateOf(false) }
     var passwordVisible by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         // TopBar permanece fijo, fuera del scroll
@@ -69,11 +83,11 @@ fun CreateAccountScreen(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
-                    modifier = Modifier.fillMaxSize(), // El Box ocupará todo el espacio de la Row
-                    contentAlignment = Alignment.Center // Alinea el contenido (texto) en el centro del Box
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Create a New Account",
+                        text = "Crear una Nueva Cuenta",
                         textAlign = TextAlign.Center,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
@@ -84,10 +98,10 @@ fun CreateAccountScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            //Usuario
+            // Usuario
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Username",
+                    text = "Nombre de usuario",
                     color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
@@ -103,21 +117,19 @@ fun CreateAccountScreen(navController: NavController) {
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     Spacer(modifier = Modifier.width(10.dp))
 
                     BasicTextField(
                         value = username,
                         onValueChange = {
                             username = it.filter { char -> char != ' ' }
-                            //hasPasswordError = password.isEmpty()
                         },
                         modifier = Modifier.weight(1f),
                         decorationBox = { innerTextField ->
                             Box(Modifier.fillMaxWidth()) {
                                 if (username.isEmpty()) {
                                     Text(
-                                        "Enter your Username",
+                                        "Ingrese su nombre de usuario",
                                         color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
@@ -131,19 +143,18 @@ fun CreateAccountScreen(navController: NavController) {
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         ),
-                        singleLine = true,  // input se mantenga en una sola línea
+                        singleLine = true,
                         maxLines = 1
                     )
                 }
             }
 
-
             Spacer(modifier = Modifier.height(16.dp))
 
-            //Correo electrónico
+            // Correo electrónico
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Email",
+                    text = "Correo electrónico",
                     color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
@@ -165,7 +176,6 @@ fun CreateAccountScreen(navController: NavController) {
                         value = email,
                         onValueChange = {
                             email = it.filter { char -> char != ' ' }
-                            // Validar si el correo contiene '@' y tiene un formato adecuado
                             hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email)
                                 .matches() && email.isNotEmpty()
                         },
@@ -174,7 +184,7 @@ fun CreateAccountScreen(navController: NavController) {
                             Box(Modifier.fillMaxWidth()) {
                                 if (email.isEmpty()) {
                                     Text(
-                                        "Enter your email address",
+                                        "Ingrese su dirección de correo electrónico",
                                         color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
@@ -190,12 +200,11 @@ fun CreateAccountScreen(navController: NavController) {
                         ),
                         singleLine = true,
                         maxLines = 1
-
                     )
-                }// Mostrar mensaje de error si el correo no es válido
+                }
                 if (hasEmailError) {
                     Text(
-                        text = "Please enter a valid email address.",
+                        text = "Por favor, introduzca una dirección de correo electrónico válida.",
                         color = YellowIcons,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -205,11 +214,10 @@ fun CreateAccountScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            //Contraseña
-
+            // Contraseña
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Password",
+                    text = "Contraseña",
                     color = YellowIcons,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
@@ -225,7 +233,6 @@ fun CreateAccountScreen(navController: NavController) {
                         .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     Spacer(modifier = Modifier.width(10.dp))
 
                     BasicTextField(
@@ -240,7 +247,7 @@ fun CreateAccountScreen(navController: NavController) {
                             Box(Modifier.fillMaxWidth()) {
                                 if (password.isEmpty()) {
                                     Text(
-                                        "Enter your password",
+                                        "Ingrese su contraseña",
                                         color = BlueBackground,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.Bold
@@ -257,7 +264,7 @@ fun CreateAccountScreen(navController: NavController) {
                     )
                     Icon(
                         imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                        contentDescription = "Toggle Password Visibility",
+                        contentDescription = "Alternar visibilidad de contraseña",
                         modifier = Modifier
                             .size(28.dp)
                             .clickable { passwordVisible = !passwordVisible },
@@ -266,7 +273,7 @@ fun CreateAccountScreen(navController: NavController) {
                 }
                 if (hasPasswordError) {
                     Text(
-                        text = "Please enter your password.",
+                        text = "Por favor ingrese su contraseña.",
                         color = YellowIcons,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -276,17 +283,40 @@ fun CreateAccountScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(60.dp))
 
-            //Crear cuenta
+            // Botón para crear cuenta
             Button(
-                onClick = { navController.navigate("DomicilioScreen") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = YellowIcons),
-                enabled = !hasEmailError && !hasPasswordError && email.isNotEmpty() && password.isNotEmpty() // Deshabilitar si hay errores o campos vacíos
+                onClick = {
+                    if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+                        isLoading = true // Mostrar el indicador de carga
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
+                                // Crear un nuevo usuario con el nuevo ID
+                                val usuario = Usuario(nombre = username, correo = email, contrasena = password)
+
+                                // Insertar el usuario en la base de datos local
+                                serviceDao.insertUsuario(usuario)
+                                Log.d("InsertUser", "Usuario insertado: $usuario")
+
+                                // Obtener todos los usuarios
+                                val usuarios = serviceDao.getAllUsuarios()
+                                Log.d("AllUsers", "Usuarios en la base de datos: $usuarios")
+
+                            } catch (e: Exception) {
+                                withContext(Dispatchers.Main) {
+                                    isLoading = false
+                                    e.printStackTrace()
+                                    Toast.makeText(context, "Error al insertar el usuario: ${e.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    } else {
+                        Toast.makeText(context, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Create Account",
+                    text = "Crear cuenta",
                     color = BlueBackground,
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold

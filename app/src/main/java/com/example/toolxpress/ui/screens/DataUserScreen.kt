@@ -286,3 +286,4 @@ fun AccountInfoCard(title: String, initialValue: String, isVerified: Boolean) {
         }
     }
 }
+

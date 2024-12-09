@@ -10,6 +10,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Handyman
+import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.data.model.Product
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.BlueBackground
@@ -244,6 +246,34 @@ fun TopBar(navController: NavController) {
                         )
                     }
                 }
+                // Opción "Estado de la compra"
+                DropdownMenuItemWithBackground(
+                    onClick = {
+                        expanded = false
+                        navController.navigate("EnvioScreen")
+                    },
+                    backgroundColor = Color(0xFFE3F2FD)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocalShipping,
+                            contentDescription = "Estado de la compra",
+                            tint = Color.Black,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Estado de la compra",
+                            color = Color.Black,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+
+                Divider(color = Color.Gray, thickness = .5.dp)
 
                 // Divider después de la opción "Mis compras"
                 Divider(color = Color.Gray, thickness = .5.dp)
@@ -339,13 +369,6 @@ fun ReturnBar(navController: NavController, title: String) {
     }
 }
 
-data class Product(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val price: Double,
-    val image: Int)
-
 @Composable
 fun ProductCard(
     product: Product,
@@ -359,7 +382,10 @@ fun ProductCard(
             .height(height)
             .clip(RoundedCornerShape(10.dp))
             .background(Color.White)
-            .clickable { navController.navigate("CardProducts") },
+            .clickable {
+                // Navegar a la pantalla de detalle con el ID del producto
+                navController.navigate("CardProducts/${product.id}")
+            },
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -400,7 +426,6 @@ fun ProductCard(
         }
     }
 }
-
 
 @Composable
 fun ProductDataProvider(

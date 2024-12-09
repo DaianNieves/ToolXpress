@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -99,6 +100,15 @@ dependencies {
 
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.5")
+
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.ktx)
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    val room_version= "2.6.1"
+    ksp("androidx.room:room-compiler:$room_version")
 }
 
 

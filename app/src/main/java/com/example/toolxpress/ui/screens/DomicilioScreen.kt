@@ -157,7 +157,7 @@ fun DomicilioScreen(navController: NavController) {
 
                 // Número (Validar que solo se ingresen números)
                 TextFieldWithLabel(
-                    label = "Número",
+                    label = "Número de casa",
                     value = houseNumber,
                     onValueChange = {
                         if (it.all { char -> char.isDigit() }) houseNumber =
@@ -168,24 +168,6 @@ fun DomicilioScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Entre qué calles está
-                TextFieldWithLabel(
-                    label = "¿Entre qué calles está?",
-                    value = betweenStreet1,
-                    onValueChange = { betweenStreet1 = it },
-                    placeholder = "Calle 1"
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                TextFieldWithLabel(
-                    label = "",
-                    value = betweenStreet2,
-                    onValueChange = { betweenStreet2 = it },
-                    placeholder = "Calle 2"
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
 
                 /* ¿Es tu trabajo o tu casa?
                 Text(
