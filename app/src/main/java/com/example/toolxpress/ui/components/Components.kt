@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.data.model.Product
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.theme.Orange
 import com.example.toolxpress.ui.theme.BlueBackground
@@ -368,13 +369,6 @@ fun ReturnBar(navController: NavController, title: String) {
     }
 }
 
-data class Product(
-    val id: Int,
-    val name: String,
-    val description: String,
-    val price: Double,
-    val image: Int)
-
 @Composable
 fun ProductCard(
     product: Product,
@@ -388,7 +382,10 @@ fun ProductCard(
             .height(height)
             .clip(RoundedCornerShape(10.dp))
             .background(Color.White)
-            .clickable { navController.navigate("CardProducts") },
+            .clickable {
+                // Navegar a la pantalla de detalle con el ID del producto
+                navController.navigate("CardProducts/${product.id}")
+            },
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -429,7 +426,6 @@ fun ProductCard(
         }
     }
 }
-
 
 @Composable
 fun ProductDataProvider(

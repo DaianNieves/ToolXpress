@@ -54,10 +54,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.toolxpress.R
+import com.example.toolxpress.data.model.Product
 import com.example.toolxpress.ui.components.CategoryHeader
 import com.example.toolxpress.ui.theme.GrayProduct
 import com.example.toolxpress.ui.components.TopBar
-import com.example.toolxpress.ui.components.Product
 import com.example.toolxpress.ui.components.ProductCard
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
