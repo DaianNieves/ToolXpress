@@ -26,8 +26,7 @@ import com.example.toolxpress.ui.theme.YellowIcons
 
 @Composable
 fun DomicilioScreen(navController: NavController) {
-
-    //Declaración de Variables
+    // Declaración de Variables
     var name by remember { mutableStateOf("") }
     var postalCode by remember { mutableStateOf("") }
     var state by remember { mutableStateOf("") }
@@ -35,11 +34,47 @@ fun DomicilioScreen(navController: NavController) {
     var colony by remember { mutableStateOf("") }
     var street by remember { mutableStateOf("") }
     var houseNumber by remember { mutableStateOf("") }
-    var betweenStreet1 by remember { mutableStateOf("") }
-    var betweenStreet2 by remember { mutableStateOf("") }
-    var isHome by remember { mutableStateOf(true) }
     var contactNumber by remember { mutableStateOf("") }
     val scrollState = rememberScrollState()
+
+    // Variables para errores
+    var nameError by remember { mutableStateOf<String?>(null) }
+    var postalCodeError by remember { mutableStateOf<String?>(null) }
+    var stateError by remember { mutableStateOf<String?>(null) }
+    var cityError by remember { mutableStateOf<String?>(null) }
+    var colonyError by remember { mutableStateOf<String?>(null) }
+    var streetError by remember { mutableStateOf<String?>(null) }
+    var houseNumberError by remember { mutableStateOf<String?>(null) }
+    var contactNumberError by remember { mutableStateOf<String?>(null) }
+
+    // Función de validación por campo
+    fun validateField(field: String, type: String): String? {
+        return when (type) {
+            "name" -> if (field.isBlank()) "El nombre no puede estar vacío." else null
+            "postalCode" -> if (field.isBlank()) {
+                "El código postal no puede estar vacío."
+            } else if (field.length != 5 || field.any { !it.isDigit() }) {
+                "Debe contener 5 números."
+            } else null
+            "state" -> if (field.isBlank()) "El estado no puede estar vacío." else null
+            "city" -> if (field.isBlank()) "El municipio o alcaldía no puede estar vacío." else null
+            "colony" -> if (field.isBlank()) "La colonia no puede estar vacía." else null
+            "street" -> if (field.isBlank()) "La calle no puede estar vacía." else null
+            "houseNumber" -> if (field.isBlank()) {
+                "El número no puede estar vacío."
+            } else if (field.any { !it.isDigit() }) {
+                "Solo se permiten números."
+            } else null
+            "betweenStreet1" -> if (field.isBlank()) "Este campo no puede estar vacío." else null
+            "betweenStreet2" -> if (field.isBlank()) "Este campo no puede estar vacío." else null
+            "contactNumber" -> if (field.isBlank()) {
+                "El teléfono no puede estar vacío."
+            } else if (field.length != 10 || field.any { !it.isDigit() }) {
+                "Debe contener 10 dígitos."
+            } else null
+            else -> null
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -48,10 +83,8 @@ fun DomicilioScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 0.dp)
                 .statusBarsPadding()
         ) {
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -64,7 +97,7 @@ fun DomicilioScreen(navController: NavController) {
                     contentDescription = "Back",
                     tint = BlueBackground,
                     modifier = Modifier.clickable {
-                        navController.popBackStack() // Acción para regresar a la pantalla anterior
+                        navController.popBackStack()
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -78,170 +111,160 @@ fun DomicilioScreen(navController: NavController) {
         }
 
         // Contenido Principal
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(16.dp)
         ) {
+            // Campos con validación inmediata al cambiar
+            TextFieldWithValidation(
+                label = "Nombre y apellido",
+                value = name,
+                onValueChange = {
+                    name = it
+                    nameError = validateField(it, "name")
+                },
+                error = nameError,
+                placeholder = "Tal cual figure en el INE o IFE."
+            )
 
-            Column(
+            TextFieldWithValidation(
+                label = "Código postal",
+                value = postalCode,
+                onValueChange = {
+                    postalCode = it
+                    postalCodeError = validateField(it, "postalCode")
+                },
+                error = postalCodeError,
+                placeholder = "Ingresa tu código postal",
+                keyboardType = KeyboardType.Number
+            )
+
+            TextFieldWithValidation(
+                label = "Estado",
+                value = state,
+                onValueChange = {
+                    state = it
+                    stateError = validateField(it, "state")
+                },
+                error = stateError,
+                placeholder = "Ingresa tu estado"
+            )
+
+            TextFieldWithValidation(
+                label = "Municipio/Alcaldía",
+                value = city,
+                onValueChange = {
+                    city = it
+                    cityError = validateField(it, "city")
+                },
+                error = cityError,
+                placeholder = "Ingresa tu municipio o alcaldía"
+            )
+
+            TextFieldWithValidation(
+                label = "Colonia",
+                value = colony,
+                onValueChange = {
+                    colony = it
+                    colonyError = validateField(it, "colony")
+                },
+                error = colonyError,
+                placeholder = "Ingresa tu colonia"
+            )
+
+            TextFieldWithValidation(
+                label = "Calle",
+                value = street,
+                onValueChange = {
+                    street = it
+                    streetError = validateField(it, "street")
+                },
+                error = streetError,
+                placeholder = "Escribe el nombre de la calle."
+            )
+
+            TextFieldWithValidation(
+                label = "Número",
+                value = houseNumber,
+                onValueChange = {
+                    houseNumber = it
+                    houseNumberError = validateField(it, "houseNumber")
+                },
+                error = houseNumberError,
+                placeholder = "Ingresa el número"
+            )
+
+            TextFieldWithValidation(
+                label = "Teléfono de contacto",
+                value = contactNumber,
+                onValueChange = {
+                    contactNumber = it
+                    contactNumberError = validateField(it, "contactNumber")
+                },
+                error = contactNumberError,
+                placeholder = "Ingresa tu teléfono de contacto",
+                keyboardType = KeyboardType.Phone
+            )
+
+            // Botón Guardar
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState) // Habilitar scroll vertical
-                    .padding(16.dp)
+                    .fillMaxWidth() // El Box ocupará todo el ancho disponible
+                    .padding(horizontal = 16.dp), // Añadir un poco de padding
+                contentAlignment = Alignment.Center // Centra el contenido dentro del Box
             ) {
+                Button(
+                    onClick = {
+                        // Validar todos los campos al intentar guardar
+                        nameError = validateField(name, "name")
+                        postalCodeError = validateField(postalCode, "postalCode")
+                        stateError = validateField(state, "state")
+                        cityError = validateField(city, "city")
+                        colonyError = validateField(colony, "colony")
+                        streetError = validateField(street, "street")
+                        houseNumberError = validateField(houseNumber, "houseNumber")
+                        contactNumberError = validateField(contactNumber, "contactNumber")
 
-                TextFieldWithLabel(
-                    label = "Nombre y apellido",
-                    value = name,
-                    onValueChange = { name = it },
-                    placeholder = "Tal cual figure en el INE o IFE.",
-                )
-
-
-                // Espaciado uniforme
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Código postal (Validar que solo se ingresen números)
-                TextFieldWithLabel(
-                    label = "Código postal",
-                    value = postalCode,
-                    onValueChange = {
-                        if (it.all { char -> char.isDigit() }) postalCode =
-                            it // Validar que solo se ingresen números
-                    },
-                    placeholder = "Ingresa tu código postal",
-                    keyboardType = KeyboardType.Number
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Estado
-                TextFieldWithLabel(
-                    label = "Estado",
-                    value = state,
-                    onValueChange = { state = it },
-                    placeholder = "Ingresa tu estado"
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Municipio/Alcaldía
-                TextFieldWithLabel(
-                    label = "Municipio/Alcaldía",
-                    value = city,
-                    onValueChange = { city = it },
-                    placeholder = "Ingresa tu municipio o alcaldía"
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Colonia
-                TextFieldWithLabel(
-                    label = "Colonia",
-                    value = colony,
-                    onValueChange = { colony = it },
-                    placeholder = "Ingresa tu colonia"
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Calle
-                TextFieldWithLabel(
-                    label = "Calle",
-                    value = street,
-                    onValueChange = { street = it },
-                    placeholder = "Escribe solo el nombre de la calle o avenida."
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Número (Validar que solo se ingresen números)
-                TextFieldWithLabel(
-                    label = "Número de casa",
-                    value = houseNumber,
-                    onValueChange = {
-                        if (it.all { char -> char.isDigit() }) houseNumber =
-                            it // Validar que solo se ingresen números
-                    },
-                    placeholder = "Ingresa el número"
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-
-                /* ¿Es tu trabajo o tu casa?
-                Text(
-                    text = "¿Es tu trabajo o tu casa?",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(top = 8.dp)
-                ) {
-                    RadioButton(
-                        selected = isHome,
-                        onClick = { isHome = true }
-                    )
-                    Text(text = "Casa", modifier = Modifier.padding(start = 8.dp))
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    RadioButton(
-                        selected = !isHome,
-                        onClick = { isHome = false }
-                    )
-                    Text(text = "Trabajo", modifier = Modifier.padding(start = 8.dp))
-                }*/
-
-                // Teléfono de contacto (Validar que solo se ingresen números)
-                TextFieldWithLabel(
-                    label = "Teléfono de contacto",
-                    value = contactNumber,
-                    onValueChange = {
-                        if (it.all { char -> char.isDigit() }) contactNumber =
-                            it // Validar que solo se ingresen números
-                    },
-                    placeholder = "Ingresa tu teléfono de contacto",
-                    keyboardType = KeyboardType.Phone
-                )
-
-                Spacer(modifier = Modifier.height(24.dp)) // Espaciado antes del botón
-
-                Box(
-                    modifier = Modifier.fillMaxSize(), // El Box ocupa toda el área disponible
-                    contentAlignment = Alignment.Center // Centra el contenido (el botón)
-                ) {
-                    Button(
-                        onClick = {
+                        // Si no hay errores, guardar
+                        if (listOf(
+                                nameError,
+                                postalCodeError,
+                                stateError,
+                                cityError,
+                                colonyError,
+                                streetError,
+                                houseNumberError,
+                                contactNumberError
+                            ).all { it == null }
+                        ) {
                             navController.navigate("StartScreen")
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = YellowIcons),
-                        modifier = Modifier.align(Alignment.Center) // Asegura que el botón esté centrado
-                    ) {
-                        Text(
-                            text = "Guardar Información",
-                            color = BlueBackground,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = YellowIcons),
+                    modifier = Modifier.fillMaxWidth(0.8f) // El botón ocupará un 80% del ancho de la pantalla
+                ) {
+                    Text(
+                        text = "Guardar Información",
+                        color = BlueBackground,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
-                Spacer(modifier = Modifier.height(30.dp))
             }
         }
     }
 }
 
 @Composable
-fun TextFieldWithLabel(
+fun TextFieldWithValidation(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
+    error: String? = null,
     placeholder: String = "",
-    keyboardType: KeyboardType = KeyboardType.Text,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         if (label.isNotEmpty()) {
@@ -253,16 +276,27 @@ fun TextFieldWithLabel(
                 modifier = Modifier.padding(bottom = 4.dp)
             )
         }
+
+        // TextField con validación
         TextField(
             value = value,
             onValueChange = onValueChange,
             placeholder = { Text(placeholder, color = BlueBackground) },
-            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),  // Ajuste para el tipo de teclado
-            visualTransformation = visualTransformation,
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType), // Ajuste para el tipo de teclado
+            isError = error != null, // Si hay un error, marcar el campo como "error"
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
         )
+
+        // Si hay error, mostrar el mensaje debajo del campo
+        if (error != null) {
+            Text(
+                text = error,
+                color = YellowIcons,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
     }
 }
-

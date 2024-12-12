@@ -8,21 +8,21 @@ class ShoppingCartViewModel : ViewModel() {
     private val _shoppingCart = mutableStateListOf<ShoppingModel>()
     val shoppingCart: List<ShoppingModel> get() = _shoppingCart
 
+    // Lista de compras realizadas (historial de compras)
+    private val _purchaseHistory = mutableStateListOf<List<ShoppingModel>>()
+    val purchaseHistory: List<List<ShoppingModel>> get() = _purchaseHistory
+
     // Añadir un producto al carrito (si ya está, aumentar la cantidad)
     fun addProductToCart(product: ShoppingModel) {
-        println("Antes de agregar: ${_shoppingCart.size}")  // Imprimir tamaño del carrito
         val existingProduct = _shoppingCart.find { it.id == product.id }
         if (existingProduct != null) {
-            // Si el producto ya está en el carrito, actualizamos la cantidad
             val updatedProduct = existingProduct.copy(
                 selectedQuantity = existingProduct.selectedQuantity + product.selectedQuantity
             )
             updateProductInCart(updatedProduct)
         } else {
-            // Si no está, lo agregamos
             _shoppingCart.add(product)
         }
-        println("Después de agregar: ${_shoppingCart.size}")  // Imprimir tamaño después
     }
 
     // Eliminar un producto del carrito
@@ -32,9 +32,7 @@ class ShoppingCartViewModel : ViewModel() {
 
     // Limpiar el carrito
     fun clearCart() {
-        println("Antes de borrar: ${_shoppingCart.size}")
         _shoppingCart.clear()
-        println("Después de borrar: ${_shoppingCart.size}")
     }
 
     // Actualizar la cantidad de un producto existente en el carrito
@@ -54,6 +52,14 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 
+    // Finalizar compra y guardar en historial
+    fun completePurchase() {
+        // Guardar los productos del carrito en el historial
+        _purchaseHistory.add(_shoppingCart.toList())
+        // Limpiar el carrito después de la compra
+        clearCart()
+    }
+
     // Método privado para actualizar un producto en el carrito
     private fun updateProductInCart(updatedProduct: ShoppingModel) {
         val productIndex = _shoppingCart.indexOfFirst { it.id == updatedProduct.id }
@@ -62,4 +68,3 @@ class ShoppingCartViewModel : ViewModel() {
         }
     }
 }
-
