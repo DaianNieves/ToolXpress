@@ -10,6 +10,7 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Handyman
+import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
@@ -245,6 +246,34 @@ fun TopBar(navController: NavController) {
                         )
                     }
                 }
+                // Opción "Estado de la compra"
+                DropdownMenuItemWithBackground(
+                    onClick = {
+                        expanded = false
+                        navController.navigate("EnvioScreen")
+                    },
+                    backgroundColor = Color(0xFFE3F2FD)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocalShipping,
+                            contentDescription = "Estado de la compra",
+                            tint = Color.Black,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Estado de la compra",
+                            color = Color.Black,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+
+                Divider(color = Color.Gray, thickness = .5.dp)
 
                 // Divider después de la opción "Mis compras"
                 Divider(color = Color.Gray, thickness = .5.dp)
