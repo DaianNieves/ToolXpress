@@ -47,7 +47,6 @@ fun ShoppingCartScreen(navController: NavController, shoppingCartViewModel: Shop
 
         // Mostrar mensaje si el carrito está vacío
         if (productList.isEmpty()) {
-            // Mostrar ícono de carrito y mensaje "Carrito Vacío"
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -59,23 +58,35 @@ fun ShoppingCartScreen(navController: NavController, shoppingCartViewModel: Shop
                         imageVector = Icons.Filled.ShoppingCart,
                         contentDescription = "Carrito Vacío",
                         modifier = Modifier.size(100.dp),
-                        tint = YellowIcons // Color amarillo para el ícono
+                        tint = YellowIcons
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = "Carrito Vacío",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
-                        color = YellowIcons // Texto de color amarillo
+                        color = YellowIcons
                     )
                 }
             }
         } else {
-            // Mostrar productos en el carrito
+            // Título de la pantalla
+            Text(
+                text = "Carrito de Compras",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+                color = YellowIcons,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                textAlign = TextAlign.Center
+            )
+
+            // Hacer scroll de todos los elementos (productos)
             LazyColumn(
                 modifier = Modifier
-                    .weight(1f) // El LazyColumn ocupa el espacio disponible
-                    .padding(bottom = 100.dp) // Añadimos padding para no cubrir el total y botón
+                    .fillMaxSize()
+                    .weight(1f) // Permite que el LazyColumn ocupe el espacio restante
             ) {
                 items(productList) { product ->
                     ProductItem(
@@ -91,43 +102,42 @@ fun ShoppingCartScreen(navController: NavController, shoppingCartViewModel: Shop
                 }
             }
 
-            // Mostrar el total solo si hay productos
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(8.dp),
-                backgroundColor = GrayProduct,
-                elevation = 4.dp
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "Total:",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                    Text(
-                        "$${"%.2f".format(totalAmount)}",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = YellowIcons
-                    )
-                }
-            }
-
-            // Fijar el botón de compra al fondo
-            Row(
+            // Fijar el total en la parte inferior
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
+                // Mostrar el total
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp),
+                    backgroundColor = GrayProduct,
+                    elevation = 4.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            "Total:",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            "$${"%.2f".format(totalAmount)}",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = YellowIcons
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                // Fijar el botón de compra al fondo
                 Button(
                     onClick = { navController.navigate("EstableDomicilioScreen") },
                     modifier = Modifier

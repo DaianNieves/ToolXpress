@@ -90,7 +90,7 @@ fun SetupNavGraph(navController: NavHostController) {
             }
             composable("EnvioScreen") { EnvioScreen(navController) }
             composable("MetodoPagoScreen") { MetodoPagoScreen(navController) }
-            composable("ComprasScreen") { ComprasScreen(navController) }
+            composable("ComprasScreen") { ComprasScreen(navController, shoppingCartViewModel) }
             composable("ProductsScreen/{categoryName}") { backStackEntry ->
                 val categoryName = backStackEntry.arguments?.getString("categoryName")
                 ProductsScreen(navController, categoryName, allCategories) // Pasa todas las categorías aquí

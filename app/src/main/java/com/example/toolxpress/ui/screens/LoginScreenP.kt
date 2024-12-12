@@ -41,6 +41,7 @@ fun LoginScreenP(navController: NavController) {
     var keepLoggedIn by remember { mutableStateOf(false) }
     var hasEmailError by remember { mutableStateOf(false) }
     var hasPasswordError by remember { mutableStateOf(false) }
+    var loginErrorMessage by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar(navController = navController)
@@ -50,8 +51,7 @@ fun LoginScreenP(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             content = {
                 item {
-
-                    // Imagen centrada (Logo)
+                    // Logo e imagen
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                         Image(
                             painter = painterResource(id = R.drawable.logo),
@@ -63,7 +63,7 @@ fun LoginScreenP(navController: NavController) {
                 }
 
                 item {
-                    // Email/Usuario
+                    // Campo de correo/usuario
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = "Correo o Nombre de usuario",
@@ -89,8 +89,8 @@ fun LoginScreenP(navController: NavController) {
                             BasicTextField(
                                 value = email,
                                 onValueChange = {
-                                    email = it.filter { char -> char != ' ' }
-                                    hasEmailError = !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+                                    email = it.trim() // Filtrar espacios al inicio y fin
+                                    hasEmailError = email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
                                 },
                                 modifier = Modifier.weight(1f),
                                 decorationBox = { innerTextField ->
@@ -111,13 +111,12 @@ fun LoginScreenP(navController: NavController) {
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold
                                 ),
-                                singleLine = true,  // Asegura que el input se mantenga en una sola línea
-                                maxLines = 1        // Limita el input a una línea
+                                singleLine = true
                             )
                         }
                         if (hasEmailError) {
                             Text(
-                                text = "Por favor, introduzca una dirección de correo electrónico válida.",
+                                text = "Por favor, introduzca un correo válido.",
                                 color = YellowIcons,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -129,7 +128,7 @@ fun LoginScreenP(navController: NavController) {
                 }
 
                 item {
-                    // Campo de texto para contraseña - mostrar/ocultar contraseña
+                    // Campo de contraseña
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = "Contraseña",
@@ -147,7 +146,7 @@ fun LoginScreenP(navController: NavController) {
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Password,
-                                contentDescription = "User Icon",
+                                contentDescription = "Password Icon",
                                 modifier = Modifier.size(28.dp),
                                 tint = BlueBackground
                             )
@@ -155,7 +154,7 @@ fun LoginScreenP(navController: NavController) {
                             BasicTextField(
                                 value = password,
                                 onValueChange = {
-                                    password = it.filter { char -> char != ' ' }//filtrar espacios
+                                    password = it.trim() // Filtrar espacios
                                     hasPasswordError = password.isEmpty()
                                 },
                                 modifier = Modifier.weight(1f),
@@ -178,8 +177,7 @@ fun LoginScreenP(navController: NavController) {
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold
                                 ),
-                                singleLine = true,  // input se mantenga en una sola línea
-                                maxLines = 1
+                                singleLine = true
                             )
                             Icon(
                                 imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
@@ -192,7 +190,7 @@ fun LoginScreenP(navController: NavController) {
                         }
                         if (hasPasswordError) {
                             Text(
-                                text = "Please enter your password.",
+                                text = "Por favor, ingrese su contraseña.",
                                 color = YellowIcons,
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -204,57 +202,48 @@ fun LoginScreenP(navController: NavController) {
                 }
 
                 item {
-                    // Remember me
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Checkbox(
-                            checked = keepLoggedIn,
-                            onCheckedChange = { keepLoggedIn = it },
-                            colors = CheckboxDefaults.colors(
-                                checkmarkColor = BlueBackground, // Color de la marca cuando está seleccionado
-                                uncheckedColor = Color.White, // Borde blanco cuando está desmarcado
-                                checkedColor = YellowIcons // Borde y relleno amarillo cuando está seleccionado
-                            )
-                        )
+                    if (loginErrorMessage != null) {
                         Text(
-                            text = "Recuérdame",
-                            color = Color.White,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                            text = loginErrorMessage!!,
+                            color = YellowIcons,
+                            modifier = Modifier.padding(8.dp),
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(60.dp))
-                }
-
-                item {
-                    // Botón de inicio de sesión
                     Button(
-                        onClick = { navController.navigate("StartScreen") },
+                        onClick = {
+                            if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                                hasEmailError = true
+                                loginErrorMessage = "Por favor, verifique su correo."
+                            } else if (password.isEmpty()) {
+                                hasPasswordError = true
+                                loginErrorMessage = "Por favor, introduzca su contraseña."
+                            } else {
+                                loginErrorMessage = null
+                                navController.navigate("StartScreen")
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 25.dp)
-                            .height(50.dp), // Altura ajustada a 50.dp
+                            .height(50.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = YellowIcons, // Color de fondo amarillo
-                            contentColor = Color.White // Color del contenido, en este caso el texto
+                            containerColor = YellowIcons,
+                            contentColor = Color.White
                         ),
-                        shape = RoundedCornerShape(16.dp) // Borde redondeado para mejor diseño
+                        shape = RoundedCornerShape(16.dp)
                     ) {
                         Text(
                             text = "Iniciar sesión",
-                            fontSize = 30.sp, // Ajuste del tamaño de fuente a 15.sp
+                            fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             textAlign = TextAlign.Center,
-                            color = BlueBackground // Color del texto blanco
+                            color = BlueBackground
                         )
                     }
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
                 }
-
-
                 item {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
